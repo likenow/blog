@@ -17,7 +17,7 @@ Anyway~~现在就用 `GitHub` 啦！
 | 读书总结 | [《Unix编程艺术》摘录1](./articles/2019-01-15-《Unix编程艺术》摘录Part1.md)<br>[《Unix编程艺术》摘录2](./articles/2019-01-20-《Unix编程艺术》摘录Part2.md)<br>[《Unix编程艺术》摘录3](./articles/2019-01-31-《Unix编程艺术》摘录Part3.md)<br>[《Python-基础教程第三版》摘录1](./articles/2019-02-19-《Python-基础教程第三版》摘录Part1.md)<br>[《Python-基础教程第三版》摘录2](./articles/2019-04-04-《Python-基础教程第三版》摘录Part2.md)<br>[《遇见未知的自己》摘录](./articles/2017-3-17-读《遇见未知的自己》摘录.md)<br> |      |
 | 年度分享 | [我的 2018 年总结](./articles/2018-11-24-杂谈之2018流水账记事.md) |
 | 其它分享 | [程序员自装修系列-基础设计](./articles/2019-01-13-程序员自装修系列-基础设计.md)<br>[程序员自装修系列1](./articles/2019-01-19-程序员自装修系列-Part1.md)<br>[程序员自装修系列-物联网](./articles/2019-01-20-程序员自装修系列-物联网.md)<br>[老板讲互联网思维](./articles/2017-12-29-老板讲互联网思维.md)<br>[记审核加急经历-2015年](./articles/2015-12-26-记审核加急经历.md) |      |
-| 工作效率 | [Mac外接移动硬盘](./articles/2016-1-10-Mac外接移动硬盘小tip.md)<br>[Windows操作系统的电脑如何学习OC](./articles/2015-3-7-Windows操作系统的电脑如何学习OC.md)<br>[使用Charles进行抓包](./articles/2015-8-16-使用Charles进行抓包.md)<br>[iOS开发工具XCode的使用与遇到的问题](,.articles/2015-9-21-iOS开发工具XCode的使用与遇到的问题.md)<br>                                                                                 |
+| 工作效率 | [Mac外接移动硬盘](./articles/2016-1-10-Mac外接移动硬盘小tip.md)<br>[Windows操作系统的电脑如何学习OC](./articles/2015-3-7-Windows操作系统的电脑如何学习OC.md)<br>[使用Charles进行抓包](./articles/2015-8-16-使用Charles进行抓包.md)<br>[iOS开发工具XCode的使用与遇到的问题](.articles/2015-9-21-iOS开发工具XCode的使用与遇到的问题.md)<br>                                                                                 |
 
 ##  iOS
 

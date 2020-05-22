@@ -27,7 +27,7 @@ categories:
 
   - `/Users/username/Library/Developer/CoreSimulator/Devices/模拟器UDID/data/Library/Preferences`文件夹下
 
-## Xcode 7 遇到额问题
+## Xcode 7 遇到的问题
 
 - `does not contain bitcode` 。在`Build Setting `里面搜索`bitcode`,把`Enable Bitcode` 更改位`NO`.
 
@@ -49,6 +49,23 @@ categories:
   - 解决方法：`Info.plist`文件中添加一个`key`为`LSApplicationQueriesSchemes`的数组值，里面包含需要添加白名单的`string`类型的` scheme`。在项目中使用了qq，微信等分享登录功能，需要添加对应的key
 
 - 系统`framework`问题，升级之后`framework`全变红了（并不影响程序运行），替换成`9.0`版本的`framework`即可，旧版本的` .dylib`后缀库文件在`Xcode7`中已经换成` .tbd`了，相应进行替换即可
+
+
+## XCode 10 遇到的问题
+
+> ld: library not found for -lstdc++.6.0.9
+> clang: error: linker command failed with exit code 1 (use -v to see invocation)
+> linker command failed with exit code 1 (use -v to see invocation)
+
+**解决：**
+
+把以下3个文件copy到 
+`/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/lib` 目录
+
+- libstdc++.6.0.9.tbd
+- libstdc++.6.tbd
+- libstdc++.tbd
+
 
 
 
@@ -91,6 +108,14 @@ categories:
 | Alt +   鼠标放在模拟器上     | 可以模拟多点触摸                   |
 
 
+
+## could not find developer disk image
+
+**解决**
+将你对应缺少的 Disk Image 版本放入
+> /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/DeviceSupport
+
+![](../assets/2020-xcode-1.png)
 
 ## 参考文献
 

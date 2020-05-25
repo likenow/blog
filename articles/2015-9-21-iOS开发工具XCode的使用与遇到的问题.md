@@ -8,6 +8,47 @@ categories:
 - 工具
 ---
 
+## `$(SRCROOT)` 和 `$(PROJECT_DIR)`
+[What the different between SRCROOT and PROJECT_DIR?
+](https://stackoverflow.com/questions/36323031/what-the-different-between-srcroot-and-project-dir/40739356)
+
+> Exchangeable in practice, while the documentation makes these subtle theoretical distinctions:
+> 1. SRCROOT
+> Directory path. Identifies the directory containing the target’s source files: contains the path to the project file that defines the target.
+> SOURCE_ROOT is an undocumented alias to SRCROOT
+> 2. PROJECT_DIR
+Identifies the directory containing the project (.xcodeproj)
+$(PROJECT_DIR)/build is used as the create the default value for:
+> Intermediate Build Files Path OBJROOT
+Build Products Path SYMROOT
+Typically these paths are not set per target, but are set per-project or per-user.
+> 3. PROJECT_FILE_PATH
+Identifies the project itself.
+Equivalent to $(PROJECT_DIR)/$(PROJECT_NAME).xcodeproj
+> Conceptually different (#1 is about the project which defines the target while #2 is about the project independently of any target), they are always pointing to the same location since you are, in essence, always building a target.
+> References
+> - Xcode 8.3 Build Settings reference
+> - Xcode Build System Guide (Retired 2016-09-29)
+
+![](../assets/2015-xcode-1.png)
+
+## Library Search Paths / Header Search Paths
+
+> I'm looking for a documentation, too. But I made the experience, that `$(inherited)` can be used to inherit build settings from the project level to the target level. When you define library or header search paths at the project level you can use `$(inherited)` in the target build settings to use these search paths in the search paths of the project targets.
+
+
+```
+$(inherited) "$(SRCROOT)/.a文件所在的文件名"
+
+// 如果有多个.a文件格式就像这样
+
+$(inherited) "$(SRCROOT)/xxxx" "$(SRCROOT)/xx"
+
+如果取的是相对是绝对路径那么工程移到别的地方就有可能导致运行出错。所以要改成相对路径
+
+```
+
+
 ## Xcode 6 遇到的问题
 
 - 去掉了`pch`文件。如果你想有`pch`需要在`building setting`中的`precompile header`设置下路径`$(SRCROOT)/xxx/xxxx.pch`, 然后将`Precompile Prefix Header`为`YES`，预编译后的`pch`文件会被缓存起来，可以提高编译速度。`pch`是预编译文件,我们的一些头文件导入会写到这里如`Foundation.h` 
@@ -29,11 +70,25 @@ categories:
 
 ## Xcode 7 遇到的问题
 
-- `does not contain bitcode` 。在`Build Setting `里面搜索`bitcode`,把`Enable Bitcode` 更改位`NO`.
+### does not contain bitcode
+在`Build Setting `里面搜索`bitcode`,把`Enable Bitcode` 更改位`NO`
 
-- 网络请求失败：`App Transport Security has blocked a cleartext HTTP (http://) resource load since it is insecure. Temporary exceptions can be configured via your app's Info.plist file.`
+#### Bitcode
+LLVM 是目前苹果采用的编译器工具链，Bitcode 是 LLVM 编译器的**中间代码**的一种编码LLVM的前端可以理解为C/C++/OC/Swift等编程语言，LLVM的后端可以理解为各个芯片平台上的汇编指令或者可执行机器指令数据，那么，BitCode就是位于这两者直接的中间码。 
 
-  - 原因：`iOS9`默认使用`HTTPS`请求。解决：暂时退回`http`请求：在工程的`Info.plist`文件里添加`NSAppTransportSecurity`字典类型的，添加一个元素：`key`为`NSAllowsArbitraryLoads`，值为`YES`
+LLVM的编译工作原理是前端负责把项目程序源代码翻译成 Bitcode 中间码，然后再根据不同目标机器芯片平台转换为相应的汇编指令以及翻译为机器码。这样设计就可以让LLVM成为了一个编译器架构，可以轻而易举的在LLVM架构之上发明新的语言(前端)，以及在 LLVM 架构下面支持新的CPU(后端)指令输出，虽然Bitcode仅仅只是一个中间码不能在任何平台上运行，但是它可以转化为任何被支持的CPU架构，包括现在还没被发明的CPU架构，也就是说现在打开Bitcode功能提交一个App到应用商店，以后如果苹果新出了一款手机并CPU也是全新设计的，在苹果后台服务器一样可以从这个App的 Bitcode 开始编译转化为新CPU上的可执行程序，可供新手机用户下载运行这个App。
+
+上传到服务器的bitcode给苹果带来更好处是: 
+以后新设计了新指令集的新CPU，可以继续从这份bitcode开始编译出新CPU上执行的可执行文件，以供用户下载安装。
+
+但是bitcode给开发者带来的不便之处就是: 
+没用bitcode之前，当应用程序奔溃后，开发者可以根据获取的的奔溃日志再配上上传到苹果服务器的二进制文件的调试符号表信息DSYM可以还原程序运行过程到奔溃时后调用栈信息，对问题进行定位排查。但是用了bitcode之后，用户安装的二进制不是开发者这边生成的，而是苹果服务器经过优化后生成的，其对应的调试符号信息丢失了，也就无法进行前面说的还原奔溃现场找原因了。
+
+
+
+### 网络请求失败：`App Transport Security has blocked a cleartext HTTP (http://) resource load since it is insecure. Temporary exceptions can be configured via your app's Info.plist file.`
+
+原因：`iOS9`默认使用`HTTPS`请求。解决：暂时退回`http`请求：在工程的`Info.plist`文件里添加`NSAppTransportSecurity`字典类型的，添加一个元素：`key`为`NSAllowsArbitraryLoads`，值为`YES`
 
   ```json
   <key>NSAppTransportSecurity</key>
@@ -43,7 +98,7 @@ categories:
   </dict>
   ```
 
-- `iOS 9` 使用 `URL scheme`必须将其加入**白名单**
+### `iOS 9` 使用 `URL scheme`必须将其加入**白名单**
 
   - `canOpenURL: failed for URL: "mqqopensdkapiV2://qqapp" - error: "This app is not allowed to query for schememqqopensdkapiV2”`
   - 解决方法：`Info.plist`文件中添加一个`key`为`LSApplicationQueriesSchemes`的数组值，里面包含需要添加白名单的`string`类型的` scheme`。在项目中使用了qq，微信等分享登录功能，需要添加对应的key
@@ -123,3 +178,4 @@ categories:
 
 - [Xcode6 模拟器路径【修改】](https://blog.csdn.net/simon699/article/details/39398453)
 - [升级Xcode7后遇到的一些问题](https://blog.csdn.net/he15023306643/article/details/48684229)
+- [关于bitcode, 知道这些就够了]( http://xelz.info/blog/2018/11/24/all-you-need-to-know-about-bitcode/)

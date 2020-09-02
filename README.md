@@ -32,7 +32,7 @@ Anyway~~现在就用 `GitHub` 啦！
 | swift | [Swift学习实践](./articles/2017-1-2-Swift学习实践.md)<br>  | swift 的内容已经过时，不建议阅读 |
 | 数据库 | [了解SQLite](./articles/2020-5-17-了解SQLite.md)<br>[FMDB使用](./articles/2016-5-14-FMDB使用.md)<br>  | ✅ |
 | 设计模式 | [iOS单例设计模式](./articles/2015-10-22-iOS单例设计模式.md)<br>[OC协议与代理设计模式](./articles/2015-7-19-OC协议与代理设计模式.md)<br>[iOS架构与设计模式](./articles/2017-9-22-iOS架构与设计模式.md)<br> | ✅ |
-| 杂烩 | [iOS扫码功能实现](./articles/2018-3-9-iOS扫码功能实现.md)<br>[iOS签到日历功能实现](./articles/2016-7-23-iOS签到日历功能实现.md)<br>[作为移动应用开发者应该了解APP测试](./articles/2016-8-7-作为移动应用开发者应该了解APP测试.md)<br>[Swagger在我们项目开发中的应用](./articles/2016-9-17-Swagger在我们项目开发中的应用.md)<br>[用户行为统计探索](./articles/2017-6-1-用户行为统计探索.md)<br> | ✅ |
+| 杂烩 | [iOS扫码功能实现](./articles/2018-3-9-iOS扫码功能实现.md)<br>[iOS签到日历功能实现](./articles/2016-7-23-iOS签到日历功能实现.md)<br>[作为移动应用开发者应该了解APP测试](./articles/2016-8-7-作为移动应用开发者应该了解APP测试.md)<br>[Swagger在我们项目开发中的应用](./articles/2016-9-17-Swagger在我们项目开发中的应用.md)<br>[用户行为统计探索](./articles/2017-6-1-用户行为统计探索.md)<br>[iOS遇到的开发问题汇总](./articles/2020-9-2-iOS问题汇总.md)<br>[iOS适配](./articles/2020-9-2-iOS适配.md) | ✅ |
 
 
 

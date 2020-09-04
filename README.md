@@ -10,7 +10,7 @@ Anyway~~现在就用 `GitHub` 啦！
 #### [原静态博客](http://dnduuhn.com) 将不再维护！慢慢把自己记录的笔记和博文整理到 `GitHub` 上来。
 
 
-**文章比较水，希望慢慢能够写出一些高质量的文章。欢迎各位读者踊跃指正错误，共同创作高质量的文章。**
+**希望慢慢能够写出一些高质量的文章。欢迎各位读者踊跃指正错误，共同创作高质量的文章。**
 
 ## 📖 读书、总结与分享
 
@@ -29,7 +29,7 @@ Anyway~~现在就用 `GitHub` 啦！
 | 多线程 | [多线程编程知识整理](./articles/2018-12-02-iOS-多线程编程知识整理.md)<br>[iOS-多线编程之线程安全](./articles/2018-12-11-iOS-多线编程之线程安全.md)<br>[Runloop与线程保活](./articles/2018-12-15-iOS-Runloop与线程保活.md)<br>[iOS多线程之同步异步、串行并行](./articles/2018-12-18-iOS多线程之同步异步、串行并行.md)<br>[Autorelease-Pool(2)](./articles/2018-12-20-Autorelease-Pool不应该停留在知道（二）.md)<br>[AutoreleasePool(1)](./articles/2018-11-18-AutoreleasePool不应该停留在知道.md)<br>| ✅ |
 | ObjC | [OC语言笔记0](./articles/OC语言笔记0.md)<br>[OC中给类扩充方法](./articles/OC中给类扩充方法.md)<br>[Set 方法和 Get 方法](./articles/set和get方法.md)<br>[小结OC中的方法重写2](./articles/小结OC中的方法重写2.md)<br>[小结OC中的方法重写](./articles/小结OC中的方法重写.md)<br>[Objective-C真假值小结](./articles/2018-11-01-Objective-C真假值小结.md)<br>[OC与C-混编](./articles/2015-12-12-OC与C-混编.md)<br>[OC内存管理](./articles/2015-11-7-OC内存管理.md)<br>[OC中的正则表达式](./articles/2016-2-21-OC中的正则表达式.md)<br>[Tagged Pointer](./articles/2015-5-22-TaggedPointer.md)<br> | ✅ |
 | 工程化 | [Cocoapods搭建OC私repo](./articles/2016-8-27-Cocoapods搭建OC私repo.md)<br>[cocoaPods的简单使用](./articles/2016-4-3-cocoaPods的简单使用.md)<br> [一直用的Git真的了解吗](./articles/2019-12-3-一直用的Git真的了解吗.md) | ✅ |
-| swift | [Swift学习实践](./articles/2017-1-2-Swift学习实践.md)<br>  | swift 的内容已经过时，不建议阅读 |
+| swift | [Swift学习实践](./articles/2017-1-2-Swift学习实践.md)<br>  | 该内容已经过时，不建议阅读 |
 | 数据库 | [了解SQLite](./articles/2020-5-17-了解SQLite.md)<br>[FMDB使用](./articles/2016-5-14-FMDB使用.md)<br>  | ✅ |
 | 设计模式 | [iOS单例设计模式](./articles/2015-10-22-iOS单例设计模式.md)<br>[OC协议与代理设计模式](./articles/2015-7-19-OC协议与代理设计模式.md)<br>[iOS架构与设计模式](./articles/2017-9-22-iOS架构与设计模式.md)<br> | ✅ |
 | 杂烩 | [iOS扫码功能实现](./articles/2018-3-9-iOS扫码功能实现.md)<br>[iOS签到日历功能实现](./articles/2016-7-23-iOS签到日历功能实现.md)<br>[作为移动应用开发者应该了解APP测试](./articles/2016-8-7-作为移动应用开发者应该了解APP测试.md)<br>[Swagger在我们项目开发中的应用](./articles/2016-9-17-Swagger在我们项目开发中的应用.md)<br>[用户行为统计探索](./articles/2017-6-1-用户行为统计探索.md)<br>[iOS遇到的开发问题汇总](./articles/2020-9-2-iOS问题汇总.md)<br>[iOS适配](./articles/2020-9-2-iOS适配.md) | ✅ |
@@ -56,6 +56,7 @@ Anyway~~现在就用 `GitHub` 啦！
 | :---: | :--- | :--- |
 | 编码 | [敲代码时遇到的乱码问题](./articles/敲代码时遇到的乱码问题.md) | ✅ |
 | Mac 配置开发环境 | [Mac 配置开发环境](./articles/Mac配置开发环境.md) | ✅ |
+| shell 脚本 | [Shell脚本终端输出显示样式](./articles/2018-4-24-Shell脚本终端输出显示样式.md) | ✅ |
 
 ## 🕸 计算机网络
 

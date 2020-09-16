@@ -8,7 +8,42 @@ categories:
 - 工具
 ---
 
+
+
+## Xcode 12 (Version 12.0 beta 6 (12A8189n))
+
+### Xcode 12, building for iOS Simulator, but linking in object file built for iOS, for architecture arm64
+
+解决：
+
+> I've seen quite a bit of weird behavior with frameworks, I think due to changes to the simulators to support Apple silicon. My temporary workaround is, in my app/extension targets, to add "arm64" to the Excluded Architectures build setting when building for the simulator (as your preview appears to be trying to do), and setting "Build Active Architecture Only" to No for all schemes. Might be worth a try.
+
+<img src="../assets/image-20200907112056864.png" alt="image-20200907112056864" style="zoom:80%;" />
+
+
+
+<img src="../assets/image-20200907112237568.png" alt="image-20200907112237568" style="zoom:80%;" />
+
+解决：
+
+```
+Keychain Access
+->
+Right-click on login
+->
+Lock & unlock again
+->
+Clean Xcode project
+->
+Make build again
+```
+
+
+
+
+
 ## `$(SRCROOT)` 和 `$(PROJECT_DIR)`
+
 [What the different between SRCROOT and PROJECT_DIR?
 ](https://stackoverflow.com/questions/36323031/what-the-different-between-srcroot-and-project-dir/40739356)
 
@@ -32,21 +67,83 @@ Equivalent to $(PROJECT_DIR)/$(PROJECT_NAME).xcodeproj
 
 ![](../assets/2015-xcode-1.png)
 
+
+
+## Search Paths
+
+常用路径 `path` ，就是下面三种啦：
+
+- `Framework Search Paths`
+   附加到项目中的`framework` 的搜索路径。
+- `Library Search Paths`
+   附加到项目中的第三方`Library`的搜索路径。
+- `Header Search Path`
+   头文件的搜索路径。
+- `User Header Search Paths`
+   只有在`Always Search User Paths`为`Yes`时才会被搜索。
+
+
+
 ## Library Search Paths / Header Search Paths
 
 > I'm looking for a documentation, too. But I made the experience, that `$(inherited)` can be used to inherit build settings from the project level to the target level. When you define library or header search paths at the project level you can use `$(inherited)` in the target build settings to use these search paths in the search paths of the project targets.
 
+> 注意：
+>
+> - 路径中有空格必须要加引号
+>
+> - 双引号的作用是如果在路径中有空格，可以识别该路径。
+> - 没有双引号但是路径中有空格，它会自动变成两个路径。
+> - 多个路径可以用空格隔开
+> - 如果取的是绝对路径那么工程移到别的地方就有可能导致运行出错。所以要改成相对路径
+
 
 ```
+举例：
+// 情况1：
 $(inherited) "$(SRCROOT)/.a文件所在的文件名"
-
-// 如果有多个.a文件格式就像这样
-
+// 情况2：如果有多个.a文件格式就像这样 
 $(inherited) "$(SRCROOT)/xxxx" "$(SRCROOT)/xx"
-
-如果取的是相对是绝对路径那么工程移到别的地方就有可能导致运行出错。所以要改成相对路径
-
 ```
+
+
+
+## $(inherited)
+
+> [What is $(inherited) in Xcode's search path settings?](https://stackoverflow.com/questions/15343122/what-is-inherited-in-xcodes-search-path-settings)
+>
+> I'm looking for a documentation, too. But I made the experience, that `$(inherited)` can be used to inherit build settings from the project level to the target level. When you define library or header search paths at the project level you can use `$(inherited)` in the target build settings to use these search paths in the search paths of the project targets.
+
+`$(inherited)`可用于将构建设置从项目级别继承到目标级别。
+
+
+
+![image-20200916135737065](../assets/image-20200916135737065.png)
+
+> You can see the flow of `inherited` from right to left
+>
+> ```
+> Resolved <- Target <- xcconfig <- Project <- iOS Default
+> ```
+>
+> So in `inherited` in Target means that Target inherits settings from xcconfig and Project
+
+
+
+## Framework Search Paths
+
+>[Framework Programming Guide](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPFrameworks/Tasks/IncludingFrameworks.html)
+>
+>## Locating Frameworks in Non-Standard Directories
+>
+>If your project links to frameworks that are not included in any of the standard locations, you must explicitly specify the location of that framework before Xcode can locate its header files. To specify the location of such a framework, add the directory containing the framework to the “Framework Search Paths” option of your Xcode project. Xcode passes this list of directories to the compiler and linker, which both use the list to search for the framework resources.
+>
+>
+>
+>**Note:** The standard locations for frameworks are the `/System/Library/Frameworks` directory and the `/Library/Frameworks` directory on the local system.
+
+文档指出，如果你引用的 `Frameworks` 没有在标准位置（`standard locations`），那么，你需要在工程的配置文件里设置` “Framework Search Paths”`， 用来为编译器（`compiler`）和连接器（`linker`）指定搜索路径。
+
 
 
 ## Xcode 6 遇到的问题

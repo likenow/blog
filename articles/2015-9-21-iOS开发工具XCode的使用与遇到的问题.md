@@ -12,6 +12,12 @@ categories:
 
 ## Xcode 12 (Version 12.0 beta 6 (12A8189n))
 
+### imcompatible block pointer types sending xxx
+
+解决：
+
+![image-20200924134121709](../assets/image-20200924134121709.png)
+
 ### Xcode 12, building for iOS Simulator, but linking in object file built for iOS, for architecture arm64
 
 解决：

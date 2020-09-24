@@ -141,7 +141,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
    <tr>
-      <td rowspan="10">Objc</td>
+      <td rowspan="11">Objc</td>
       <td><a href="./articles/OC语言笔记0.md">OC语言笔记0</a></td>
       <td>✅</td>
    </tr>
@@ -179,6 +179,10 @@ Anyway~~现在就用 `GitHub` 啦！
    </tr>
    <tr>
       <td><a href="./articles/2015-5-22-TaggedPointer.md">Tagged Pointer</a></td>
+      <td>✅</td>
+   </tr>
+   <tr>
+      <td><a href="./articles/2019-9-17-OC符号冲突.md">符号冲突</a></td>
       <td>✅</td>
    </tr>
    <tr>

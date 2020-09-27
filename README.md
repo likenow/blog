@@ -23,7 +23,7 @@ Anyway~~现在就用 `GitHub` 啦！
    <tr>
       <td>读书总结</td>
       <td><a href="./articles/书籍记录.md">书籍记录</a></td>
-      <td>♻️ <font color="green">持续更新中️</font></td>
+      <td>🔥🎉📌📍 <font color="red">持续更新中️</font></td>
    </tr>
    <tr>
       <td>个人总结</td>
@@ -66,13 +66,14 @@ Anyway~~现在就用 `GitHub` 啦！
    </tr>
    <tr>
       <td><a href="./articles/2015-9-21-iOS开发工具XCode的使用与遇到的问题.md">iOS开发工具XCode的使用与遇到的问题</a></td>
-      <td>♻️ <font color="green">持续更新中️</font></td>
+      <td>🔥🎉📌📍<font color="red">持续更新中️</font></td>
    </tr>
    <tr>
       <td><a href=".articles/2020-7-21-使用SourceTree.md">使用SourceTree</a></td>
       <td>✅</td>
    </tr>
 </table>
+
 
 ##  iOS
 
@@ -113,7 +114,7 @@ Anyway~~现在就用 `GitHub` 啦！
    </tr>
    <tr>
       <td><a href="./articles/2020-08-19-码页面要点记录.md">码页面要点记录</a></td>
-      <td>♻️ <font color="green">持续更新中️</font></td>
+      <td>🔥🎉📌📍 <font color="red">持续更新中️</font></td>
    </tr>
    <tr>
       <td rowspan="6">多线程</td>
@@ -248,13 +249,14 @@ Anyway~~现在就用 `GitHub` 啦！
    </tr>
    <tr>
       <td><a href="./articles/2020-9-2-iOS问题汇总.md">iOS遇到的开发问题汇总</a></td>
-      <td>♻️ <font color="green">持续更新中️</font></td>
+      <td>🔥🎉📌📍<font color="red">持续更新中️</font></td>
    </tr>
    <tr>
       <td><a href="./articles/2020-9-2-iOS适配.md">iOS适配</a></td>
-      <td>♻️ <font color="green">持续更新中️</font></td>
+      <td>🔥🎉📌📍<font color="red">持续更新中️</font></td>
    </tr>
 </table>
+
 
 
 
@@ -277,9 +279,10 @@ Anyway~~现在就用 `GitHub` 啦！
    </tr>
    <tr>
       <td><a href="./articles/2020-07-22-视频概念整理.md">视频概念整理</a></td>
-      <td>♻️ <font color="green">持续更新中️</font></td>
+      <td>🔥🎉📌📍<font color="red">持续更新中️</font></td>
    </tr>
 </table>
+
 
 
 ## 🌐 前端
@@ -485,3 +488,4 @@ Anyway~~现在就用 `GitHub` 啦！
 | 主题 | 文章 | 备注 |
 | :---: | :--- | :--- |
 | 大杂烩 | [覆盖整个可视区域的遮罩效果](./articles/cover.md)<br>[常用CSS属性速记](./articles/css-pro-fast.md)<br>[实现两列等高](./articles/equal-high.md)<br>[锁定DIV为视口大小](./articles/flat.md)<br>[浮动及影响](./articles/float-effect.md)<br>[三种方法开启网页图片灰度](./articles/gray.md)<br>[Hexo 搭建博客小结](./articles/hexo-blog.md)<br>[了解URL](./articles/html-url.md)<br>[图片替换](./articles/image-exchange.md)<br>[图片预加载](./articles/image-preload.md)<br>[调整图片](./articles/image-resize.md)<br>[jQuery 制作垂直方向的 Accordion 效果](./articles/jq-accordion.md)<br>[自定义动画](./articles/jq-animate.md)<br>[jQuery实现网页局部刷新](./articles/jq-refresh.md)<br>[事件驱动的JavaScript](./articles/js-event-driven.md)<br>[网页选项卡](./articles/js-tab.md)<br>[总结JavaScript文件的加载](./articles/js-to-load.md)<br>[浅谈CSS布局](./articles/layout.md)<br>[CSS学习反思](./articles/learn-remind.md)<br>[解决IE6下MAX-WIDTH嗝屁](./articles/max-width-ie6.md)<br>[博客网站搬到 Github](./articles/move.md)<br>[我的博客](./articles/my-blog-release.md)<br>[CSS透明度属性](./articles/opacity.md)<br>[CSS实现元素居中](./articles/realize-center.md)<br>[配置 Github 时遇到的问题](./articles/set-github.md)<br>[配置 Github 时遇到的问题](./articles/set-use-github.md)<br>[换肤功能](./articles/skin-change.md)<br>[让你的Sublime Text编辑器丰富多“彩”](./articles/st-color.md)<br>[Sublime Text 2快捷键操作](./articles/st-shortcutkeys.md)<br>[在新窗口打开链接](./articles/target.md)<br>[totop](./articles/totop.md)<br>[传统下拉菜单](./articles/traditional-droplist.md)<br>[WIN7下的虚拟桌面](./articles/virtual-dexpot.md)<br>[可视化格式模型](./articles/visual-format-model.md)<br>[学习&使用 Z-INDEX](./articles/z-index.md)<br>[锚点那些事儿](./articles/anchor.md)<br>[CSS盒模型](./articles/box-model.md)<br>[了解按钮](./articles/button.md)<br>[你可能不需要jQuery使用原生JavaScript进行开发](./articles/2014-7-19-转《你可能不需要jQuery使用原生JavaScript进行开发》.md)<br>[暑假过完，大四学生了](./articles/2014-9-01-暑假过完，大四学生了.md)<br>[PhoneGap尝鲜](./articles/2014-12-10-PhoneGap尝鲜.md)<br>[Node-WebKit开发HTML5本地桌面应用](./articles/2014-12-16-Node-WebKit开发HTML5本地桌面应用.md)<br> | ✅ |
+

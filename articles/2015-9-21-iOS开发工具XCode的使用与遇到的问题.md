@@ -152,13 +152,15 @@ $(inherited) "$(SRCROOT)/xxxx" "$(SRCROOT)/xx"
 
 
 
+### 如果想让使用ARC机制的代码不使用ARC机制，只需要输入`-fno-objc-arc`
+
+
+
 ## Xcode 6 遇到的问题
 
 - 去掉了`pch`文件。如果你想有`pch`需要在`building setting`中的`precompile header`设置下路径`$(SRCROOT)/xxx/xxxx.pch`, 然后将`Precompile Prefix Header`为`YES`，预编译后的`pch`文件会被缓存起来，可以提高编译速度。`pch`是预编译文件,我们的一些头文件导入会写到这里如`Foundation.h` 
 - 模拟器路径的变更
   - `/Users/username/Library/Developer/CoreSimulator`
-
-<!--more-->
 
 - 应用沙盒地址的变更
 
@@ -170,6 +172,12 @@ $(inherited) "$(SRCROOT)/xxxx" "$(SRCROOT)/xx"
 - `NSUserDefault` 文件存储位置变更，`NSUserDefault`是iOS提供的本地化数据存储方式，会在沙盒中自动创建一个`.plist`的配置文件，将数据保存起来，在读取时，以`NSDictionary`字典来进行接收 
 
   - `/Users/username/Library/Developer/CoreSimulator/Devices/模拟器UDID/data/Library/Preferences`文件夹下
+
+#### Xcode 6.3 新增：Nullability Annotations
+
+这一新特性的核心是两个新的类型注释：**__nullable**和**__nonnull**。从字面上我们可以猜到，**__nullable**表示对象可以是NULL或nil，而**__nonnull**表示对象不应该为空。当我们不遵循这一规则时，编译器就会给出警告。
+
+
 
 ## Xcode 7 遇到的问题
 
@@ -207,6 +215,17 @@ LLVM的编译工作原理是前端负责把项目程序源代码翻译成 Bitcod
   - 解决方法：`Info.plist`文件中添加一个`key`为`LSApplicationQueriesSchemes`的数组值，里面包含需要添加白名单的`string`类型的` scheme`。在项目中使用了qq，微信等分享登录功能，需要添加对应的key
 
 - 系统`framework`问题，升级之后`framework`全变红了（并不影响程序运行），替换成`9.0`版本的`framework`即可，旧版本的` .dylib`后缀库文件在`Xcode7`中已经换成` .tbd`了，相应进行替换即可
+
+
+
+### XCode 9
+
+xcode 9 带来了不少的变化，其中，构建系统选项出现了 **New Build System (Preview) **  选项
+
+![image-20200928161248046](../assets/image-20200928161248046.png)
+
+
+
 
 
 ## XCode 10 遇到的问题
@@ -274,6 +293,42 @@ LLVM的编译工作原理是前端负责把项目程序源代码翻译成 Bitcod
 > /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/DeviceSupport
 
 ![](../assets/2020-xcode-1.png)
+
+
+
+### Copy items if needed
+
+![image-20200928160435050](../assets/image-20200928160435050.png)
+
+如图，在xcode会产生**蓝色文件夹（folder），其一般作为资源文件夹使用，与黄色文件夹的主要区别是不参与编译**，所以说如果你在这些文件夹下编写的逻辑代码是不参与编译的，其他文件也不能直接引用它们，若引用其中文件需要全路径。
+
+
+
+![image-20200928160620278](../assets/image-20200928160620278.png)
+
+如图，在xcode下**黄色文件夹（group）是逻辑文件夹**，主要是为了逻辑上的分组，如果手动创建（通过New Group选项）group并不会真正创建一个文件夹文件，该文件夹下的文件则会散乱的存放在工程根目录下。当然我们通常会让Xcode中的文件树与实际工程文件中的文件树保持一致。
+
+上述，我们都勾选了 *Copy items if needed*，它会自动复制一份相同的文件到你的工程中，引用的是复制后在工程目录中的位置。若不勾选，文件的引用位置则是文件的原位置（不建议这样做，如果该文件在工程外被删除，工程则无法引用，所以还是复制一份到工程中，这样更利于工程文件的管理）。
+
+
+
+### Distribution requires enrollment in Apple Developer Program
+
+解决：更新证书
+
+
+
+### The file “XXX” couldn’t be opened because you don’t have permission to view it.
+
+![image-20200928162904934](../assets/image-20200928162904934.png)
+
+
+
+解决：直接点击Xcode -> Preferences ->找到DerivedData删除即可
+
+
+
+
 
 ## 参考文献
 

@@ -27,7 +27,7 @@ Anyway~~现在就用 `GitHub` 啦！
    </tr>
    <tr>
       <td>个人总结</td>
-      <td><a href="./articles/2018-11-24-杂谈之2018流水账记事.md">我的 2018 年总结</a></td>
+      <td><a href="./articles/2018-11-24-杂谈之2018流水账记事.md">个人总结</a></td>
       <td>✅</td>
    </tr>
    <tr>
@@ -73,6 +73,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
 </table>
+
 
 
 ##  iOS
@@ -200,10 +201,14 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
    <tr>
-      <td rowspan="">Swift</td>
+      <td rowspan="2">Swift</td>
       <td><a href="./articles/2017-1-2-Swift学习实践.md">Swift学习实践</a></td>
       <td>该内容已经过时，不建议阅读</td>
    </tr>
+   <tr>
+      <td><a href="./articles/2017-03-04-Charts使用.md">Charts 使用</a></td>
+      <td>✅</td>
+    </tr>
    <tr>
       <td rowspan="2">数据库</td>
       <td><a href="./articles/2020-5-17-了解SQLite.md">了解SQLite</a></td>
@@ -256,6 +261,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>🔥🎉📌📍<font color="red">持续更新中️</font></td>
    </tr>
 </table>
+
 
 
 

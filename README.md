@@ -203,7 +203,7 @@ Anyway~~现在就用 `GitHub` 啦！
    <tr>
       <td rowspan="2">Swift</td>
       <td><a href="./articles/2017-1-2-Swift学习实践.md">Swift学习实践</a></td>
-      <td>该内容已经过时，不建议阅读</td>
+      <td>❎</td>
    </tr>
    <tr>
       <td><a href="./articles/2017-03-04-Charts使用.md">Charts 使用</a></td>
@@ -232,7 +232,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
    <tr>
-      <td rowspan="7">杂烩</td>
+      <td rowspan="8">杂烩</td>
       <td><a href="./articles/2018-3-9-iOS扫码功能实现.md">iOS扫码功能实现</a></td>
       <td>✅</td>
    </tr>
@@ -259,6 +259,10 @@ Anyway~~现在就用 `GitHub` 啦！
    <tr>
       <td><a href="./articles/2020-9-2-iOS适配.md">iOS适配</a></td>
       <td>🔥🎉📌📍<font color="red">持续更新中️</font></td>
+   </tr>
+   <tr>
+     <td><a href="./articles/2016-2-23-iOS开发之XIB.md">iOS 开发之 XIB</a></td>
+     <td>✅</td>
    </tr>
 </table>
 

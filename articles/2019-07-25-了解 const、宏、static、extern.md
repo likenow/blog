@@ -1,5 +1,9 @@
 ## 了解 const、宏、static、extern
 
+
+
+之前的一篇文章 [C语言学习static和extern关键字](./articles/2014-8-17-C语言学习static和extern关键字.md)
+
 ### const
 
 const 修饰**右边的变量**，具体的场景比如：修饰指针变量、修饰函数参数、修饰函数返回值、修饰成员函数。。。等

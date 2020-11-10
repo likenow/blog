@@ -170,6 +170,8 @@ for (int i = 0; i < numberOfEntries; i++) {
 >
 > ​			Simulator: iPhone XR 
 
+
+
 | 类 / 时间 [ms]                  | 10.000.000 elements |1.000.000 elements |
 | ------------------------------- | ------------------ |------------------ |
 | `NSMutableSet`, adding          | 6135.44  | 449.32             |
@@ -178,6 +180,8 @@ for (int i = 0; i < numberOfEntries; i++) {
 | `NSMutableArray`, random access | 18.95      |1.72               |
 
 这个检测符合我们的预期：`NSSet` 在每一个被添加的对象上执行 `hash` 和 `isEqual:` 方法并管理一系列哈希值，所以在添加元素时耗费了更多的时间。`set`的随机访问比较难以测试，因为这里执行的都是 `anyObject`。
+
+> You can use sets as an alternative to arrays when the order of elements isn’t important and performance in testing whether an object is contained in the set is a consideration—while arrays are ordered, testing for membership is slower than with sets.
 
 
 

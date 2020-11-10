@@ -13,18 +13,17 @@ Anyway~~现在就用 `GitHub` 啦！
 
 ## 最近更新
 
-| 文章                                                         | 备注                                    |
-| ------------------------------------------------------------ | --------------------------------------- |
-| [书籍记录](./articles/书籍记录.md)                           | 🔥🎉📌📍<font color="red">持续更新中️</font> |
-| [iOS开发工具XCode的使用与遇到的问题](./articles/2015-9-21-iOS开发工具XCode的使用与遇到的问题.md) | 🔥🎉📌📍                                    |
-| [iOS 适配](./articles/2020-9-2-iOS适配.md)                   | 🔥🎉📌📍                                    |
-| [码页面要点记录](./articles/2020-08-19-码页面要点记录.md)    | 🔥🎉📌📍                                    |
-| [iOS遇到的开发问题汇总](./articles/2020-9-2-iOS问题汇总.md)  | 🔥🎉📌📍                                    |
-| [视频概念整理](./articles/2020-07-22-视频概念整理.md)        | 🔥🎉📌📍                                    |
-| [Flutter--从提出问题到理解原理](./articles/2019-12-20-Flutter--从提出问题到理解原理.md) |                                         |
-| [iOS开发 URL 编解码](./articles/2020-11-5-iOS开发URL编解码.md) |                                         |
-
-
+| 文章                                                         |
+| ------------------------------------------------------------ |
+| [书籍记录](./articles/书籍记录.md)                           |
+| [iOS开发工具XCode的使用与遇到的问题](./articles/2015-9-21-iOS开发工具XCode的使用与遇到的问题.md) |
+| [iOS 适配](./articles/2020-9-2-iOS适配.md)                   |
+| [码页面要点记录](./articles/2020-08-19-码页面要点记录.md)    |
+| [iOS遇到的开发问题汇总](./articles/2020-9-2-iOS问题汇总.md)  |
+| [视频概念整理](./articles/2020-07-22-视频概念整理.md)        |
+| [Flutter--从提出问题到理解原理](./articles/2019-12-20-Flutter--从提出问题到理解原理.md) |
+| [iOS开发 URL 编解码](./articles/2020-11-5-iOS开发URL编解码.md) |
+| [OC中的self和super关键字](./articles/2020-11-10-OC中的self和super关键字.md) |
 
 
 
@@ -159,8 +158,12 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
    <tr>
-      <td rowspan="12">Objc</td>
+      <td rowspan="13">Objc</td>
       <td><a href="./articles/OC语言笔记0.md">OC语言笔记0</a></td>
+      <td>✅</td>
+   </tr>
+   <tr>
+      <td><a href="./articles/2020-11-10-OC中的self和super关键字.md">OC中的self和super关键字</a></td>
       <td>✅</td>
    </tr>
    <tr>

@@ -422,6 +422,7 @@ Anyway~~现在就用 `GitHub` 啦！
 </table>
 
 
+
 ## 😵 算法
 
 <table>
@@ -431,11 +432,12 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>备注</td>
    </tr>
    <tr>
-      <td> 待整理 todo </td>
-      <td><a href="./articles/敲代码时遇到的乱码问题.md">⏰</a></td>
-      <td>📌</td>
+      <td rowspan="2"> 排序算法 </td>
+      <td><a href="./articles/2020-3-09-快速排序.md">快速排序</a></td>
+      <td>✅</td>
    </tr>
 </table>
+
 
 ## 💎 全栈之路
 
@@ -505,11 +507,12 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>备注</td>
    </tr>
    <tr>
-      <td> 待整理 todo </td>
+      <td> Flutter </td>
       <td><a href="./articles/2019-12-20-Flutter--从提出问题到理解原理.md">Flutter--从提出问题到理解原理</a></td>
       <td>✅</td>
    </tr>
 </table>
+
 
 ## 📱 安卓开发
 
@@ -520,13 +523,14 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>备注</td>
    </tr>
    <tr>
-      <td> 待整理 todo </td>
+      <td> Android </td>
       <td><a href="./articles/2018-7-6-Android天气应用Demo.md">Android天气应用Demo</a></td>
       <td>✅</td>
    </tr>
 </table>
 
-## 🤦‍♂️ 15 年之前的文章
+
+## 🤦‍♂️ 2015 年之前的文章
 
 | 主题 | 文章 | 备注 |
 | :---: | :--- | :--- |

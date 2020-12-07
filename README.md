@@ -211,7 +211,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
    <tr>
-      <td rowspan="4">工程化</td>
+      <td rowspan="5">工程化</td>
       <td><a href="./articles/2016-8-27-Cocoapods搭建OC私repo.md">Cocoapods搭建OC私repo</a></td>
       <td>✅</td>
    </tr>
@@ -225,6 +225,10 @@ Anyway~~现在就用 `GitHub` 啦！
    </tr>
    <tr>
       <td><a href="./articles/2019-12-3-一直用的Git真的了解吗.md">一直用的Git真的了解吗</a></td>
+      <td>✅</td>
+   </tr>
+  <tr>
+      <td><a href="./articles/2020-12-7-Cocoapods使用总结1.md">Cocoapods使用总结（一）</a></td>
       <td>✅</td>
    </tr>
    <tr>
@@ -296,6 +300,8 @@ Anyway~~现在就用 `GitHub` 啦！
      <td>✅</td>
     </tr>
 </table>
+
+
 
 
 ## 🎬 视频

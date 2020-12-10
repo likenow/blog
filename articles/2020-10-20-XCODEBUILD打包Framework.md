@@ -155,5 +155,5 @@ open "${SRCROOT}/Products"
 ##### 注意点：
 
 - 先 `clean` 再 `build`
-- 不要忘记 97 行的拷贝 `cp -r`
+- 拷贝 `cp -r` 这步不能漏
 - `lipo` 创建通用库

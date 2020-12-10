@@ -211,7 +211,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
    <tr>
-      <td rowspan="6">工程化</td>
+      <td rowspan="7">工程化</td>
       <td><a href="./articles/2016-8-27-Cocoapods搭建OC私repo.md">Cocoapods搭建OC私repo</a></td>
       <td>✅</td>
    </tr>
@@ -229,6 +229,10 @@ Anyway~~现在就用 `GitHub` 啦！
    </tr>
   <tr>
       <td><a href="./articles/2020-10-20-XCODEBUILD打包Framework.md">XCODEBUILD打包Framework</a></td>
+      <td>✅</td>
+   </tr>
+   <tr>
+      <td><a href="./articles/2020-10-29-XCode多环境工程配置.md">XCODE多环境工程配置</a></td>
       <td>✅</td>
    </tr>
   <tr>

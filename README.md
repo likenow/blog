@@ -22,7 +22,6 @@ Anyway~~现在就用 `GitHub` 啦！
 | [iOS遇到的开发问题汇总](./articles/2020-9-2-iOS问题汇总.md)  |
 | [视频概念整理](./articles/2020-07-22-视频概念整理.md)        |
 | [iOS 单元测试](./articles/2020-11-13-iOS单元测试.md)         |
-| [iOS开发 URL 编解码](./articles/2020-11-5-iOS开发URL编解码.md) |
 | [OC中的self和super关键字](./articles/2020-11-10-OC中的self和super关键字.md) |
 
 
@@ -463,6 +462,11 @@ Anyway~~现在就用 `GitHub` 啦！
    <tr>
       <td rowspan="1"> 排序算法 </td>
       <td><a href="./articles/2020-3-09-快速排序.md">快速排序</a></td>
+      <td>✅</td>
+   </tr>
+   <tr>
+    	<td rowspan="1"> 链表 </td>
+      <td><a href="./articles/2020-3-11-链表.md">链表</a></td>
       <td>✅</td>
    </tr>
   <tr>

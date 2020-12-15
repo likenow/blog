@@ -465,8 +465,12 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
    <tr>
-    	<td rowspan="1"> 链表 </td>
+    	<td rowspan="2"> 线性表 </td>
       <td><a href="./articles/2020-3-11-链表.md">链表</a></td>
+      <td>✅</td>
+   </tr>
+   <tr>
+      <td><a href="./articles/2019-10-20-数组.md">数组</a></td>
       <td>✅</td>
    </tr>
   <tr>
@@ -497,23 +501,23 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
    <tr>
-      <td><a href="./articles/C语言学习笔记一.md">C语言学习笔记1</a></td>
+      <td><a href="./articles/C语言学习笔记一.md">C语言学习笔记1-scanf函数</a></td>
       <td>✅</td>
    </tr>
    <tr>
-      <td><a href="./articles/C语言学习笔记二.md">C语言学习笔记2</a></td>
+      <td><a href="./articles/C语言学习笔记二.md">C语言学习笔记2-控制语句</a></td>
       <td>✅</td>
    </tr>
    <tr>
-      <td><a href="./articles/C语言学习笔记三.md">C语言学习笔记3</a></td>
+      <td><a href="./articles/C语言学习笔记三.md">C语言学习笔记3-指针</a></td>
       <td>✅</td>
    </tr>
    <tr>
-      <td><a href="./articles/C语言学习笔记四.md">C语言学习笔记4</a></td>
+      <td><a href="./articles/C语言学习笔记四.md">C语言学习笔记4-结构体</a></td>
       <td>✅</td>
    </tr>
    <tr>
-      <td><a href="./articles/2014-6-21-C语言学习笔记五.md">C语言学习笔记5</a></td>
+      <td><a href="./articles/2014-6-21-C语言学习笔记五.md">C语言学习笔记5-宏定义</a></td>
       <td>✅</td>
    </tr>
    <tr>

@@ -22,7 +22,7 @@ Anyway~~现在就用 `GitHub` 啦！
 | [iOS遇到的开发问题汇总](./articles/2020-9-2-iOS问题汇总.md)  |
 | [视频概念整理](./articles/2020-07-22-视频概念整理.md)        |
 | [iOS 单元测试](./articles/2020-11-13-iOS单元测试.md)         |
-| [AVFoundation 边下边播](./articles/2020-12-24-AVFoundation边下边播.md) |
+| [AVPlayer 边下边播](./articles/2020-12-24-AVPlayer边下边播.md) |
 
 
 
@@ -329,7 +329,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
    <tr>
-      <td><a href="./articles/2020-12-24-AVFoundation边下边播.md">AVFoundation 边下边播</a></td>
+      <td><a href="./articles/2020-12-24-AVPlayer边下边播.md">AVPlayer 边下边播</a></td>
       <td>✅</td>
    </tr>
    <tr>

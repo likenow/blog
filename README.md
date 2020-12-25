@@ -22,7 +22,7 @@ Anyway~~现在就用 `GitHub` 啦！
 | [iOS遇到的开发问题汇总](./articles/2020-9-2-iOS问题汇总.md)  |
 | [视频概念整理](./articles/2020-07-22-视频概念整理.md)        |
 | [iOS 单元测试](./articles/2020-11-13-iOS单元测试.md)         |
-| [OC中的self和super关键字](./articles/2020-11-10-OC中的self和super关键字.md) |
+| [AVFoundation 边下边播](./articles/2020-12-24-AVFoundation边下边播.md) |
 
 
 
@@ -320,12 +320,16 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>备注</td>
    </tr>
    <tr>
-      <td rowspan="3">杂烩</td>
+      <td rowspan="4">杂烩</td>
       <td><a href="./articles/2016-11-27-语音视频信息的app应用初步涉猎.md">语音视频信息的app应用初步涉猎</a></td>
       <td>✅</td>
    </tr>
    <tr>
       <td><a href="./articles/2017-8-5-iOS集成ijkplayer播放视频.md">iOS集成ijkplayer播放视频</a></td>
+      <td>✅</td>
+   </tr>
+   <tr>
+      <td><a href="./articles/2020-12-24-AVFoundation边下边播.md">AVFoundation 边下边播</a></td>
       <td>✅</td>
    </tr>
    <tr>

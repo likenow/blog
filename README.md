@@ -482,10 +482,10 @@ Anyway~~现在就用 `GitHub` 啦！
       <td><a href="./articles/2020-10-9-遍历二叉树1.md">遍历二叉树（一）</a></td>
       <td>✅</td>
    </tr>
-  <!-- <tr>
-      <td><a href="./articles/2020-10-19-遍历二叉树2.md">遍历二叉树（二）</a></td>
+  <tr>
+      <td><a href="./articles/2020-10-12-遍历二叉树2.md">遍历二叉树（二）</a></td>
       <td>✅</td>
-   </tr> -->
+   </tr>
 </table>
 
 

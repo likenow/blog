@@ -157,3 +157,11 @@ open "${SRCROOT}/Products"
 - 先 `clean` 再 `build`
 - 拷贝 `cp -r` 这步不能漏
 - `lipo` 创建通用库
+
+
+---
+
+2020.12.30
+> 问题描述：打包出来的 Framework 集成到工程以后，build 报 `xxx.h file note found` 错误！
+> 先后检查了 `Header Search Paths` 和 `User Header Search Paths` 都没有什么问题。
+> 最后在 `Framework Search Paths` 中增加了 `xx/Pods/**` 然后编译通过了。

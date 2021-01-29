@@ -214,7 +214,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
    <tr>
-      <td rowspan="7">工程化</td>
+      <td rowspan="8">工程化</td>
       <td><a href="./articles/2016-8-27-Cocoapods搭建OC私repo.md">Cocoapods搭建OC私repo</a></td>
       <td>✅</td>
    </tr>
@@ -242,6 +242,10 @@ Anyway~~现在就用 `GitHub` 啦！
       <td><a href="./articles/2020-12-7-Cocoapods使用总结1.md">Cocoapods使用总结（一）</a></td>
       <td>✅</td>
    </tr>
+  <tr>
+  		<td><a href="./articles/2021-1-26-GitWorktree.md">Git worktree</a></td>
+    	<td>✅</td>
+  </tr>
    <tr>
       <td rowspan="2">Swift</td>
       <td><a href="./articles/2017-1-2-Swift学习实践.md">Swift学习实践</a></td>

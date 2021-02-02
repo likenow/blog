@@ -114,6 +114,14 @@ $(inherited) "$(SRCROOT)/xxxx" "$(SRCROOT)/xx"
 
 
 
+### “Header Search Paths” vs. “User Header Search Paths” in Xcode?
+
+> Use the `*User Header Search Paths*` for paths you want searched for `#include "..."` and use the `*Header Search Paths*` for `#include <...>`. Of course, if you check the option to` *Always Search User Paths*`, then `#include <...>` will also work for the user paths.
+
+> `< >` is for frameworks -- `.a` and `.frameworks` "libraries" -- and it doesn't matter if it's a system framework, one of your own or a 3rd party (like Boost.) `" "` is for project headers -- .h files that are part of the set of files being compiled. Hope that helps clarify. 
+
+
+
 ## $(inherited)
 
 > [What is $(inherited) in Xcode's search path settings?](https://stackoverflow.com/questions/15343122/what-is-inherited-in-xcodes-search-path-settings)
@@ -327,6 +335,35 @@ xcode 9 带来了不少的变化，其中，构建系统选项出现了 **New Bu
 解决：直接点击Xcode -> Preferences ->找到DerivedData删除即可
 
 
+### Xcode 里 `-ObjC`  
+在 Xcode 的 `Build Settings` ->  `Other Linker Flags` 里面加入`-ObjC` 的作用：它的作用就是将静态库中所有的和对象相关的文件都加载进来。
+
+解释：
+之所以使用该标志，和Objective-C的一个重要特性：类别（category)有关。
+Unix的标准静态库实现和Objective-C的动态特性之间有一些冲突：**Objective-C 没有为每个函数（或者方法）定义链接符号，它只为每个类创建链接符号**。**这样当在一个静态库中使用类别来扩展已有类的时候，链接器不知道如何把类原有的方法和类别中的方法整合起来**，就会导致你调用类别中的方法时，出现`selector not recognized` 错误。
+
+### 使用 `-ObjC` 后
+1. `undefined symbols`，说明工程中没有引入第三方引用的库。
+2. `duplicate symbols`，说明第三方库中的类名和工程中的类名，或其他第三方库中的类名**重名**了。
+
+规避解决：
+1. 避免对系统类加 `category` 这样，别人用到你的库时，不加 `-ObjC` 参数也可以用你的库
+2. 如果库中用到了其它的第三方的源代码，尤其是用的比较普遍的，如 `Reachability`，一定要对这些类重命名，最常见的做法是给类加个**前缀**，以避免别人用你的库时，产生 `duplicate symbols` 的问题。
+
+#### `-all_load`  `-force_load`
+本来这样就可以解决问题了，不过在64位的Mac系统或者iOS系统下，链接器有一个 bug，会导致只包含有类别的静态库无法使用 `-ObjC` 标志来加载文件。变通方法是使用 `-all_load` 或者 `-force_load` 标志，它们的作用都是加载静态库中所有文件，即使没有objc代码。
+- `all_load` 作用于所有的库
+- `-force_load` 后面必须要指定具体的文件。eg. `-force_load $(PROJECT_DIR)/yourframewokname.framework/yourframeworkname`
+
+### The target … overrides the `OTHER_LDFLAGS` build setting defined in `Pods/Pods.xcconfig
+
+> This definitely works most of the time:
+>
+> Go to your target Build Settings -> Other linker flags -> double click . Add `$(inherited)` to a new line.
+>
+> If you have problem with "...target overrides the GCC_PREPROCESSOR_DEFINITIONS build setting defined in..." then you must add $(inherited) to your target Build Settings -> Preprocessor Macros
+
+<img src="../assets/image-20210202143423954.png" alt="image-20210202143423954" style="zoom:50%;" />
 
 
 

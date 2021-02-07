@@ -13,14 +13,14 @@ Anyway~~现在就用 `GitHub` 啦！
 
 ## 最近更新
 
-| 🔥📌文章                                                         |
+| 🔥📌文章                                                       |
 | ------------------------------------------------------------ |
 | [书籍记录](./articles/书籍记录.md)                           |
 | [iOS开发工具XCode的使用与遇到的问题](./articles/2015-9-21-iOS开发工具XCode的使用与遇到的问题.md) |
 | [iOS 适配](./articles/2020-9-2-iOS适配.md)                   |
 | [码页面要点记录](./articles/2020-08-19-码页面要点记录.md)    |
 | [iOS遇到的开发问题汇总](./articles/2020-9-2-iOS问题汇总.md)  |
-| [视频概念整理](./articles/2020-07-22-视频概念整理.md)        |
+| [听了一场后端服务架构技术分享](./articles/2021-02-07-云.md)  |
 | [iOS 单元测试](./articles/2020-11-13-iOS单元测试.md)         |
 | [AVPlayer 边下边播](./articles/2020-12-24-AVPlayer边下边播.md) |
 
@@ -45,10 +45,14 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
    <tr>
-      <td rowspan="5">其它分享</td>
+      <td rowspan="6">其它分享</td>
       <td><a href="./articles/2019-01-13-程序员自装修系列-基础设计.md">程序员自装修系列-基础设计</a></td>
       <td>✅</td>
    </tr>
+  <tr>
+  	<td><a href="./articles/2021-02-07-云.md">听了一场后端服务架构技术分享</a></td>
+    <td>✅</td>
+  </tr>
    <tr>
       <td><a href="./articles/2019-01-19-程序员自装修系列-Part1.md">程序员自装修系列1</a></td>
       <td>✅</td>
@@ -87,6 +91,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
 </table>
+
 
 
 

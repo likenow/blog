@@ -367,7 +367,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
    <tr>
-      <td rowspan="7">Hybrid 系列</td>
+      <td rowspan="8">Hybrid 系列</td>
       <td><a href="./articles/2017-6-11-伪WEEX实践篇.md">伪WEEX实践篇</a></td>
       <td>✅</td>
    </tr>

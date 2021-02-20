@@ -283,7 +283,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
    <tr>
-      <td rowspan="10">杂烩</td>
+      <td rowspan="11">杂烩</td>
       <td><a href="./articles/2018-3-9-iOS扫码功能实现.md">iOS扫码功能实现</a></td>
       <td>✅</td>
    </tr>
@@ -293,6 +293,10 @@ Anyway~~现在就用 `GitHub` 啦！
    </tr>
    <tr>
       <td><a href="./articles/2016-8-7-作为移动应用开发者应该了解APP测试.md">作为移动应用开发者应该了解APP测试</a></td>
+      <td>✅</td>
+   </tr>
+   <tr>
+      <td><a href="./articles/2021-1-31-AB测试.md">AB测试</a></td>
       <td>✅</td>
    </tr>
    <tr>

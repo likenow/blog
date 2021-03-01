@@ -45,7 +45,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
    <tr>
-      <td rowspan="8">其它分享</td>
+      <td rowspan="9">其它分享</td>
       <td><a href="./articles/2019-01-13-程序员自装修系列-基础设计.md">程序员自装修系列-基础设计</a></td>
       <td>✅</td>
    </tr>
@@ -55,6 +55,10 @@ Anyway~~现在就用 `GitHub` 啦！
    </tr>
    <tr>
   	 <td><a href="./articles/2018-12-技术沙龙2.md">2018年技术沙龙part2</a></td>
+    <td>✅</td>
+   </tr>
+   <tr>
+  	 <td><a href="./articles/2018-12-技术沙龙3.md">2018年技术沙龙part3</a></td>
     <td>✅</td>
    </tr>
    <tr>

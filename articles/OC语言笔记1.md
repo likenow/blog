@@ -94,6 +94,8 @@ MyObj *obj2 = [[MyObj alloc] init]; // 返回 MyObj * 类型
 
 - [instancetype](https://nshipster.cn/instancetype/)
 
+- [Would it be beneficial to begin using instancetype instead of id?](https://stackoverflow.com/questions/8972221/would-it-be-beneficial-to-begin-using-instancetype-instead-of-id)
+
 
 
 > 想知道Objective-C接下去会发生什么吗？[请多关注Objective-C最新动向](http://clang.llvm.org/docs/LanguageExtensions.html)。

@@ -26,95 +26,6 @@ Anyway~~现在就用 `GitHub` 啦！
 
 
 
-## 📖 读书、总结与分享
-
-<table>
-   <tr>
-      <td>主题</td>
-      <td>文章</td>
-      <td>备注</td>
-   </tr>
-   <tr>
-      <td>读书总结</td>
-      <td><a href="./articles/书籍记录.md">书籍记录</a></td>
-      <td>🔥🎉📌📍 <font color="red">持续更新中️</font></td>
-   </tr>
-   <tr>
-      <td rowspan="2">个人总结</td>
-      <td><a href="./articles/2018-11-24-杂谈之2018流水账记事.md">2018年流水账记事</a></td>
-      <td>✅</td>
-   </tr>
-   <tr>
-  	 <td><a href="./articles/2021-3-2020年度总结.md">2020年流水账记事</a></td>
-    <td>✅</td>
-   </tr>
-   <tr>
-      <td rowspan="10">其它分享</td>
-      <td><a href="./articles/2019-01-13-程序员自装修系列-基础设计.md">程序员自装修系列-基础设计</a></td>
-      <td>✅</td>
-   </tr>
-   <tr>
-  	 <td><a href="./articles/2019-6-小课堂.md">2019年小课堂</a></td>
-    <td>✅</td>
-   </tr>
-   <tr>
-  	 <td><a href="./articles/2018-12-技术沙龙1.md">2018年技术沙龙part1</a></td>
-    <td>✅</td>
-   </tr>
-   <tr>
-  	 <td><a href="./articles/2018-12-技术沙龙2.md">2018年技术沙龙part2</a></td>
-    <td>✅</td>
-   </tr>
-   <tr>
-  	 <td><a href="./articles/2018-12-技术沙龙3.md">2018年技术沙龙part3</a></td>
-    <td>✅</td>
-   </tr>
-   <tr>
-  	 <td><a href="./articles/2021-02-07-云.md">听了一场后端服务架构技术分享</a></td>
-    <td>✅</td>
-   </tr>
-   <tr>
-      <td><a href="./articles/2019-01-19-程序员自装修系列-Part1.md">程序员自装修系列1</a></td>
-      <td>✅</td>
-   </tr>
-   <tr>
-      <td><a href="./articles/2019-01-20-程序员自装修系列-物联网.md">程序员自装修系列-物联网</a></td>
-      <td>✅</td>
-   </tr>
-   <tr>
-      <td><a href="./articles/2017-12-29-老板讲互联网思维.md">老板讲互联网思维</a></td>
-      <td>✅</td>
-   </tr>
-   <tr>
-      <td><a href="./articles/2015-12-26-记审核加急经历.md">记审核加急经历-2015年</a></td>
-      <td>✅</td>
-   </tr>
-   <tr>
-      <td rowspan="5">工作效率</td>
-      <td><a href="./articles/2016-1-10-Mac外接移动硬盘小tip.md">Mac外接移动硬盘</a></td>
-      <td>✅</td>
-   </tr>
-   <tr>
-      <td><a href="./articles/2015-3-7-Windows操作系统的电脑如何学习OC.md">Windows操作系统的电脑如何学习OC</a></td>
-      <td>✅</td>
-   </tr>
-   <tr>
-      <td><a href="./articles/2015-8-16-使用Charles进行抓包.md">使用Charles进行抓包</a></td>
-      <td>✅</td>
-   </tr>
-   <tr>
-      <td><a href="./articles/2015-9-21-iOS开发工具XCode的使用与遇到的问题.md">iOS开发工具XCode的使用与遇到的问题</a></td>
-      <td>🔥🎉📌📍<font color="red">持续更新中️</font></td>
-   </tr>
-   <tr>
-      <td><a href=".articles/2020-7-21-使用SourceTree.md">使用SourceTree</a></td>
-      <td>✅</td>
-   </tr>
-</table>
-
-
-
-
 ##  iOS
 
 <table>
@@ -623,6 +534,96 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
 </table>
+
+
+## 📖 读书、总结与分享
+
+<table>
+   <tr>
+      <td>主题</td>
+      <td>文章</td>
+      <td>备注</td>
+   </tr>
+   <tr>
+      <td>读书总结</td>
+      <td><a href="./articles/书籍记录.md">书籍记录</a></td>
+      <td>🔥🎉📌📍 <font color="red">持续更新中️</font></td>
+   </tr>
+   <tr>
+      <td rowspan="2">个人总结</td>
+      <td><a href="./articles/2018-11-24-杂谈之2018流水账记事.md">2018年流水账记事</a></td>
+      <td>✅</td>
+   </tr>
+   <tr>
+  	 <td><a href="./articles/2021-3-2020年度总结.md">2020年流水账记事</a></td>
+    <td>✅</td>
+   </tr>
+   <tr>
+      <td rowspan="10">其它分享</td>
+      <td><a href="./articles/2019-01-13-程序员自装修系列-基础设计.md">程序员自装修系列-基础设计</a></td>
+      <td>✅</td>
+   </tr>
+   <tr>
+  	 <td><a href="./articles/2019-6-小课堂.md">2019年小课堂</a></td>
+    <td>✅</td>
+   </tr>
+   <tr>
+  	 <td><a href="./articles/2018-12-技术沙龙1.md">2018年技术沙龙part1</a></td>
+    <td>✅</td>
+   </tr>
+   <tr>
+  	 <td><a href="./articles/2018-12-技术沙龙2.md">2018年技术沙龙part2</a></td>
+    <td>✅</td>
+   </tr>
+   <tr>
+  	 <td><a href="./articles/2018-12-技术沙龙3.md">2018年技术沙龙part3</a></td>
+    <td>✅</td>
+   </tr>
+   <tr>
+  	 <td><a href="./articles/2021-02-07-云.md">听了一场后端服务架构技术分享</a></td>
+    <td>✅</td>
+   </tr>
+   <tr>
+      <td><a href="./articles/2019-01-19-程序员自装修系列-Part1.md">程序员自装修系列1</a></td>
+      <td>✅</td>
+   </tr>
+   <tr>
+      <td><a href="./articles/2019-01-20-程序员自装修系列-物联网.md">程序员自装修系列-物联网</a></td>
+      <td>✅</td>
+   </tr>
+   <tr>
+      <td><a href="./articles/2017-12-29-老板讲互联网思维.md">老板讲互联网思维</a></td>
+      <td>✅</td>
+   </tr>
+   <tr>
+      <td><a href="./articles/2015-12-26-记审核加急经历.md">记审核加急经历-2015年</a></td>
+      <td>✅</td>
+   </tr>
+   <tr>
+      <td rowspan="5">工作效率</td>
+      <td><a href="./articles/2016-1-10-Mac外接移动硬盘小tip.md">Mac外接移动硬盘</a></td>
+      <td>✅</td>
+   </tr>
+   <tr>
+      <td><a href="./articles/2015-3-7-Windows操作系统的电脑如何学习OC.md">Windows操作系统的电脑如何学习OC</a></td>
+      <td>✅</td>
+   </tr>
+   <tr>
+      <td><a href="./articles/2015-8-16-使用Charles进行抓包.md">使用Charles进行抓包</a></td>
+      <td>✅</td>
+   </tr>
+   <tr>
+      <td><a href="./articles/2015-9-21-iOS开发工具XCode的使用与遇到的问题.md">iOS开发工具XCode的使用与遇到的问题</a></td>
+      <td>🔥🎉📌📍<font color="red">持续更新中️</font></td>
+   </tr>
+   <tr>
+      <td><a href=".articles/2020-7-21-使用SourceTree.md">使用SourceTree</a></td>
+      <td>✅</td>
+   </tr>
+</table>
+
+
+
 
 
 

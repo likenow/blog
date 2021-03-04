@@ -40,9 +40,13 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>🔥🎉📌📍 <font color="red">持续更新中️</font></td>
    </tr>
    <tr>
-      <td>个人总结</td>
-      <td><a href="./articles/2018-11-24-杂谈之2018流水账记事.md">个人总结</a></td>
+      <td rowspan="2">个人总结</td>
+      <td><a href="./articles/2018-11-24-杂谈之2018流水账记事.md">2018年流水账记事</a></td>
       <td>✅</td>
+   </tr>
+   <tr>
+  	 <td><a href="./articles/2021-3-2020年度总结.md">2020年流水账记事</a></td>
+    <td>✅</td>
    </tr>
    <tr>
       <td rowspan="10">其它分享</td>

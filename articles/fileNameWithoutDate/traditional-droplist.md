@@ -12,7 +12,7 @@ tags:
 <!--more-->
 
 ## 列表元素
-![](../assets/lbys.png)
+![](../../assets/lbys.png)
 
 ## 制作下拉菜单
 这些列表元素的定义属性不是我们讨论的重点，这里我们以无序列表为例，将通过`<ul>` `<li>`的嵌套实现下拉菜单。
@@ -53,7 +53,7 @@ tags:
         </ul>
     </div>
 
-![](../assets/xlcdstart.png)
+![](../../assets/xlcdstart.png)
 
 ### CSS代码部分
 
@@ -135,9 +135,9 @@ tags:
     }
 
 ### 效果展示
-1. ![](../assets/xlcdxg0.png)
-2. ![](../assets/xlcdxg1.png) 
-3. ![](../assets/xlcdxg2.png)  
+1. ![](../../assets/xlcdxg0.png)
+2. ![](../../assets/xlcdxg1.png) 
+3. ![](../../assets/xlcdxg2.png)  
 
 配色啥的都不专业，关键看一下下拉菜单效果。由`<ul>` `<li>`嵌套，通过相对定位与绝对定位实现合适的布局。改代码实现下拉菜单向下弹出，通过修改`<top>` `<bottom>`的值可以调整下拉菜单向上弹出。
 
@@ -152,9 +152,9 @@ tags:
     }
 
 ### 修改后菜单向上弹出的效果 
-1. ![](../assets/xlcdxgxs0.png)
-2. ![](../assets/xlcdxgxs1.png)
-3. ![](../assets/xlcdxgxs2.png)   
+1. ![](../../assets/xlcdxgxs0.png)
+2. ![](../../assets/xlcdxgxs1.png)
+3. ![](../../assets/xlcdxgxs2.png)   
 
 ### 注意
 IE6仅支持`<a>`的`:hover`,并不支持诸如`li:hover`，所以在IE6下要修改一下，本篇暂不分析。

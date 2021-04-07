@@ -43,8 +43,8 @@ tags:
     }
 
 ### 如图分析
-1. ![](../assets/zhgai1.png)
-2. ![](../assets/zhgai2.png)
+1. ![](../../assets/zhgai1.png)
+2. ![](../../assets/zhgai2.png)
 
 效果还是很明显的嘛！首先，遮罩层用了半透明图片，当然这方面对于现代浏览器来说`opacity`也是不错的选择哦！其次`position: fixed;`对于IE6不支持该条规则的情况，我只能说：“IE6不如自挂东南枝！”。如果您确实相兼容IE6可以留言，我一定会尽快解答。
 

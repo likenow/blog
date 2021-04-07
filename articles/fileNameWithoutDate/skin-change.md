@@ -104,7 +104,7 @@ tags:
     }    
 
 #### 效果如图
-![](../assets/huanfugjl.jpg)
+![](../../assets/huanfugjl.jpg)
 
 ### 换肤功能实现
 实现换肤功能主要是实现单击切换按钮时的切换样式文件功能和 Cookie 记录皮肤功能。

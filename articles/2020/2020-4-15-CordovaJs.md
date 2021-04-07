@@ -153,9 +153,9 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
 
 > 借助翻译软件查到的结果：
 
-![image-20200429173755383](../assets/image-20200429173755383.png)
+![image-20200429173755383](../../assets/image-20200429173755383.png)
 
-![image-20200429173825858](../assets/image-20200429173825858.png)
+![image-20200429173825858](../../assets/image-20200429173825858.png)
 
 
 

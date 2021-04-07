@@ -69,7 +69,7 @@ jQuery API Documentation 这样描述`.load()`方法：
     </html>
 
 ### 查看Demo截图
-![](../assets/loaderror.jpg)
+![](../../assets/loaderror.jpg)
 
 ## jQuery实现定时网页局部刷新
 定时局部刷新用到jQuery里面的setInterval方法，setInterval方法两个参数，第一个是设置定时执行的函数名，第二个是时间。如下代码所示，设置每隔10000毫秒定时刷新。这里提前打个预防针：如果你在jQuery中使用setInterval时，直接在ready中调用其他方法，会提示缺少对象的错误，我这里使用setInterval方法时内置了一个function。写成：

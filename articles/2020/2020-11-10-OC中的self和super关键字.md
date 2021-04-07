@@ -176,7 +176,7 @@ Apple 官方文档 [Working with Objects](https://developer.apple.com/library/ar
 >
 > `self` 是一个 `OCTChild` 的实例对象，那么 `super` 是这个对象的父类。
 >
-> <img src="../assets/self-super-1.png" style="zoom:50%;" />
+> <img src="../../assets/self-super-1.png" style="zoom:50%;" />
 >
 > 看上去没啥问题，那么我们现在如果加一个 `OCTGrandFather` 类，使 `OCTFather` 继承这个类，那结果呢？
 >
@@ -184,7 +184,7 @@ Apple 官方文档 [Working with Objects](https://developer.apple.com/library/ar
 >
 > 但实际上呢？
 >
-> <img src="../assets/self-super-2.png" style="zoom:50%;" />
+> <img src="../../assets/self-super-2.png" style="zoom:50%;" />
 >
 > 如图所示，一开始调用没啥问题，刚才我们也验证过了，但是当 `OCTFather` 调用 `super` 方法的时候，由于是运行时确定 `super` 为 “`self` 的父类”，那么它就又会回到 `self` 所表示的 `OCTChild` 的实例对象这里来，然后重新向上找父类。
 >

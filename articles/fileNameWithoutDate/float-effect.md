@@ -65,12 +65,12 @@ CSS的FLOAT属性到底是个什么东东？以下是个人对FLOAT属性的神�
 ​    }
 
 ### 分析如图
-![](../assets/fudongbuju.png)
+![](../../assets/fudongbuju.png)
 
 ## 浮动带来的影响
 上例展现了一个简单的浮动布局，你可能已经注意到了，我对`article`
 应用了`overflow: hidden;`，它产生了怎样的效应？看一下去掉这条属性后的表现：
-![](../assets/fudongtx.png)
+![](../../assets/fudongtx.png)
 我擦嘞，这是怎么了？好吧我承认自己故作震惊。没错，这就是浮动给人间造成的危害。毕竟神力本不是人家所有的，所以人们也要承担一定的风险：父盒子高度**塌陷**，布局崩盘这真是令人不爽啊。
 
 ## 解决浮动带来的负面影响
@@ -97,8 +97,8 @@ CSS的FLOAT属性到底是个什么东东？以下是个人对FLOAT属性的神�
 这里解决大部分的浮动造成的影响是没有问题的,列举几个不合适的地方：
 1. 如果使用了`overflow: hidden;`的元素要定位到外面来，比如说要`position: absolute;`就泛滥了。
 2. 对CSS3的box-shadow属性来说，它会裁剪阴影。 
-    1. ![](../assets/ovh1.png)
-    2. ![](../assets/ovh2.png)  
+    1. ![](../../assets/ovh1.png)
+    2. ![](../../assets/ovh2.png)  
 
 ### 浮动父元素      
 

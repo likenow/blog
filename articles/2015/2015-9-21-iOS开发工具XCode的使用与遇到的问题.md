@@ -16,7 +16,7 @@ categories:
 
 解决：
 
-![image-20200924134121709](../assets/image-20200924134121709.png)
+![image-20200924134121709](../../assets/image-20200924134121709.png)
 
 ### Xcode 12, building for iOS Simulator, but linking in object file built for iOS, for architecture arm64
 
@@ -24,11 +24,11 @@ categories:
 
 > I've seen quite a bit of weird behavior with frameworks, I think due to changes to the simulators to support Apple silicon. My temporary workaround is, in my app/extension targets, to add "arm64" to the Excluded Architectures build setting when building for the simulator (as your preview appears to be trying to do), and setting "Build Active Architecture Only" to No for all schemes. Might be worth a try.
 
-<img src="../assets/image-20200907112056864.png" alt="image-20200907112056864" style="zoom:80%;" />
+<img src="../../assets/image-20200907112056864.png" alt="image-20200907112056864" style="zoom:80%;" />
 
 
 
-<img src="../assets/image-20200907112237568.png" alt="image-20200907112237568" style="zoom:80%;" />
+<img src="../../assets/image-20200907112237568.png" alt="image-20200907112237568" style="zoom:80%;" />
 
 解决：
 
@@ -71,7 +71,7 @@ Equivalent to $(PROJECT_DIR)/$(PROJECT_NAME).xcodeproj
 > - Xcode 8.3 Build Settings reference
 > - Xcode Build System Guide (Retired 2016-09-29)
 
-![](../assets/2015-xcode-1.png)
+![](../../assets/2015-xcode-1.png)
 
 
 
@@ -132,7 +132,7 @@ $(inherited) "$(SRCROOT)/xxxx" "$(SRCROOT)/xx"
 
 
 
-![image-20200916135737065](../assets/image-20200916135737065.png)
+![image-20200916135737065](../../assets/image-20200916135737065.png)
 
 > You can see the flow of `inherited` from right to left
 >
@@ -230,7 +230,7 @@ LLVM的编译工作原理是前端负责把项目程序源代码翻译成 Bitcod
 
 xcode 9 带来了不少的变化，其中，构建系统选项出现了 **New Build System (Preview) **  选项
 
-![image-20200928161248046](../assets/image-20200928161248046.png)
+![image-20200928161248046](../../assets/image-20200928161248046.png)
 
 
 
@@ -300,19 +300,19 @@ xcode 9 带来了不少的变化，其中，构建系统选项出现了 **New Bu
 将你对应缺少的 Disk Image 版本放入
 > /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/DeviceSupport
 
-![](../assets/2020-xcode-1.png)
+![](../../assets/2020-xcode-1.png)
 
 
 
 ### Copy items if needed
 
-![image-20200928160435050](../assets/image-20200928160435050.png)
+![image-20200928160435050](../../assets/image-20200928160435050.png)
 
 如图，在xcode会产生**蓝色文件夹（folder），其一般作为资源文件夹使用，与黄色文件夹的主要区别是不参与编译**，所以说如果你在这些文件夹下编写的逻辑代码是不参与编译的，其他文件也不能直接引用它们，若引用其中文件需要全路径。
 
 
 
-![image-20200928160620278](../assets/image-20200928160620278.png)
+![image-20200928160620278](../../assets/image-20200928160620278.png)
 
 如图，在xcode下**黄色文件夹（group）是逻辑文件夹**，主要是为了逻辑上的分组，如果手动创建（通过New Group选项）group并不会真正创建一个文件夹文件，该文件夹下的文件则会散乱的存放在工程根目录下。当然我们通常会让Xcode中的文件树与实际工程文件中的文件树保持一致。
 
@@ -328,7 +328,7 @@ xcode 9 带来了不少的变化，其中，构建系统选项出现了 **New Bu
 
 ### The file “XXX” couldn’t be opened because you don’t have permission to view it.
 
-![image-20200928162904934](../assets/image-20200928162904934.png)
+![image-20200928162904934](../../assets/image-20200928162904934.png)
 
 
 
@@ -363,7 +363,7 @@ Unix的标准静态库实现和Objective-C的动态特性之间有一些冲突�
 >
 > If you have problem with "...target overrides the GCC_PREPROCESSOR_DEFINITIONS build setting defined in..." then you must add $(inherited) to your target Build Settings -> Preprocessor Macros
 
-<img src="../assets/image-20210202143423954.png" alt="image-20210202143423954" style="zoom:50%;" />
+<img src="../../assets/image-20210202143423954.png" alt="image-20210202143423954" style="zoom:50%;" />
 
 
 

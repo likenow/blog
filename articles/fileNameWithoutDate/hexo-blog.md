@@ -8,7 +8,7 @@ tags:
 ---
 ## 两类 Github Page 搞清楚
 
-![](../assets/github-pages-type.png)
+![](../../assets/github-pages-type.png)
 
 人家[GitHub Pages](https://pages.github.com/)说的很清楚，只怪我自己太晕，当时就因为没有搞清楚这两种类型，浪费了些时间。硬伤！要命啊······
 <!--more-->
@@ -17,9 +17,9 @@ tags:
 ### 两个文件
 
 1. 对整站的配置：
-![](../assets/config1.png)
+![](../../assets/config1.png)
 2. 对主题的配置：
-![](../assets/config2.png)
+![](../../assets/config2.png)
 
 上述连个文件要搞清楚，不要犯浑，一开始的时候我对这两个文件搞混了一次，浪费了些时间，希望大家注意。至于如何配置以及各个可配置项的用处大家可以到[Configuration](http://hexo.io/docs/configuration.html)学习配置。
 
@@ -29,10 +29,10 @@ tags:
 
 之前用的好好的，突然遇到这个问题后，我有点儿搞不懂了，稍微冷静了一会儿后，突然想到，我上午安装软件估计是把环境变量搞乱了，于是
 
-1. ![](../assets/sysdm-cpl.png)
-2. ![](../assets/xtsx-gj.png)
-3. ![](../assets/environment-variable.png)
-4. ![](../assets/edit-path.png)
+1. ![](../../assets/sysdm-cpl.png)
+2. ![](../../assets/xtsx-gj.png)
+3. ![](../../assets/environment-variable.png)
+4. ![](../../assets/edit-path.png)
 
 修改了环境变量后，然后就恢复了。如果你也遇到了这样的问题可以先排查一下是不是因为环境变量的改变造成的。
 
@@ -50,7 +50,7 @@ Github 的版本库通常建议同时附上 README.md 说明文件，但是 hexo
 
 在浏览到[How do I add a README.md file into the root directory of the generated blog by HEXO? ](https://github.com/hexojs/hexo/issues/786)看到了处理方案：利用主题的 source 目录，也就是 themes/themes-name/source 。因为这个文件夹里面的所有文件都会被复制到网站的根目录中去，也就是说，如果在里面放上 README.md ，就可以正常的存在于网站的主目录了。于是尝试了一下，但是 README.md 文件还是被解析成了html文件：
 
-![](../assets/readme-render.png)
+![](../../assets/readme-render.png)
 
 既然 md 文件被解析成 html 文件无可避免，于是我就把 README.md 改成了 README.mdown ，终于问题算是解决了。
 
@@ -84,7 +84,7 @@ Github 的版本库通常建议同时附上 README.md 说明文件，但是 hexo
 
 原本是希望，文章可在这两个同级分类下，但是结果却是：
 
-![](../assets/categories.png)
+![](../../assets/categories.png)
 
 所以，我看到其他博文里有提到说 categories 可添加多个分类，好像不太合理，当然也有可能是对静态博客系统做了自己的定制吧。
 

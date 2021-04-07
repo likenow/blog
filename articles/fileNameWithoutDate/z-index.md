@@ -58,7 +58,7 @@ Z-INDEX属于那种给点儿阳光就灿烂的属性，在`position: relative;``
 
 ### 分析如图。    
 在不使用Z-INDEX的情况下层级关系表达的也是不错的
-![](../assets/withoutz-index.png)
+![](../../assets/withoutz-index.png)
 
 ## 使用Z-INDEX表达层级关系
 使用Z-INDEX表达层级关系，为了使其在最上层，对于其数值的设置为：`z-index: 9999;`我表示反对。有必要把数字搞得这么大吗？真是逗啊！看一下我是怎么用的：
@@ -104,7 +104,7 @@ Z-INDEX属于那种给点儿阳光就灿烂的属性，在`position: relative;``
 
 ### 分析如图
 使用Z-INDEX之后，给`.first`赋值为3，然后他就展现在最前面了。这里我对它的值仅用到了1,2,3这样连幼儿园的小朋友都可以数的阿拉伯数字。在使用Z-INDEX的情况下层级关系表达的也是不错的。    
-![](../assets/withz-index.png)
+![](../../assets/withz-index.png)
 
 ## 复杂情况举例
 上述讲述的都是中规中矩的应用，当然还有比较复杂的应用。这里主要提一下应用Z-INDEX上下文的层级优先关系，即其父元素的层级优先关系。有时候，不能光看z-index: 999999;值有多大，还要看父元素的层级。看下面的例子：
@@ -161,15 +161,15 @@ Z-INDEX属于那种给点儿阳光就灿烂的属性，在`position: relative;``
 
 ### 分析如图
 1. cover设置`z-index: 1;`效果如下：    
-![](../assets/cover1.png)
+![](../../assets/cover1.png)
 2. cover设置`z-index: 2;`效果如下： 
-![](../assets/cover2.png)
+![](../../assets/cover2.png)
 
 以上，我们清楚地看到，当`.cover`的层级比`.container`大的时候，`.container`整个就被`.cover`遮住，即使`.first`的z-index属性值为3也于事无补。看来韩信再牛，在项羽麾下是没有出头之日啊！
 
 ## Z-INDEX负值工作原理
 ### 比较拙劣的手工演示图
-![](../assets/-z-indexs.jpg)
+![](../../assets/-z-indexs.jpg)
 
 正如演示图所示，当给绝对定位的wrapper（设定了Z-INDEX）的子元素layer2绝对定位并设置`z-index: -1;`后，该子元素会显示在wrapper的其他子元素之下；而给绝对定位的wrapper（设未定Z-INDEX）的子元素layer2绝对定位并设置`z-index: -1;`后，它会显示在wrapper之下。
 根据个人理解：当绝对定位的父元素在设置了Z-INDEX之后其绝对定位的子元素的Z-INDEX为负值时，会显示在该父元素的其他子元素之下；当绝对定位的父元素在没有设置Z-INDEX，其绝对定位的子元素的Z-INDEX为负值时，会显示在该父元素之下。总算把Z-INDEX负值的工作原理说明白了。如果你还不太明白没关系继续看下文，我将通过实例进一步探索Z-INDEX负值。
@@ -232,7 +232,7 @@ Z-INDEX属于那种给点儿阳光就灿烂的属性，在`position: relative;``
 
 ### 分析如图
 通过伪元素`:before` `:after`在box前后布置阴影，CSS3的`box-shadow`属性做出阴影，然后通过transform属性变换阴影的角度，最后通过`z-index: -1;`使其在box之下显示。
-![](../assets/yinyingxg.jpg)
+![](../../assets/yinyingxg.jpg)
 
 ## 使用Z-INDEX制作图像叠加效果
 ### 用例代码-HTML部分
@@ -298,7 +298,7 @@ Z-INDEX属于那种给点儿阳光就灿烂的属性，在`position: relative;``
 
 ### 分析如图
 图片叠加实现影集一样的效果，其中叠加的图片通过伪元素`:before` `:after`在stacks的前后添加，通过transform完成角度的旋转，关键是通过`z-index`负值实现叠加的层次效果。
-![](../assets/diejiatpxg.jpg)
+![](../../assets/diejiatpxg.jpg)
 
 
 ## 结语

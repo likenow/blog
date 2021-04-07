@@ -1,10 +1,10 @@
 ## XCODEBUILD 打包Framework
 
-<img src="../assets/image-20201209143223140.png" alt="image-20201209143223140" style="zoom:50%;" />
+<img src="../../assets/image-20201209143223140.png" alt="image-20201209143223140" style="zoom:50%;" />
 
 上图是在 Terminal 输入: `man xcodebuild` 看到的手册。`xcodebuild --help` 可以获得更详细的帮助：
 
-<img src="../assets/image-20201209143551395.png" alt="image-20201209143551395" style="zoom:50%;" />
+<img src="../../assets/image-20201209143551395.png" alt="image-20201209143551395" style="zoom:50%;" />
 
 ### XCODEBUILD
 

@@ -13,7 +13,7 @@ tags:
 
 ## 解决办法
 在此之前，我们不妨看一下浏览器对`max-width`的支持情况：
-![](../assets/mwzc.png)
+![](../../assets/mwzc.png)
 
 ## CSS解决方式
 这里用expression语句

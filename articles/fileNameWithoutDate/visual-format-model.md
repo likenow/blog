@@ -37,9 +37,9 @@ tags:
     </div>
 
 ### 分析如图：    
-1. ![](../assets/boxes1.png)
-2. ![](../assets/boxes2.png)
-3. ![](../assets/boxes3.png)
+1. ![](../../assets/boxes1.png)
+2. ![](../../assets/boxes2.png)
+3. ![](../../assets/boxes3.png)
 
 ## display属性
 1. `block`该属性值导致一个元素生成一个块级盒子。
@@ -80,9 +80,9 @@ tags:
     }
 
  #### 如图分析
- 1.  ![](../assets/div-box.png)
- 2.  ![](../assets/inner-div-box.png)
- 3.  ![](../assets/p-box.png)
+ 1.  ![](../../assets/div-box.png)
+ 2.  ![](../../assets/inner-div-box.png)
+ 3.  ![](../../assets/p-box.png)
 
 
 ### 浮动方案
@@ -114,9 +114,9 @@ tags:
     }
 
  #### 如图分析
- 1.  ![](../assets/div-box.png)
- 2.  ![](../assets/inner-div-box.png)
- 3.  ![](../assets/p-box.png)
+ 1.  ![](../../assets/div-box.png)
+ 2.  ![](../../assets/inner-div-box.png)
+ 3.  ![](../../assets/p-box.png)
 
 ### 绝对定位方案
 决定对位方式使该盒子完全从常规流中脱离出来。它又分为，固定定位（fixed）、相对定位（relative）、绝对定位（absolute）三种。
@@ -165,9 +165,9 @@ tags:
 
 ##### 如图分析
 1. Absolute下的效果
-![](../assets/abswithoutrel.png)
+![](../../assets/abswithoutrel.png)
 2. Relative下的Absolute的效果
-![](../assets/abswithrel.png)
+![](../../assets/abswithrel.png)
 
 
 ## 参考文献

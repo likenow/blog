@@ -35,8 +35,8 @@ ps:这段代码兼容 IE6-9 和 Webkit 浏览器(Chrome 18+,Safari 6.0+,and Oper
     }
 
 ### 效果展示
-1. ![](../assets/kdsk.jpg)
-2. ![](../assets/graykdsk.jpg)
+1. ![](../../assets/kdsk.jpg)
+2. ![](../../assets/graykdsk.jpg)
 
 ## 第二种方法 javascript
 通过JavaScript可以兼容绝大多数开启JavaScript的浏览器，以下这段代码来自[Ajax Blender](http://www.ajaxblender.com/howto-convert-image-to-grayscale-using-javascript.html)

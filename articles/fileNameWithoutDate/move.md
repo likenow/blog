@@ -47,7 +47,7 @@ tags:
 - DNS 设置
     - 我开始用的是[DNSPOD 中国版](https://www.dnspod.cn/)当我添加一条 A 记录使其指向：`192.30.252.153` `192.30.252.154`中的一个时出现了莫名的错误，于是我转而使用[DNSPOD 国际版](https://www.dnspod.com/)算是解决了。
     - 关于 DNS 的参数设置在使用 DNSPOD 时都会有说明，这里不再浪费口舌，值得主义的一个小技巧是：Time To Live（TTL），缓存的生存时间。指地方dns缓存您域名记录信息的时间，缓存失效后会再次到DNSPod获取记录值。为了快速生效可置为：60s，待解析生效后再改回正常值：600s。
-    - 最终效果：![](../assets/dnsseting.png)
+    - 最终效果：![](../../assets/dnsseting.png)
 - 当然，到这里只是意味着,如果你的域名解析到了 DNSPod ，它会帮你转到 Github 但是它为什么回到 DNSPod 呢?这就需要我们在 Godaddy 那也做一些设置了
     - 因为用了DNSPOD 国际版所以修改的时候也要参照对应的修改教程[How can the domain name registered in Godaddy use DNSPod?](https://www.dnspod.com/support/index/fid/119)
 - 最后，稍作等待然后就可以用你自己的域名访问你的博客了

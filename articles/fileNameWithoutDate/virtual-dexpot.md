@@ -13,38 +13,38 @@ tags:
 
 ## 准备
 首先，我们要下载Dexpot，这当然不用我说了吧。不过如果你觉得网上资源太杂乱我这里直接给您个官网链接吧[Dexpot官网下载](http://dexpot.de/?id=download)，这里您可以找到想要的资源。下载的时候有这样几个版本：
-![](../assets/banben.png)
+![](../../assets/banben.png)
 这里讲的是WIN7下的使用，自然是选择Dexpot 1.6版本。ps：有便携版（Portable），我这里选择的是安装版。安装比较简单，按照提示不到一分钟就可以装好,这里不再赘述。如果遇到问题可以留言。我会尽快帮助您解决问题。
 
 ## 使用
 万事俱备只欠东风，现在开始使用。为了更好的使用，通常我们会根据自己的喜好配置一下。
 ### 使用前的设置
 1. 鼠标右键单击Dexpot的系统托盘图标，会出现如图：
-![](../assets/yjdexpot.png)
+![](../../assets/yjdexpot.png)
 2. 当然该Dexpot托盘菜单中桌面名称都是有设置的，接下来就要将这一点。为了提高识别度我为每个桌面起了一个名字，你也可以来设置一下，还是右击，然后选择配置桌面，如下：
-![](../assets/peizhi.png)
+![](../../assets/peizhi.png)
 3. 
-![](../assets/mc.png)
+![](../../assets/mc.png)
 4. 背景选项
-![](../assets/bj.png)
+![](../../assets/bj.png)
 5. 工具选项
-![](../assets/gj.png)
+![](../../assets/gj.png)
 6. 启动选项
-![](../assets/qd.png)
+![](../../assets/qd.png)
 7. 其次，让我们看一看设置选项。选择设置选项后，弹出如下窗口： 
-![](../assets/sz.png)
+![](../../assets/sz.png)
 8. 其左侧是六个选项，分别为常规、外观、部件、控制、切换桌面以及插件和附件，常规如下：
-![](../assets/cg.png)
+![](../../assets/cg.png)
 9. 外观
-![](../assets/wg.png)
+![](../../assets/wg.png)
 10. 部件
-![](../assets/bujian.png)
+![](../../assets/bujian.png)
 11. 控制
-![](../assets/kz.png)
+![](../../assets/kz.png)
 12. 切换桌面
-![](../assets/qhzm.png)
+![](../../assets/qhzm.png)
 13. 插件和附件
-![](../assets/cjfj.png)
+![](../../assets/cjfj.png)
 
 以上六个选项，根据自己的喜好设置，自己舒服最好，像常规选项里面的桌面数、语言、启动；外观选项里面的图盘图标；切换桌面选项里面的桌面元素、桌面名称等根据自己的习惯来就好。值得注意的是：部件选项中的设置比桌面管理器、桌面预览还是比较有趣的；插件和附件中选择需要的效果就好，比如DexControl插件就是来控制虚拟桌面图标的。
 

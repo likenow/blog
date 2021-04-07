@@ -148,7 +148,7 @@ for (int i = 0; i < numberOfEntries; i++) {
 
 `NSMutableSet` 有几个很强大的方法，例如 `intersectSet:`，`minusSet:` 和 `unionSet:`。
 
-![](../assets/setMainpulation.png)
+![](../../assets/setMainpulation.png)
 
 
 

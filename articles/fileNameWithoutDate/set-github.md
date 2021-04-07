@@ -17,17 +17,17 @@ tags:
 
 ### 问题如图
 
-![](../assets/bad-file-num.png)
+![](../../assets/bad-file-num.png)
 
 ### 解决问题
 
 我到[Error: Bad file number](https://help.github.com/articles/error-bad-file-number/)找到了解决的办法，我尝试 GitHub Help提供的方案：
 
 - Use HTTPS ，它干脆避免了 SSH 
-![](../assets/use-https.png)
+![](../../assets/use-https.png)
 - Test from a different network ，如果可以连到另一个没有防火墙的网络不失为一种方法，那我只有“呵呵”了
 - Using SSH over the HTTPS port ，如果使用 HTTPS 行不通，而且你的防火墙管理员拒绝允许 SSH 连接，你可以尝试其他端口去连接 SSH ，这里用的是 443 端口，而且也确实可行：
-![](../assets/443port.png)
+![](../../assets/443port.png)
 
 那么我用的解决方案就是在`.ssh`文件下创建了`config`文件放到 rsa 相同目录下。`config`配置如下：
 
@@ -38,7 +38,7 @@ tags:
     Port 443
 
 成功解决如下，已经可以成功连接GitHub了：
-![](../assets/ssh-success.png)
+![](../../assets/ssh-success.png)
 
 ## 常见问题
 

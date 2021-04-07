@@ -56,12 +56,12 @@ tags:
     浏览器不会重新向服务器请求scrollto.html
 
 
-1. ![](../assets/bushuaxinyemian1.jpg)
-2. ![](../assets/bushuaxinyemian2.jpg)
+1. ![](../../assets/bushuaxinyemian1.jpg)
+2. ![](../../assets/bushuaxinyemian2.jpg)
 
 虽然改变#后面的部分不会导致页面重载，但是会改变#会改变浏览器的访问历史。每一次改变#后的部分，都会在浏览器的访问历史中增加一个记录，使用”后退”按钮，就可以回到上一个位置。这对于**ajax应用程序**特别有用，可以用不同的#值，表示不同的访问状态，然后向用户给出可以访问某个状态的链接。值得注意的是，上述规则对IE 6和IE 7不成立，它们不会因为#的改变而增加历史记录。ps:由于本篇重点在于锚点，这方面的知识不做剖析。
 从上述分析，不难看出锚点的触发正是通过浏览器URL地址的#触发的而不是点击a触发。如下图解：
-![](../assets/maodianchufa.jpg)
+![](../../assets/maodianchufa.jpg)
 
 ## 锚点跳转的条件
 
@@ -142,7 +142,7 @@ tags:
     </body>
 
 ### 效果展示
-![](../assets/scrolltomenu.jpg)
+![](../../assets/scrolltomenu.jpg)
 
 ### jQ 实现跳转功能
 

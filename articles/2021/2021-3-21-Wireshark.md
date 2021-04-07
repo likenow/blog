@@ -10,7 +10,7 @@ rvictl -s 设备号
 
 结果，我运行命令的时候，报错了如图：
 
-<img src="../assets/image-20210401152645479.png" alt="image-20210401152645479" style="zoom:50%;" />
+<img src="../../assets/image-20210401152645479.png" alt="image-20210401152645479" style="zoom:50%;" />
 
 命令找不到，然后，我在`.bash_profile` 文件中增加了 `rvictl` 的路径
 
@@ -20,23 +20,23 @@ export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin
 
 然后 `source .bash_profile` 即可，如图
 
-<img src="../assets/image-20210401152850561.png" alt="image-20210401152850561" style="zoom:50%;" />
+<img src="../../assets/image-20210401152850561.png" alt="image-20210401152850561" style="zoom:50%;" />
 
 现在，建立映射关系，如图：
 
-<img src="../assets/image-20210401152540143.png" alt="image-20210401152540143" style="zoom:50%;" />
+<img src="../../assets/image-20210401152540143.png" alt="image-20210401152540143" style="zoom:50%;" />
 
 
 
 现在，打开  Wireshark 欢迎界面如下图，Wireshark在第一个界面就把当前系统所包含的网卡列出来了，直接点击任何一项就可以开始监听通过该网卡的所有网络流量。ps. 高亮处是我电脑连接的 iPhone 手机的网卡
 
-<img src="../assets/WX20210401-103220@2x.png" alt="image-20210401152645479" style="zoom:50%;" />
+<img src="../../assets/WX20210401-103220@2x.png" alt="image-20210401152645479" style="zoom:50%;" />
 
 双击进入后如图：
 
-<img src="../assets/image-20210401154124764.png" alt="image-20210401154124764" style="zoom:50%;" />
+<img src="../../assets/image-20210401154124764.png" alt="image-20210401154124764" style="zoom:50%;" />
 
-<img src="../assets/image-20210401155150319.png" alt="image-20210401155150319" style="zoom:50%;" />
+<img src="../../assets/image-20210401155150319.png" alt="image-20210401155150319" style="zoom:50%;" />
 
 此时，启动iPhone上的任意App，只要有网络流量产生，对应的网络包都会在Wireshark上述的列表中展示出来。
 
@@ -46,15 +46,15 @@ export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin
 
 - 标号为 2 是历史流量包列表展示界面，这里展示的是从抓包开始，所有通过我们iPhone设备的流量。列表界面不同的包有不同的颜色，Wireshark通过颜色来区分包的类型，对于特定场景快速识别目标流量非常有用。
 
-  <img src="../assets/WX20210401-103337@2x.png" alt="image-20210401152645479" style="zoom:50%;" />
+  <img src="../../assets/WX20210401-103337@2x.png" alt="image-20210401152645479" style="zoom:50%;" />
 
 - 标号为 3 是单个包的详细信息展示面板，我们在第二部分选中的网络包在这一部分会将其结构以可阅读的文本形式展示出来，要正确阅读这一部分的信息需要对 TCP/IP 协议有一定的掌握。
 
-  <img src="../assets/image-20210401155820958.png" alt="image-20210401155820958" style="zoom:50%;" />
+  <img src="../../assets/image-20210401155820958.png" alt="image-20210401155820958" style="zoom:50%;" />
 
 - 标号为 4 是单个包的二进制流信息展示面板，这一部分展示的信息是包的原始数据，也是一个网络包所包含内容的真实展现，我们在第3部分选中的协议头，都会在这一部分以同步高亮的形式标记出来。这一部分的展示是为了让我们对包的真实内容做直观的判断，能具体到单个 byte。
 
-  <img src="../assets/image-20210401155507392.png" alt="image-20210401155507392" style="zoom:50%;" />
+  <img src="../../assets/image-20210401155507392.png" alt="image-20210401155507392" style="zoom:50%;" />
 
 
 
@@ -67,7 +67,7 @@ export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin
 - **Capture Filter**
 - **Display Filter**
 
-<img src="../assets/image-20210401160531913.png" alt="image-20210401160531913" style="zoom:50%;" />
+<img src="../../assets/image-20210401160531913.png" alt="image-20210401160531913" style="zoom:50%;" />
 
 
 
@@ -120,7 +120,7 @@ Wireshark默认情况下将不同网络连接的流量都混在一起展示，�
 
 ##### Follow Stream
 
-<img src="../assets/image-20210401163500618.png" alt="image-20210401163500618" style="zoom:50%;" />
+<img src="../../assets/image-20210401163500618.png" alt="image-20210401163500618" style="zoom:50%;" />
 
 在 display filter 会看到 `tcp.stream eq 0` （筛选出第一个TCP流）
 
@@ -133,7 +133,7 @@ Wireshark 支持我们常见的4种Stream：
 - SSL
 - HTTP
 
-![image-20210401163236951](../assets/image-20210401163236951.png)
+![image-20210401163236951](../../assets/image-20210401163236951.png)
 
 弹出的窗口，将iPhone和Server之间某次的连接流量完整的呈现出来，包括iPhone发送了12个包，Server回了10个包，以及iPhone上行和下行的流量 20KB，还提供流量编解码选择，文本搜索功能等。具体参见官方文档 [Follow TCP Stream](https://www.wireshark.org/docs/wsug_html_chunked/ChAdvFollowStreamSection.html)
 
@@ -143,15 +143,15 @@ Wireshark 支持我们常见的4种Stream：
 
 一图胜千言：
 
-<img src="../assets/image-20210401171433770.png" alt="image-20210401171433770" style="zoom:50%;" />
+<img src="../../assets/image-20210401171433770.png" alt="image-20210401171433770" style="zoom:50%;" />
 
 
 
-<img src="../assets/image-20210401165207709.png" alt="image-20210401165207709" style="zoom:50%;" />
+<img src="../../assets/image-20210401165207709.png" alt="image-20210401165207709" style="zoom:50%;" />
 
 如果没有过滤，如下图：
 
-<img src="../assets/image-20210401171823263.png" alt="image-20210401171823263" style="zoom:25%;" />
+<img src="../../assets/image-20210401171823263.png" alt="image-20210401171823263" style="zoom:25%;" />
 
 
 

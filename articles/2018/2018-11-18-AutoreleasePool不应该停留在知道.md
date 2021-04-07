@@ -164,7 +164,7 @@ int main(int argc, const char * argv[]) {
 - 当对象调用 `autorelease` 方法时，会将对象加入 `AutoreleasePoolPage` 的栈中
 - 调用 `AutoreleasePoolPage::pop` 方法会向栈中的对象发送释放消息
 
-![](../assets/autoreleasepool2018.png)
+![](../../assets/autoreleasepool2018.png)
 
 #### AutoreleasePoolPage
 

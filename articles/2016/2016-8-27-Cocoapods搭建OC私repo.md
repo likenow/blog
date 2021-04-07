@@ -11,7 +11,7 @@ categories:
 
 默认所有的`Podspec`文件都放在了`https://github.com/CocoaPods/Specs`地址上，所以第一次`pod setup`时如果你的项目依赖很多Cocoapods管理的库，将会耗费许多时间。所以，对于公司级别的开发，需要搭建许多私有的类库，这就需要我们创建一个私有的`repo`。
 
-![](../assets/cocoapodsprivaterepo2016.png)
+![](../../assets/cocoapodsprivaterepo2016.png)
 
 <!--more-->
 

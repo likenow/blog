@@ -29,6 +29,7 @@
 
 分析：
 
+```wiki
 例子是5行6列，计数是从 0 开始，输入两个噪音点`[3,4,3]`和`[1,1,4]`
 
 1. 向8个方向传播（向四周扩散）
@@ -36,20 +37,20 @@
 3. 同一格被多个音源的噪音覆盖，不叠加保留较大者
 
 
+    0  |  1  |  2  |  3  |   4   |   5  |
 
-​      0  |  1  |  2  |  3  |   4   |   5  |
+0 | 3     3     3     2      1       0
 
-0 | 3      3      3      2       1        0
+1 | 3     4     3     2      1       1
 
-1 | 3      **4**      3      2       1        1
+2 | 3     3     3     2      2       2
 
-2 | 3      3      3      2       2        2
+3 | 2     2     2     2      3       2
 
-3 | 2      2      2      2       **3**        2
-
-4 | 1      1      1      2       2        2
+4 | 1     1     1     2      2       2
 
 => sum: 63
+```
 
 
 
@@ -144,5 +145,58 @@ print(result)
 
 ---
 
+2.题目描述：交换比特（bit）。对一个整数每两位交换一次，并返回交换后的数。
 
+```swift
+class Solution {
+    func swap_bit(x: Int) -> Int {
+        // Mask A - a, in binary, is 1010
+        let maskA = 0xAA
+        // Mask 5 -  5, in binary, is 0101
+        let mask5 = 0x55;
+        let r1 = (x & maskA) >> 1
+        let r2 = (x & mask5) << 1
+        let result = r1 | r2
+        return result
+    }
+
+    func testSwapBit(x: Int) {
+        print(swap_bit(x: x))
+    }
+}
+
+Solution().testSwapBit(x: 7)
+```
+
+
+
+上述，涉及到一个知识点叫：**位屏蔽**。
+
+Stack Overflow 上的一个问题：[What are 0xaa and 0x55 doing?](https://stackoverflow.com/questions/43923906/what-are-0xaa-and-0x55-doing)
+
+```wiki
+     First, we'll look at (x & 0xaaaaaaaa). If you break 0xaaaaaaaa down to the bit level, you end up with 1010 1010 1010 1010 1010 1010 1010 1010 (as a, in binary, is 1010). So (x & 0xaaaaaaaa) is saying, return only every even-placed 1 in x. This is called bit masking. Then, you right shift it by one place - this is how you make the even numbers switch place (so now the second bit occupies the place of the first bit, and the fourth the third, etc).
+
+     You do the same thing with (x & 0x55555555) - if you break it down to the bit level, you end up with 0101 0101 0101 0101 0101 0101 0101 0101 (as 5, in binary, is 0101). This masks all the even-placed bits in x, and gives you all the odd-placed bits. Then, you shift all bits left by 1. Finally, you use the or (|) operator to combine the two bit-sequences, and that's your answer.
+
+     Example: Let's take 2456086205. We convert that into binary and get 1001 0010 0110 0100 1110 0110 1011 1101. Now, we do (x & 0xaaaaaaaa), and get
+
+     1001 0010 0110 0100 1110 0110 1011 1101 & 1010 1010 1010 1010 1010 1010 1010 1010,
+
+     which equals 1000 0010 0010 0000 1010 0010 1010 1000. Shift this to the right and you get 0100 0001 0001 0000 0101 0001 0101 0100.
+
+     Now, do (x & 0x55555555), and get
+
+     1001 0010 0110 0100 1110 0110 1011 1101 & 0101 0101 0101 0101 0101 0101 0101 0101,
+
+     which equals 0001 0000 0100 0100 0100 0100 0001 0101. Shift this to the left and you get 0010 0000 1000 1000 1000 1000 0010 1010.
+
+     Finally, we do 0100 0001 0001 0000 0101 0001 0101 0100 | 0010 0000 1000 1000 1000 1000 0010 1010. We then get 0110 0001 1001 1000 1101 1001 0111 1110, which, as you can see, is the the solution!
+```
+
+
+
+---
+
+---
 

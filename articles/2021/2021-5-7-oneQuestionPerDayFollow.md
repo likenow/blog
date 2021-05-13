@@ -412,6 +412,9 @@ def nim(heaps, game_type):
     # nim sum will give the correct end-game move for normal play but
     # misere requires the last move be forced onto the opponent
     if is_misere and is_near_endgame:
+        # 列表推导式 list comprehension，是在一组字符串或者一组对象上执行一条相同操作的简洁写法！
+        # eg. heaps = [0,2,1] => sum([1,1]) => 2
+        # eg. sum(x * x for x in range(10))  => sum([1*1, 2*2, 3*3, ...])
         moves_left = sum(1 for x in heaps if x > 0)
         is_odd = (moves_left % 2 == 1)
         sizeof_max = max(heaps)
@@ -446,3 +449,21 @@ if __name__ == "__main__":
     doctest.testmod()
 ```
 
+
+
+题外话：
+
+> ```python
+> sum(...)
+>     sum(iterable[, start]) -> value
+> 
+>     Return the sum of an iterable or sequence of numbers (NOT strings)
+>     plus the value of 'start' (which defaults to 0).  When the sequence is
+>     empty, return start.
+> ```
+>
+> 
+>
+> 比如:[[1],[2,3],[4,5,6]]，将其转成[1, 2, 3, 4, 5, 6].
+>
+> 这个时候使用Python自带的sum函数会很简单。

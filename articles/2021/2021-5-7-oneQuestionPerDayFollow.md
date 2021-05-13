@@ -200,3 +200,160 @@ Stack Overflow 上的一个问题：[What are 0xaa and 0x55 doing?](https://stac
 
 ---
 
+3.[尼姆游戏](https://zh.wikipedia.org/wiki/%E5%B0%BC%E5%A7%86%E6%B8%B8%E6%88%8F)
+
+> 尼姆游戏，是一种两人玩儿的回合制数学战略游戏。游戏者轮流从几排棋子（或者任何道具）中选择一排，再由这一排中取走一个或者多个，依规则不同，拿走最后一个的可能是输家，也有可能是赢家。当指定相应数量时，一堆这样的棋子称作一个**尼姆堆**。古代就有许多尼姆游戏的变体。最早欧洲有关尼姆游戏的参考资料是在16世纪，目前使用的名称是由[哈佛大学](https://zh.wikipedia.org/wiki/哈佛大学)的Charles L. Bouton命名，他也在1901年提出了此游戏的完整理论，不过没有说明名称的由来。
+
+题目描述：有两堆球，一堆8个 一堆10个， 每人每次只能从某一堆上至少拿走一个上不封顶，拿走最后一个的输，两个人轮流拿 ，你先拿怎么赢？ 
+
+```wiki
+读完题干，如果你仔细看了上述维基百科，我们可以吧两堆球，理解为两排。
+
+胜利的策略就是在取走球后，使尼姆和为0。
+
+题目描述的是 misère 版（拿到最后一个棋子的输），而且是一个特别简单的情况，只有两排。
+必胜的策略：在个数较多的那牌拿走部分球，使两者数量相同。接下来对手不论怎么下，都继续使另一排的数量相同，最后即可胜利。
+```
+
+
+
+
+
+```swift
+enum GameType: String {
+    case NORMAL = "Normal"
+    case MISERE = "Misere"
+}
+
+/**
+ 在normal版本（拿到最后一个棋子的赢）中，胜利的策略就是在取走棋子后，使尼姆和为0。只要取走棋子前，尼姆和不为0，一定有办法取走部分棋子使尼姆和为0。另一个游戏者无论怎么拿，取走棋子后尼姆和都不会为0。以此策略，只要在取棋子时照策略进行，一定会胜利。要找到要拿走的棋子，可以令X是原来各排棋子数的尼姆和，游戏策略是要分别计算各排棋子数和X的尼姆和，找到尼姆和比该排棋子数少的那一排，接下来就要取走这一排的棋子，使该排棋子数等于尼姆和。以上例中，原来各排棋子数的尼姆和是X = 3 ⊕ 4 ⊕ 5 = 2。A=3、B=4、C=5且X=2，因此得到
+
+ A ⊕ X = 3 ⊕ 2 = 1 [因为 (011) ⊕ (010) = 001 ]
+ B ⊕ X = 4 ⊕ 2 = 6
+ C ⊕ X = 5 ⊕ 2 = 7
+ 因此下一步是取走A排的棋子，使其数量变1（拿走二个棋子）。
+
+ 有一个特别简单的例子，是只剩二排的情形，其策略是在个数较多的那牌拿走部分棋子，使两者数量相同。接下来对手不论怎么下，都继续使二排的数量相同，最后即可胜利。
+
+ 若是玩misère版本。前面的策略都一样，只到只剩一排的棋子超过一个（二个或二个以上）时才有不同。此时的策略都是针对超过一个棋子的那排棋子取子，使留下来的每一排都只有一个棋子。接下来玩的人只能从这几排中选一排拿走。取子可能是那排全部取完，或是只剩一个，视游戏版本而定，在玩misère版本（拿到最后一个棋子的输）时，要使留下来的排数是单数（因此对方会拿到最后一个棋子），在玩normal版本游戏时，要使留下来的排数是偶数。（因此自己会拿到最后一个棋子）。
+ */
+class Solution {
+    /// 支持两种游戏模式：normal and misere。计算输入排，下一步该移除哪一排的多少数量
+    func nim(heaps: [Int], type: String) -> (Int, Int) {
+        print("game type \(type)", heaps)
+        // 判断当前 nim 游戏类型
+        let isMisere = (type == GameType.MISERE.rawValue)
+        // 游戏是否进入到后半程
+        let isNearEnd = self.isNearEndGame(heaps: heaps)
+        // 如果游戏进入后半程，misere 与 normal 不同
+        if isMisere, isNearEnd {
+            // 计算剩余非 0 的排
+            let left = self.movesLeft(heaps: heaps)
+            // 排数是否为单数
+            let isOdd = (left % 2) == 1
+            
+            // 针对超过一个棋子的那排棋子取子，使留下来的每一排都只有一个棋子 ps.要使留下来的排数是单数
+            let max = self.maxOfHeap(heaps: heaps)
+            let maxValue = max.1
+            let maxIndex = max.0
+            if maxValue == 1, isOdd {
+                print("U will lose, No matter how you try :(")
+                return (0,0)
+            }
+            return (maxIndex, maxValue)
+        }
+        // 尼姆和
+        let nimSum = xorHeap(heaps: heaps)
+        // 胜利的策略就是在取走棋子后，使尼姆和为0。所以，另一个游戏者无论怎么拿，取走棋子后尼姆和都不会为0。
+        if nimSum == 0 {
+            print("U will lose, No matter how you try :(")
+            return (0,0)
+        }
+        // 找到要拿走的棋子
+        var willRemoveSize = 1
+        for (i, v) in heaps.enumerated() {
+            // 要分别计算各排棋子数和nimSum 的尼姆和
+            willRemoveSize = v ^ nimSum
+            // 找到尼姆和比该排棋子数少的那一排，接下来就要取走这一排的棋子，使该排棋子数等于尼姆和。
+            if willRemoveSize < v {
+                let amountToRemove = v - willRemoveSize
+                return (i, amountToRemove)
+            }
+        }
+        return (0,0)
+    }
+    /// Misere 只到只剩一排的棋子超过一个（二个或二个以上）时才有不同
+    func isNearEndGame(heaps: [Int]) -> Bool {
+        var result = 0
+        for v in heaps {
+            if v > 1 {
+                result += 1
+            }
+        }
+        
+        return result <= 1
+    }
+    /// 剩余非 0 的排
+    func movesLeft(heaps: [Int]) -> Int {
+        var result = 0
+        for v in heaps {
+            if v > 0 {
+                result += 1
+            }
+        }
+        return result
+    }
+    /// 找到最大值及所在的排
+    func maxOfHeap(heaps: [Int]) -> (Int, Int) {
+        var result = 0
+        var index = 0
+        for (i,v) in heaps.enumerated() {
+            if v > result {
+                result = v
+                index = i
+            }
+        }
+        
+        return (index,result)
+    }
+    /// heaps中的元素异或运算
+    func xorHeap(heaps: [Int]) -> Int {
+        var result = heaps[0]
+        for i in 1..<heaps.count {
+            result ^= heaps[i]
+        }
+        print("nimSum =",result)
+        
+        return result
+    }
+}
+
+print("next step", Solution().nim(heaps: [3,4,5], type: GameType.MISERE.rawValue))
+//        print("next step", Solution().nim(heaps: [1,4,5], type: GameType.MISERE.rawValue))
+        print("next step", Solution().nim(heaps: [1,4,3], type: GameType.MISERE.rawValue))
+//        print("next step", Solution().nim(heaps: [1,2,3], type: GameType.MISERE.rawValue))
+        print("next step", Solution().nim(heaps: [1,2,2], type: GameType.MISERE.rawValue))
+//        print("next step", Solution().nim(heaps: [0,2,2], type: GameType.MISERE.rawValue))
+        print("next step", Solution().nim(heaps: [0,2,1], type: GameType.MISERE.rawValue))
+//        print("next step", Solution().nim(heaps: [0,0,1], type: GameType.MISERE.rawValue))
+
+/**
+ * 打印
+ game type Misere [3, 4, 5]
+ nimSum = 2
+ next step (0, 2)
+
+ game type Misere [1, 4, 3]
+ nimSum = 6
+ next step (1, 2)
+
+ game type Misere [1, 2, 2]
+ nimSum = 1
+ next step (0, 1)
+
+ game type Misere [0, 2, 1]
+ next step (1, 2)
+
+*/
+```
+

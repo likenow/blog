@@ -8,7 +8,7 @@
 
 1.本次题目来自牛客网分享的一次华为面试题：
 
-```wiki
+```c
 终端产品在进行一项噪音监测实验。若将空实验室平面图视作一个 nm 的二维矩阵（左上角为 [0,0]）。
 工作人员在实验室内设置了若干噪音源，并以 [噪音源所在行，噪音源所在列，噪音值] 的形式记录于二维数组 noise 中。
 噪音沿相邻八个方向传播，在传播过程中，噪音值（单位为分贝）逐级递减 1 分贝，直至分贝削弱至 1
@@ -29,7 +29,7 @@
 
 分析：
 
-```wiki
+```c
 例子是5行6列，计数是从 0 开始，输入两个噪音点`[3,4,3]`和`[1,1,4]`
 
 1. 向8个方向传播（向四周扩散）
@@ -174,7 +174,7 @@ Solution().testSwapBit(x: 7)
 
 Stack Overflow 上的一个问题：[What are 0xaa and 0x55 doing?](https://stackoverflow.com/questions/43923906/what-are-0xaa-and-0x55-doing)
 
-```wiki
+```c
      First, we'll look at (x & 0xaaaaaaaa). If you break 0xaaaaaaaa down to the bit level, you end up with 1010 1010 1010 1010 1010 1010 1010 1010 (as a, in binary, is 1010). So (x & 0xaaaaaaaa) is saying, return only every even-placed 1 in x. This is called bit masking. Then, you right shift it by one place - this is how you make the even numbers switch place (so now the second bit occupies the place of the first bit, and the fourth the third, etc).
 
      You do the same thing with (x & 0x55555555) - if you break it down to the bit level, you end up with 0101 0101 0101 0101 0101 0101 0101 0101 (as 5, in binary, is 0101). This masks all the even-placed bits in x, and gives you all the odd-placed bits. Then, you shift all bits left by 1. Finally, you use the or (|) operator to combine the two bit-sequences, and that's your answer.
@@ -206,7 +206,7 @@ Stack Overflow 上的一个问题：[What are 0xaa and 0x55 doing?](https://stac
 
 题目描述：有两堆球，一堆8个 一堆10个， 每人每次只能从某一堆上至少拿走一个上不封顶，拿走最后一个的输，两个人轮流拿 ，你先拿怎么赢？ 
 
-```wiki
+```c
 读完题干，如果你仔细看了上述维基百科，我们可以吧两堆球，理解为两排。
 
 胜利的策略就是在取走球后，使尼姆和为0。
@@ -478,7 +478,7 @@ if __name__ == "__main__":
 
 
 
-```swift
+```c
 /* 分析：
  * 对8个位置 _ _ _ _ _ _ _ _ 插入题干给的 11223344 8个数字
  * 把最大的数放在第一位，否则是无法包裹4个数字的
@@ -493,7 +493,7 @@ if __name__ == "__main__":
 
 5.最少的砝码：如何用尽可能少的砝码称量出 `[1, N] `之间的所有重量？（只能在天秤的一端放砝码）
 
-```wiki
+```c
 分析：
 比如 N = 100 其二进制表示为：1100100
 用 2^2 2^5 2^6 三个砝码即可
@@ -516,5 +516,108 @@ if __name__ == "__main__":
 
 上述 100 时，最小取 5
 
+```
+
+6.绝对值表达式的最大值
+
+```c
+给你两个长度相等的整数数组，返回下面表达式的最大值：
+
+|arr1[i] - arr1[j]| + |arr2[i] - arr2[j]| + |i - j|
+
+其中下标 i，j 满足 0 <= i, j < arr1.length。
+
+示例 1：
+输入：arr1 = [1,2,3,4], arr2 = [-1,4,5,6]
+输出：13
+
+示例 2：
+输入：arr1 = [1,-2,-5,0,10], arr2 = [0,-2,-1,-7,-4]
+输出：20
+
+提示：
+2 <= arr1.length == arr2.length <= 40000
+-10^6 <= arr1[i], arr2[i] <= 10^6
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/maximum-of-absolute-value-expression
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+```
+
+最近刚好在看数学书，我看到绝对值就有了取绝对值的想法：
+
+```c
+|a| = a , a>0
+|a| = -a , a<0
+所以如下：
+  |arr1[i] - arr1[j]| + |arr2[i] - arr2[j]| + |i - j|
+=> 会有 8 种情况：
+// --1--
+arr1[i] - arr1[j] + arr2[i] - arr2[j] + i - j
+-(arr1[i] - arr1[j]) - (arr2[i] - arr2[j]) - (i - j)
+// --2--
+arr1[i] - arr1[j] - (arr2[i] - arr2[j]) + i - j
+-(arr1[i] - arr1[j]) + (arr2[i] - arr2[j]) - (i - j)
+// --3--
+-(arr1[i] - arr1[j]) + arr2[i] - arr2[j] + i - j
+(arr1[i] - arr1[j]) - (arr2[i] - arr2[j]) - (i - j)
+// --4--
+-(arr1[i] - arr1[j]) - (arr2[i] - arr2[j]) + i - j
+arr1[i] - arr1[j] + arr2[i] - arr2[j] - (i - j)
+  
+由于，i 和 j 之间没有大关系，也就是说二者可以相互替代。因此只需要计算 4 个算式就可以了：
+arr1[i] - arr1[j] + arr2[i] - arr2[j] + i - j
+arr1[i] - arr1[j] - (arr2[i] - arr2[j]) + i - j
+-(arr1[i] - arr1[j]) + arr2[i] - arr2[j] + i - j
+-(arr1[i] - arr1[j]) - (arr2[i] - arr2[j]) + i - j
+  
+=> 整理如下：
+arr1[i]  + arr2[i] + i  - (arr1[j] + arr2[j] + j)
+arr1[i]  - arr2[i] + i  - (arr1[j] - arr2[j] + j)
+arr2[i]  - arr1[i] + i  - (arr2[j] - arr1[j] + j)
+-arr2[i] - arr1[i] + i  - (-arr1[j] - arr2[j] + j)
+  
+  
+再仔细观察，会发现前面部分和后面部分是一样的，原因还是上面所说的 i 和 j 可以互换。因此我们要做的就是：
+1. 遍历一遍数组，然后计算四个表达式， arr1[i] + arr2[i] + i，arr1[i] - arr2[i] + i，arr2[i] - arr1[i] + i 和 -1 * arr2[i] - arr1[i] + i 的 最大值和最小值。
+2. 分别取出四个表达式最大值和最小值的差值（就是这个表达式的最大值）
+3. 从四个表达式最大值再取出最大值  
+```
+
+```swift
+class S {
+    func maxOfAbsoluteValue(arr1: [Int], arr2:[Int]) -> Int {
+        var r1 = [Int]()
+        var r2 = [Int]()
+        var r3 = [Int]()
+        var r4 = [Int]()
+        var result = [Int]()
+        for i in (0..<arr1.count) {
+            let one = arr1[i]  + arr2[i] + i
+            let two = arr1[i]  - arr2[i] + i
+            let three = arr2[i]  - arr1[i] + i
+            let four = -arr2[i] - arr1[i] + i
+            
+            r1.append(one)
+            r2.append(two)
+            r3.append(three)
+            r4.append(four)
+        }
+        
+        let m1 = r1.max()! - r1.min()!
+        let m2 = r2.max()! - r2.min()!
+        let m3 = r3.max()! - r3.min()!
+        let m4 = r4.max()! - r4.min()!
+        
+        result.append(m1)
+        result.append(m2)
+        result.append(m3)
+        result.append(m4)
+        
+        return result.max() ?? 0
+    }
+}
+
+print(S.init().maxOfAbsoluteValue(arr1: [1,-2,-5,0,10], arr2: [0,-2,-1,-7,-4])) // 20
 ```
 

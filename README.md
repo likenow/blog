@@ -440,16 +440,20 @@ Anyway~~现在就用 `GitHub` 啦！
       <td><a href="./articles/2019/2019-10-20-数组.md">数组</a></td>
       <td>✅</td>
    </tr>
-  <tr>
-    	<td rowspan="2"> 树 </td>
+   <tr>
+    	<td rowspan="3"> 树 </td>
       <td><a href="./articles/2020/2020-10-9-遍历二叉树1.md">遍历二叉树（一）</a></td>
       <td>✅</td>
    </tr>
-  <tr>
+   <tr>
       <td><a href="./articles/2020/2020-10-12-遍历二叉树2.md">遍历二叉树（二）</a></td>
       <td>✅</td>
    </tr>
-  <tr>
+   <tr>
+      <td><a href="./articles/2021/2021-06-22-SuffixTree.md">后缀树</a></td>
+      <td>✅</td>
+   </tr>
+   <tr>
       <td rowspan="1"> 散列表（Hash table） </td>
       <td><a href="./articles/2021/2021-4-7-hashTable.md">散列表</a></td>
       <td>✅</td>

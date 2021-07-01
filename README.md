@@ -183,7 +183,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
    <tr>
-      <td><a href="./articles/2021/2021-07-01-LinkMap.md.md">LinkMap</a></td>
+      <td><a href="./articles/2021/2021-07-01-LinkMap.md">LinkMap</a></td>
       <td>✅</td>
    </tr>
    <tr>

@@ -651,3 +651,107 @@ A 中的二三名也可能是前三
 
 
 
+8 实现一个算法，确定一个字符串 s 的所有字符是否全都不同。
+
+```c
+示例 1：
+输入: s = "leetcode"
+输出: false
+  
+示例 2：
+输入: s = "abc"
+输出: true
+限制：
+0 <= len(s) <= 100
+  
+如果你不使用额外的数据结构，会很加分。
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/is-unique-lcci
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+```
+
+
+
+```swift
+class Solution {
+    /// 嵌套for循环
+    func isUnique_forfor(input: String) -> Bool {
+        let characters = Array(input)
+        if characters.count == 0 {
+            return true
+        }
+        if characters.count == 1 {
+            return true
+        }
+        var arr = [Character]()
+        
+        if characters.count>0 {
+            arr.append(characters.first ?? "$")
+        }
+        
+        for i in 1..<characters.count {
+            for c in arr {
+                if c == characters[i] {
+                    return false
+                } else {
+                    arr.append(characters[i])
+                    continue
+                }
+            }
+        }
+        
+        return true
+    }
+    /// 使用字典
+    func isUnique_dic(input: String) -> Bool {
+        let characters = Array(input)
+        var map = [Character: Int]()
+        for c in characters {
+            map[c, default:0] += 1
+        }
+        for v in map.values {
+            if v > 1 {
+                return false
+            }
+        }
+        return true
+    }
+    /// 位运算
+    /* 分析：
+     每个字符的ASCII码都不一样，移动不同位数表示不同的字符而且只有第一位是1，取 | 运算相当于把当前字符保存在了int64的不同位上，
+     如果没有相同字符 & 运算会一直为0，有相同字符对应位的数就会是1（二进制位1表示出现过， 0表示未出现过）
+     位运算：
+     1 计算出字符char离'a'这个字符的距离，即我们要位移的距离，用offset_bit表示，
+     2 使用左移运算符1 << offset_bit 则可以得到对应下标为1，其余下标为0的数，如：字符char = 'c'，则得到的数为000...00100
+     3 将这个数跟 mark 做与运算，由于这个数只有一个位为1，其他位为0，那么与运算的结果中，其他位肯定是0，而对应的下标位是否0则取决于之前这个字符有没有出现过，
+        3-1 若出现过则被标记为1，那么与运算的结果就不为0；
+        3-2 若之前没有出现过，则对应位的与运算的结果也是0，那么整个结果也为0。
+     4 对于没有出现过的字符，我们用或运算 mark | (1 << offset_bit) 将对应下标位的值置为1。
+    */
+    func isUnique_bit(input: String) -> Bool {
+        let characters = Array(input)
+        var mark: Int64 = 0
+        let beginCharacter = Character("a").asciiValue!
+        for c in characters {
+            let offset_bit = c.asciiValue! - beginCharacter
+            // 判断这个字符在 mark 上是否是 1
+            if mark & 1 << offset_bit != 0 {
+                return false
+            }
+            // 将这个字符存在 mark 上
+            mark |= 1 << offset_bit
+            
+        }
+        
+        return true
+    }
+    /// Swift API
+    func isUnique_set(input: String) -> Bool {
+        let s: Set<Character> = Set(input)
+        return s.count == input.count
+    }
+}
+
+```
+

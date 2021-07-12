@@ -755,3 +755,120 @@ class Solution {
 
 ```
 
+
+
+9 给定一个二维网格和一个单词，找出该单词是否存在于网格中。
+
+单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或者垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+
+
+
+eg.
+
+```c
+board = [
+
+['A', 'B', 'C', 'E'],
+
+['S', 'F', 'C', 'S'],
+
+['A', 'D', 'E', 'E'],
+
+]
+```
+
+
+
+给定 Word = “ABCCED”，返回 true
+
+给定 Word = “SEE”，返回 true
+
+给定 Word = “ABCB”，返回 false
+
+
+
+> 提示：board 和  word 中只包含大写和小写英文字母
+>
+> 1 <= board.length <= 200
+>
+> 1 <= board[i].length <= 200
+>
+> 1 <= word.length <= 10^3
+
+```swift
+class SearchWord {
+    /**
+     思路：
+     在 2D 表中搜索是否有满足给定单词的字符组合，要求所有字符都是相邻的（方向不限). 题中也没有要求字符的起始和结束位置。
+     在起始位置不确定的情况下，扫描二维数组，找到字符跟给定单词的第一个字符相同的，四个方向（上，下，左，右）分别 DFS 搜索，
+        > 如果任意方向满足条件，则返回结果。
+        > 不满足，回溯，重新搜索。
+     关键点：
+     1. 遍历二维数组的每一个点，找到起始点相同的字符，做 DFS
+     2. DFS 过程中，要记录已经访问过的节点，防止重复遍历，这里（Java Code 中）用 * 表示当前已经访问过，也可以用 Set 或者是 boolean[][]数组记录访问过的节点位置。
+     3. 是否匹配当前单词中的字符，不符合回溯，这里记得把当前 * 重新设为当前字符。如果用 Set 或者是 boolean[][]数组，记得把当前位置重设为没有访问过。
+     */
+    func existWord (board: [[Character]]?, word: String?) -> Bool {
+        guard let brd = board else { return false }
+        guard let w = word else { return false }
+        
+        if brd.count == 0 {
+            return false
+        }
+        if w.count == 0 {
+            return true
+        }
+        
+        var b = brd // 为了标记 *
+        let characters:[Character] = Array(w)
+        let row = b.count
+        let col = b[0].count
+        
+        /// O(i*j) - i 是二维数组行数， j 是二维数组列数
+        for r in 0..<row {
+            for c in 0..<col {
+                if b[r][c] == characters[0] {
+                    if dfs(board: &b, words: characters, r: r, c: c, index: 0) {
+                        return true
+                    }
+                }
+            }
+        }
+        return false
+    }
+    
+    func dfs (board: inout [[Character]], words: [Character], r: Int, c: Int, index: Int) -> Bool {
+        if index == words.count {
+            return true
+        }
+
+        if !isValid(board: board, r: r, c: c) {
+            return false
+        }
+        if board[r][c] != words[index] {
+            return false
+        }
+        
+        // 标记访问过
+        board[r][c] = "✅"
+        
+        // 对四个方向 dfs 查找 上 下 左 右
+        let result = dfs(board: &board, words: words, r: r-1, c: c, index: index+1)
+            || dfs(board: &board, words: words, r: r+1, c: c, index: index+1)
+            || dfs(board: &board, words: words, r: r, c: c-1, index: index+1)
+            || dfs(board: &board, words: words, r: r, c: c+1, index: index+1)
+        
+        // 回溯
+        board[r][c] = words[index]
+        
+        return result
+    }
+    
+    /// 检查有效性 board 二维数组 r 行 c 列
+    func isValid(board: [[Character]], r: Int, c: Int) -> Bool {
+        return r >= 0 && r < board.count && c >= 0 && c < board[0].count
+    }
+
+}
+```
+

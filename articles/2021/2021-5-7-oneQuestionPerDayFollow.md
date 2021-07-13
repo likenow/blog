@@ -805,8 +805,8 @@ class SearchWord {
         > 不满足，回溯，重新搜索。
      关键点：
      1. 遍历二维数组的每一个点，找到起始点相同的字符，做 DFS
-     2. DFS 过程中，要记录已经访问过的节点，防止重复遍历，这里（Java Code 中）用 * 表示当前已经访问过，也可以用 Set 或者是 boolean[][]数组记录访问过的节点位置。
-     3. 是否匹配当前单词中的字符，不符合回溯，这里记得把当前 * 重新设为当前字符。如果用 Set 或者是 boolean[][]数组，记得把当前位置重设为没有访问过。
+     2. DFS 过程中，要记录已经访问过的节点，防止重复遍历，这里用 ✅ 表示当前已经访问过，也可以用 Set 或者是 boolean[][]数组记录访问过的节点位置。
+     3. 是否匹配当前单词中的字符，不符合回溯，这里记得把当前 ✅ 重新设为当前字符。如果用 Set 或者是 boolean[][]数组，记得把当前位置重设为没有访问过。
      */
     func existWord (board: [[Character]]?, word: String?) -> Bool {
         guard let brd = board else { return false }
@@ -819,7 +819,7 @@ class SearchWord {
             return true
         }
         
-        var b = brd // 为了标记 *
+        var b = brd // 为了标记 ✅
         let characters:[Character] = Array(w)
         let row = b.count
         let col = b[0].count
@@ -827,6 +827,7 @@ class SearchWord {
         /// O(i*j) - i 是二维数组行数， j 是二维数组列数
         for r in 0..<row {
             for c in 0..<col {
+              	// 找到起始点相同的字符做 DFS
                 if b[r][c] == characters[0] {
                     if dfs(board: &b, words: characters, r: r, c: c, index: 0) {
                         return true
@@ -858,7 +859,7 @@ class SearchWord {
             || dfs(board: &board, words: words, r: r, c: c-1, index: index+1)
             || dfs(board: &board, words: words, r: r, c: c+1, index: index+1)
         
-        // 回溯
+        // 执行深度优先遍历，从较深层的结点返回到较浅层结点的时候，需要做「状态重置」，即「回到过去」、「恢复现场」
         board[r][c] = words[index]
         
         return result
@@ -871,4 +872,197 @@ class SearchWord {
 
 }
 ```
+
+
+
+10 回溯
+
+上一题其实已经用到了 **回溯** 接下来，我们再继续加深一下
+
+> 回溯法是一种选优搜索法，按选优条件向前搜索，以达到目标。
+>
+> 但当探索到某一步时，发现原先选择并不优或达不到目标，就退回一步重新选择，这种走不通就退回再走的技术为回溯法，而满足回溯条件的某个状态的点称为“**回溯点**”。
+
+**回溯算法**
+
+> 采用试错的思想，它尝试分步的去解决一个问题。在分步解决问题的过程中，当它通过尝试发现现有的分步答案不能得到有效的正确的解答的时候，它将取消上一步甚至是上几步的计算，再通过其它的可能的分步解答再次尝试寻找问题的答案。
+>
+> 回溯法通常用最简单的递归方法来实现，在反复重复上述的步骤后可能出现两种情况：
+>
+> - 找到一个可能存在的正确的答案；
+> - 在尝试了所有可能的分步方法后宣告该问题没有答案。
+>
+> 作者：liweiwei1419
+> 链接：https://leetcode-cn.com/problems/permutations/solution/hui-su-suan-fa-python-dai-ma-java-dai-ma-by-liweiw/
+> 来源：力扣（LeetCode）
+> 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+```python
+/* 算法框架--递归回溯框架
+   	result = []
+		def backtrack(路径, 选择列表):
+      if 满足结束条件:
+          result.add(路径)
+          return
+      for 选择 in 选择列表:
+        # 做选择
+        将该选择从选择列表移除
+        路径.add(选择)
+        backtrack(路径, 选择列表)
+        # 撤销选择
+        路径.remove(选择)
+        将该选择再加入选择列表
+*/   
+```
+
+
+
+eg.
+
+**实例1：八皇后问题**
+
+> **八皇后问题**是一个以[国际象棋](https://zh.wikipedia.org/wiki/国际象棋)为背景的问题：如何能够在8×8的国际象棋棋盘上放置八个[皇后](https://zh.wikipedia.org/wiki/后_(国际象棋))，使得任何一个皇后都无法直接吃掉其他的皇后？为了达到此目的，任两个皇后都不能处于同一条横行、纵行或斜线上。八皇后问题可以推广为更一般的**n皇后摆放问题**：这时棋盘的大小变为*n*×*n*，而皇后个数也变成*n*。[当且仅当](https://zh.wikipedia.org/wiki/当且仅当)*n* = 1或*n* ≥ 4时问题有解[[1\]](https://zh.wikipedia.org/wiki/八皇后问题#cite_note-1)
+>
+> 八个皇后在8x8棋盘上共有4,426,165,368（[64C8](https://zh.wikipedia.org/wiki/組合)）种摆放方法，但只有92个**互不相同**的解。如果将旋转和对称的解归为一种的话，则一共有12个独立解
+>
+> 下表给出了*n*皇后问题的解的个数包括独立解U（[OEIS](https://zh.wikipedia.org/wiki/整數數列線上大全)中的数列[A002562](https://oeis.org/A002562)）以及互不相同的解D（[OEIS](https://zh.wikipedia.org/wiki/整數數列線上大全)中的数列[A000170](https://oeis.org/A000170)）的个数：
+>
+> | *n*  |  1   |  2   |  3   |  4   |  5   |  6   |  7   |  8   |  9   |  10  |  11   |   12   |   13   |   14    |  ..  |
+> | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :---: | :----: | :----: | :-----: | :--: |
+> |  U   |  1   |  0   |  0   |  1   |  2   |  1   |  6   |  12  |  46  |  92  |  341  | 1,787  | 9,233  | 45,752  |  ..  |
+> |  D   |  1   |  0   |  0   |  2   |  10  |  4   |  40  |  92  | 352  | 724  | 2,680 | 14,200 | 73,712 | 365,596 |  ..  |
+
+```swift
+class BackTracking {
+    /// 8皇后
+    var queenNumber = 8
+    /// 记录皇后的位置
+    var queenPositions = Array(repeating: -1, count: 8)
+    /// 结果
+    var result = 0
+    
+    /// 传入皇后的数量
+    func nQueen(_ n: Int) -> Int {
+        // n 皇后
+        queenNumber = n
+        // 从第一行开始遍历
+        back_tracking(0)
+        
+        return result
+    }
+    
+    /// 回溯算法
+    func back_tracking(_ row: Int) {
+        if row == queenNumber {
+            result += 1
+            return
+        }
+        for j in 0..<queenNumber {
+            queenPositions[row] = j
+            if isValid(row: row) {
+                back_tracking(row+1)
+            }
+        }
+    }
+    /// 判断设置的皇后是否在同一行，同一列，或者同一斜线上
+  	/*
+      假设一个点A的坐标是[a,b]，那么和该点在同一斜线上的点A′ 有四种，分别是：
+      [a+x,b+x]
+      [a-x,b-x]
+      [a+x,b-x]
+      [a-x,b+x]
+      前两种点横纵坐标相减和A点横纵坐标相减后一样。后两种点横纵坐标相加和A点横纵坐标相加一样。
+      (a+x)-(b+x) = a-b
+      (a-x)-(b-x) = a-b
+      (a+x)+(b-x) = a+b
+      (a-x)+(b+x) = a+b
+  		只要两个点横纵坐标相加结果相等或者相减结果相等，就可以判断两个点在同一斜线上。
+  	*/
+    func isValid(row: Int) -> Bool {
+        for j in 0..<row {
+            if queenPositions[row] == queenPositions[j]
+                || row-queenPositions[row] == j-queenPositions[j]
+                || row+queenPositions[row] == j+queenPositions[j]  {
+                return false
+            }
+        }
+        
+        return true
+    }
+}
+print(BackTracking.init().nQueen(8)) // 92
+print(BackTracking.init().nQueen(7)) // 40
+print(BackTracking.init().nQueen(6)) // 4
+```
+
+
+
+```c
+#include<stdio.h>
+
+#define PRINTF_IN 1 //定义是否打印，1：打印，0：不打印
+
+int queens(int Queens){
+    int i, k, flag, not_finish=1, count=0;
+    //正在处理的元素下标，表示前i-1个元素已符合要求，正在处理第i个元素
+    int a[Queens+1];    //八皇后问题的皇后所在的行列位置，从1幵始算起，所以加1
+    i=1;
+    a[1]=1;  //为数组的第一个元素赋初值
+
+    printf("%d皇后的可能配置是:",Queens);
+
+    while(not_finish){  //not_finish=l:处理尚未结束
+        while(not_finish && i<=Queens){  //处理尚未结束且还没处理到第Queens个元素
+            for(flag=1,k=1; flag && k<i; k++) //判断是否有多个皇后在同一行
+                if(a[k]==a[i])
+                    flag=0;
+
+            for (k=1; flag&&k<i; k++)  //判断是否有多个皇后在同一对角线
+                if( (a[i]==a[k]-(k-i)) || (a[i]==a[k]+(k-i)) )
+                    flag=0;
+
+            if(!flag){  //若存在矛盾不满足要求，需要重新设置第i个元素
+                if(a[i]==a[i-1]){  //若a[i]的值已经经过一圈追上a[i-1]的值
+                    i--;  //退回一步，重新试探处理前一个元素
+
+                    if(i>1 && a[i]==Queens)
+                        a[i]=1;  //当a[i]为Queens时将a[i]的值置1
+                    else
+                        if(i==1 && a[i]==Queens)
+                            not_finish=0;  //当第一位的值达到Queens时结束
+                        else
+                            a[i]++;  //将a[il的值取下一个值
+                }else if(a[i] == Queens)
+                    a[i]=1;
+                else
+                    a[i]++;  //将a[i]的值取下一个值
+            }else if(++i<=Queens)
+                if(a[i-1] == Queens )
+                    a[i]=1;  //若前一个元素的值为Queens则a[i]=l
+                else
+                    a[i] = a[i-1]+1;  //否则元素的值为前一个元素的下一个值
+        }
+
+        if(not_finish){
+            ++count;
+            if(PRINTF_IN){
+                printf((count-1)%6 ? "   [%2d]:" : "\n[%2d]:", count);
+                
+                for(k=1; k<=Queens; k++) //输出结果
+                printf(" %d", a[k]);
+            }
+   
+            if(a[Queens-1]<Queens )
+                a[Queens-1]++;  //修改倒数第二位的值
+            else
+                a[Queens-1]=1;
+
+            i=Queens -1;    //开始寻找下一个满足条件的解
+        }
+    }
+    return count;
+}
+```
+
+
 

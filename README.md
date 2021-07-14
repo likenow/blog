@@ -463,10 +463,15 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
    <tr>
-      <td rowspan="1"> 题目 </td>
+      <td rowspan="2"> 题目 </td>
       <td><a href="./articles/2021/2021-5-7-oneQuestionPerDayFollow.md">刷题</a></td>
       <td>✅</td>
    </tr>
+   <tr>
+      <td><a href="./articles/2021/2021-07-14-LRU.md">LRU</a></td>
+      <td>✅</td>
+   </tr>
+   
 </table>
 
 

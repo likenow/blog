@@ -76,6 +76,41 @@ _server = [[GCDWebUploader alloc] initWithUploadDirectory:docPath];
 ```
 
 
+#### 1 获取各种文件目录的路径
+
+```objective-c
+// 获取沙盒主目录路径
+NSString *homeDir = NSHomeDirectory();
+// 获取Documents目录路径
+NSString *docDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+// 获取Library的目录路径
+NSString *libDir = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject];
+// 获取Caches目录路径
+NSString *cachesDir = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
+// 获取tmp目录路径
+NSString *tmpDir =  NSTemporaryDirectory();
+```
+
+
+
+#### 2 NSSearchPathForDirectoriesInDomains
+
+```objective-c
+// Creates a list of directory search paths.
+NSArray<NSString *> * NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory directory, NSSearchPathDomainMask domainMask, BOOL expandTilde);
+```
+
+
+
+`NSSearchPathForDirectoriesInDomains`方法用于查找目录，返回指定范围内的指定名称的目录的路径集合。有三个参数：
+
+- *directory* **`NSSearchPathDirectory`类型的`enum`值，表明我们要搜索的目录名称，比如这里用`NSDocumentDirectory`表明我们要搜索的是`Documents`目录。如果我们将其换成`NSCachesDirectory`就表示我们搜索的是`Library/Caches`目录。**
+- *domainMask* **`NSSearchPathDomainMask`类型的`enum`值，指定搜索范围，这里的`NSUserDomainMask`表示搜索的范围限制于当前应用的沙盒目录。还可以写成`NSLocalDomainMask`（表示`/Library`）、`NSNetworkDomainMask`（表示`/Network`）等。**
+- *expandTilde* **BOOL值，表示是否展开波浪线。在iOS中的全写形式是`/User/userName`，该值为YES即表示写成全写形式，为NO就表示直接写成“~”。**
+  - 该值为NO：Caches目录路径 `~/Library/Caches`
+  - 该值为YES：Caches目录路径 `/var/mobile/Containers/Data/Application/A7E438C4-0CB3-49D0-9B2C-D84AD67A752E/Library/Caches`
+
+
 
 ### 参考
 

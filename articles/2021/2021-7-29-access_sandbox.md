@@ -75,6 +75,8 @@ _server = [[GCDWebUploader alloc] initWithUploadDirectory:docPath];
 //other code……
 ```
 
+---
+---
 
 #### 1 获取各种文件目录的路径
 

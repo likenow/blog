@@ -165,3 +165,15 @@ open "${SRCROOT}/Products"
 > 问题描述：打包出来的 Framework 集成到工程以后，build 报 `xxx.h file note found` 错误！
 > 先后检查了 `Header Search Paths` 和 `User Header Search Paths` 都没有什么问题。
 > 最后在 `Framework Search Paths` 中增加了 `xx/Pods/**` 然后编译通过了。
+
+
+
+<font color=red>2021.08.06</font>
+
+### 一个lib包含了很多的架构，会打到最后的包里么？
+
+不会，如果lib中有`armv7, armv7s, arm64, i386`架构，而 `target architecture` 选择了
+
+`armv7s, arm64`，
+
+那么只会从lib中`link`指定的这两个架构的二进制代码，其他架构下的代码不会`link`到最终可执行文件中；反过来，一个lib需要在模拟器环境中正常link，也得包含i386架构的指令。

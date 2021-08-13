@@ -152,6 +152,43 @@ prefs:root=INTERNET_TETHERING
 
 
 
+##### 其他跳转
+
+```objective-c
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.baidu.com"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"sms://158********"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"tel://158********"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto://362****@qq.com"]];
+```
+
+##### 跳转 App Store 
+
+以 https:// 开头的应用详情页链接，跳转到AppStore。
+
+```objective-c
+ //cn代表中国。在Safari浏览器打开链接是中文介绍
+ NSString *urlStr = [NSString stringWithFormat:@"https://itunes.apple.com/cn/app/id%@", myAppID];
+```
+
+```objective-c
+NSString *urlStr = [NSString stringWithFormat:@"https://itunes.apple.com/cn/app/apple-store/id%@", myAppID];
+```
+
+跳转到应用详情页
+以 itms-apps:// 开头的应用详情页链接，跳转到AppStore。
+
+```objective-c
+// 其中myAppID为itunesconnect中的应用程序id
+NSString *str = [NSString stringWithFormat: @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=%@", myAppID]; 
+```
+
+```objective-c
+//以 itms:// 开头的应用详情页连接，会跳转到 iTunes Store，打开的仍然是应用的下载页
+ NSString *urlStr = [NSString stringWithFormat:@"itms://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=%@", myAppID];
+```
+
+##### 打开url
+
 iOS 8及以后：
 
 ```objective-c
@@ -166,38 +203,7 @@ iOS 10及以后:
 
 
 
-
-
-##### 其他跳转
-
-```objective-c
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.baidu.com"]];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"sms://158********"]];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"tel://158********"]];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto://362****@qq.com"]];
-```
-
-
-##### 跳转 App Store 进入指定的应用页面
-
-```objective-c
-// 其中myAppID为itunesconnect中的应用程序id
-NSString *str = [NSString stringWithFormat: 
-                 @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%d", 
-                 myAppID ];  
-[[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-```
-
-##### 跳转 App Store 进入首页
-
-```objective-c
-NSString *str = [NSString stringWithFormat: 
-                 @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=%@",
-                 myAppID ];  
-[[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-
-```
-
+>
 > iOS 6 以后，苹果推出了 StoreKit ，无需再跳转到 App Store 直接在应用内即可打开
 
 

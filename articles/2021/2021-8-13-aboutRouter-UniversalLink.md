@@ -10,6 +10,18 @@
 
 
 
+> - 唯一性：不像自定义的scheme,因为它使用标准的HTTP/HTTPS链接到你的web站点,所以它不会被其它的app所声明.另外,Custom URL scheme 因为是自定义的协议，所以在没有安装 app 的情况下是无法直接打开的，而Universal Links本身是一个HTTP/HTTPS链接，所以有更好的兼容性；
+>
+> - 安全：当用户的手机上安装了你的app，那么iOS将去你的网站上去下载你上传上去的说明文件(这个说明文件声明了APP可以打开哪些类型的http链接)。因为只有你自己才能上传文件到你网站的根目录,所以你的网站和你的app之间的关联是安全的；
+>
+> - 可变：当用户手机上没有安装你的app的时候，Universal Links也能够工作。如果你愿意，在没有安装APP的时候，用户点击链接，会在safari中展示你网站的内容；
+>
+> - 简单：一个URL链接，可以同时作用于网站和app，可以定义统一的web-native协议；
+>
+> - 私有：其它APP可以在不需要知道是否安装了的情况下和你的APP相互通信；
+
+
+
 > Universal Link是苹果在WWDC 2015上提出的iOS 9的新特性之一。此特性类似于深层链接，并能够方便地通过打开一个Https链接来直接启动您的客户端应用(手机有安装App)。对比以往所使用的URLSheme, 这种新特性在实现web-app的无缝链接时,能够提供极佳的用户体验。 使用前请阅读[苹果官方文档](https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html#//apple_ref/doc/uid/TP40016308-CH12-SW1)。
 >
 > 由于苹果iOS 13系统版本安全升级，微信SDK1.8.6版本要求支持Universal Links方式跳转，以便进行合法性校验，提升安全性。更多详情请参考[微信官方说明](https://developers.weixin.qq.com/doc/oplatform/Mobile_App/Access_Guide/iOS.html)
@@ -207,6 +219,29 @@ App 发版貌似是相对重新安装好一点儿。
 
 
 ### 3 H5 拉起 App
+
+```js
+// SCHEMA_PATH 为 URL Scheme 地址
+
+// location.href 形式
+window.top.location.href = SCHEMA_PATH;
+
+// a标签形式
+const a = document.createElement("a");
+a.setAttribute("href", SCHEMA_PATH);
+a.click();
+
+// iframe形式
+iframe = document.createElement('iframe');
+iframe.frameBorder = '0';
+iframe.style.cssText = 'display:none;border:0;width:0;height:0;';
+document.body.append(iframe);
+iframe.src = SCHEMA_PATH;
+```
+
+
+
+
 
 <img src="../../assets/image-20210813185847220.png" alt="image-20210813185847220" style="zoom:50%;" />
 

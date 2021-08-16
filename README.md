@@ -227,7 +227,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
    <tr>
-      <td rowspan="14">杂烩</td>
+      <td rowspan="16">杂烩</td>
       <td><a href="./articles/2018/2018-3-9-iOS扫码功能实现.md">iOS扫码功能实现</a></td>
       <td>✅</td>
    </tr>
@@ -277,6 +277,14 @@ Anyway~~现在就用 `GitHub` 啦！
    </tr>
    <tr>
      <td><a href="./articles/2016/2016-3-5-新手引导.md">新手引导</a></td>
+     <td>✅</td>
+   </tr>
+   <tr>
+     <td><a href="./articles/2019/2019-8-11-aboutRouter-jump.md">URL Scheme</a></td>
+     <td>✅</td>
+   </tr>
+   <tr>
+     <td><a href="./articles/2021/2021-8-13-aboutRouter-UniversalLink.md">Universal Link</a></td>
      <td>✅</td>
    </tr>
 </table>

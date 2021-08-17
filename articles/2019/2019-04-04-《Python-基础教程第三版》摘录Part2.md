@@ -1457,7 +1457,23 @@ print'File successfully downloaded', file=log)
 
 
 
+### 补充
 
+```python
+#!/usr/bin/python
+'''
+是告诉操作系统执行这个脚本的时候，调用/usr/bin下的python解释器；
+'''
+
+
+#!/usr/bin/env python
+'''
+这种用法是为了防止操作系统用户没有将python装在默认的/usr/bin路径里。当系统看到这一行的时候，首先会到env设置里查找python的安装路径，再调用对应路径下的解释器程序完成操作。
+'''
+```
+
+- `#!/usr/bin/python` 相当于写死了python路径
+- `#!/usr/bin/env python` 会去环境设置寻找python目录，推荐这种写法
 
 
 

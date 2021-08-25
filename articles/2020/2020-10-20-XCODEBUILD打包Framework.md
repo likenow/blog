@@ -177,3 +177,30 @@ open "${SRCROOT}/Products"
 `armv7s, arm64`，
 
 那么只会从lib中`link`指定的这两个架构的二进制代码，其他架构下的代码不会`link`到最终可执行文件中；反过来，一个lib需要在模拟器环境中正常link，也得包含i386架构的指令。
+
+
+
+<font color=red>2021.08.25</font>
+
+### 在framework生成的脚本后添加如下脚本用于校验：最低运行iOS版本、bitcode、framework是否支持所有架构(armv7,arm64,i386,x86_64)
+
+```bash
+#!/bin/sh
+
+library_name="$1"
+bitcode_count=`otool -l $library_name | grep __LLVM | wc -l | xargs`
+version_string=`otool -l $library_name | grep version | head -n 1 | xargs`
+archs_string=`lipo -info $library_name | sed "s/armv7f//g" | sed "s/armv7s//g" | sed "s/armv7s//g" | sed "s/armv7k//g" | sed "s/armv7m//g" | sed "s/armv7em//g" | sed "s/arm64v8//g" | sed "s/x86_64h//g"`
+if [[ "$version_string" != "version 8.0" ]] && [[ "$version_string" != "version 7."* ]] && [[ "$version_string" != "version 6."* ]]; then
+echo "最小系统版本号不对 $version_string"
+exit -1
+fi
+if [ "$bitcode_count" == "0" ]; then
+echo "bitcode OFF" # 当前不对bitcode做出要求
+fi
+if [[ "$archs_string" != *"armv7"* ]] || [[ "$archs_string" != *"arm64"* ]] || [[ "$archs_string" != *"i386"* ]] || [[ "$archs_string" != *"x86_64"* ]]; then
+echo "缺少部分平台 $archs_string"
+exit -1
+fi
+```
+

@@ -15,7 +15,7 @@ Anyway~~现在就用 `GitHub` 啦！
 
 | 🔥📌文章                                                       |
 | ------------------------------------------------------------ |
-| [书籍记录](./articles/fileNameWithoutDate/书籍记录.md)       |
+| [书籍记录](./articles/others/书籍记录.md)       |
 | [iOS开发工具XCode的使用与遇到的问题](./articles/2015/2015-9-21-iOS开发工具XCode的使用与遇到的问题.md) |
 | [iOS 适配](./articles/2020/2020-9-2-iOS适配.md)              |
 | [码页面要点记录](./articles/2020/2020-08-19-码页面要点记录.md) |
@@ -609,7 +609,7 @@ Anyway~~现在就用 `GitHub` 啦！
    </tr>
    <tr>
       <td>读书总结</td>
-      <td><a href="./articles/fileNameWithoutDate/书籍记录.md">书籍记录</a></td>
+      <td><a href="./articles/others/书籍记录.md">书籍记录</a></td>
       <td>🔥🎉📌📍 <font color="red">持续更新中️</font></td>
    </tr>
    <tr>

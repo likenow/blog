@@ -1,5 +1,7 @@
 ## Universal Link
 
+[toc]
+
 > universal links are:
 >
 > - **Unique.** Unlike custom URL schemes, universal links can’t be claimed by other apps, because they use standard HTTP or HTTPS links to your website.

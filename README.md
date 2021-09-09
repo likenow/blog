@@ -159,7 +159,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
    <tr>
-      <td rowspan="10">工程化</td>
+      <td rowspan="11">工程化</td>
       <td><a href="./articles/2016/2016-8-27-Cocoapods搭建OC私repo.md">Cocoapods搭建OC私repo</a></td>
       <td>✅</td>
    </tr>
@@ -193,6 +193,10 @@ Anyway~~现在就用 `GitHub` 啦！
    </tr>
    <tr>
   		<td><a href="./articles/2021/2021-1-26-GitWorktree.md">Git worktree</a></td>
+    	<td>✅</td>
+   </tr>
+   <tr>
+  		<td><a href="./articles/2021/2021-9-9-git使用记录.md">Git 使用记录</a></td>
     	<td>✅</td>
    </tr>
    <tr>

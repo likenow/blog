@@ -576,21 +576,33 @@ symbolicatecrash 是 Xcode 自带的一个分析工具，可以通过崩溃日�
 
 1 获取 dYSM 文件
 
-通过 Xcode -> Window -> Organize -> Archives 找到对应的 App 包
+  1.1 通过 Xcode -> Window -> Organize -> Archives 找到对应的 App 包
 
-显示包内容
+  1.2 显示包内容
 
-dSYMs 文件夹下 `.dYSM` 文件
+  1.3 dSYMs 文件夹下 `.dYSM` 文件
 
 2 将 symbolicatecrash 、dYSM 文件、KSCrash 生成的 .crash 日志放入同一个文件夹下
 
 3 执行符号化指令
 
-```bash
-export DEVELOPER_DIR=/Applications/XCode.app/Contents/Developer
+```sh
 ./symbolicatecrash ./*.crash ./*.app.dSYM > symbol.crash
-
 ```
+
+![image-20210909182257954](../../assets/image-20210909182257954.png)
+
+```sh
+export DEVELOPER_DIR=/Applications/XCode.app/Contents/Developer
+```
+
+> 新增环境变量：export key=value
+>
+> 删除环境变量：unset key
+>
+> 查看环境变量：env
+
+
 
 ##### 1.6.2 第三方符号化工具
 

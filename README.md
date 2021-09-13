@@ -36,7 +36,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>备注</td>
    </tr>
    <tr>
-      <td rowspan="9">Cocoa</td>
+      <td rowspan="10">Cocoa</td>
       <td><a href="./articles/2018/2018-12-23-iOS集合相关算法知识（一）.md">iOS集合相关算法知识1</a></td>
       <td>✅</td>
    </tr>
@@ -70,6 +70,10 @@ Anyway~~现在就用 `GitHub` 啦！
    </tr>
    <tr>
       <td><a href="./articles/2021/2021-5-6-CGAffineTransform.md">CGAffineTransform</a></td>
+      <td>✅</td>
+   </tr>
+   <tr>
+      <td><a href="./articles/2021/2021-9-10-animation.md">Animation 动画</a></td>
       <td>✅</td>
    </tr>
    <tr>
@@ -235,7 +239,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
    <tr>
-      <td rowspan="16">杂烩</td>
+      <td rowspan="17">杂烩</td>
       <td><a href="./articles/2018/2018-3-9-iOS扫码功能实现.md">iOS扫码功能实现</a></td>
       <td>✅</td>
    </tr>
@@ -293,6 +297,10 @@ Anyway~~现在就用 `GitHub` 啦！
    </tr>
    <tr>
      <td><a href="./articles/2021/2021-8-13-aboutRouter-UniversalLink.md">Universal Link</a></td>
+     <td>✅</td>
+   </tr>
+   <tr>
+     <td><a href="./articles/2021/2021-9-13-measureExecutionTime.md">iOS 时间相关整理</a></td>
      <td>✅</td>
    </tr>
 </table>

@@ -300,7 +300,7 @@ H5 端的 URL Scheme 跳转，从产品经理的角度看，需要满足以下 2
 
 
 
-方案：
+##### 3.2.1 方案：
 
 使用URL Scheme会遇到一个棘手的问题，那就是我们无法得知是否成功唤起App。这个也可以理解，因为这个方式本质上就是访问一个URL，并没有特别的地方。但是唤端失败（通常是用户没有装这个App），我们需要引导用户去下载，这就要求我们需要通过一些手段，去检测唤端是否成功。 常见的做法是通过监听页面是否在 n秒内 隐藏来判断是否成功唤起App，因为如果唤起，那当前页面必然已经退到后台去了。 所以我们处理的流程是这样：
 
@@ -310,7 +310,7 @@ H5 端的 URL Scheme 跳转，从产品经理的角度看，需要满足以下 2
 
 
 
-H5 端部署 Universal Link 示例：
+
 
 ```js
 var options = {
@@ -388,4 +388,5 @@ n设置为2500ms-3000ms，是一个比较合适的值
 - [Lists of available trusted root certificates in iOS](https://support.apple.com/en-us/HT204132)
 - [APP唤起那点破事](https://libin1991.github.io/2020/03/21/APP%E5%94%A4%E8%B5%B7%E9%82%A3%E7%82%B9%E7%A0%B4%E4%BA%8B/)
 - [唤起App在转转的实践](https://zhuanlan.zhihu.com/p/222864158)
+- [iOS H5 打开App通用链接](https://www.jianshu.com/p/0ead88409212)
 

@@ -1064,5 +1064,81 @@ int queens(int Queens){
 }
 ```
 
+11 多人运动
 
+> 已知小猪每晚都要约好几个女生到酒店房间。每个女生 i 与小猪约好的时间由 [si , ei］表示，其中 si 表示女生进入房间的时间， ei 表示女生离开房间的时间。由于小猪心胸开阔，思想开明，不同女生可以同时存在于小猪的房间。请计算出小猪最多同时在做几人的「多人运动」。例子：
+> Input ： [[ 0 , 30] ,[ 5 , 10 ] ， [15 , 20 ] ]
+> OutPut ：最多同时有两个女生的「三人运动」
+>
+> 思路：
+> 对开始时间进行升序排序
+> 用一个小顶堆，维护当前每个女约会结束的时间
+> 当一个新的女出现的时候入堆，并判断一下是否和上一个女有重叠。没有重叠（人数不变），弹出一个元素，保持堆的人数不变
+> 堆的大小表示的就是多人运动的最大人数，返回堆的大小即可
+> ps.进入房间的女要和房间里结束最早的女比较，每次有新的女进入房间后，都要对房间内的女进行排序，让结束时间最早的女排到栈顶。（这样的数据结构使用小顶堆比栈要更合适）
+>
+> 同下面的会议室问题：
+> 给定一系列的会议时间间隔intervals，包括起始和结束时间[[s1,e1],[s2,e2],...] (si < ei)，找到所需的最小的会议室数量。
+>
+> ```
+> 输入: intervals = [(0,30),(5,10),(15,20)]
+> 输出: 2
+> 解释:
+> 需要两个会议室
+> 会议室1:(0,30)
+> 会议室2:(5,10),(15,20)
+> 
+> 输入: intervals = [(2,7)]
+> 输出: 1
+> 解释:
+> 只需要1个会议室就够了
+> ```
+
+
+
+> 小顶堆：根结点（亦称为堆顶）的关键字是堆里所有结点关键字中最小者，称为小顶堆。小根堆要求根节点的关键字既小于或等于左子树的关键字值，又小于或等于右子树的关键字值。
+>
+> <img src="../../assets/image-20210922161944181.png" alt="image-20210922161944181" style="zoom:80%;" />
+
+```c++
+/**
+ * Definition of Interval:
+ * classs Interval {
+ *     int start, end;
+ *     Interval(int start, int end) {
+ *         this->start = start;
+ *         this->end = end;
+ *     }
+ * }
+ */
+
+class Solution {
+public:
+    /**
+     * @param intervals: an array of meeting time intervals
+     * @return: the minimum number of conference rooms required
+     */
+    int minMeetingRooms(vector<Interval> &intervals) {
+        // 01根据会议开始时间从小到大排序。如果不排序。观察出来规律就无效
+        sort(intervals.begin(), intervals.end(),
+            [](Interval& a, Interval& b) { return a.start < b.start; });
+
+        // 02从[0..i]判断历史会议由没有结束。
+        //利用优先级队列符合这个特点。
+        //最小如果还没结束，剩余根本不需要比较,如果结束了只需要返回一个就可以。
+        priority_queue<int, vector<int>, greater<int>> smallHeap;
+        // https://zh.cppreference.com/w/cpp/container/priority_queue
+
+        for (auto it : intervals) {
+            //判断历史会议，有结束的吗
+            if (!smallHeap.empty() && it.start > smallHeap.top()) {
+                smallHeap.pop();  //  【1,30】【1,10】---【15,20】
+                                // a<b <c<d a<d
+            }
+            smallHeap.push(it.end);
+        }
+        return smallHeap.size();  //无重叠会议个数。
+    }
+};
+```
 

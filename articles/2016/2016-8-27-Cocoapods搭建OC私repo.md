@@ -17,6 +17,8 @@ categories:
 
 ## 大体流程
 
+上图步骤对应如下操作：
+
 ```shell
 1. git push / git push --tags
 2. pod trunk push / pod repo add 
@@ -81,58 +83,60 @@ pod repo xxx delete PodName VERSION
 ```ruby
 
     
-// 源文件,我们使用git的管理库的源文件,用当前版本号作为tag
+# 源文件,我们使用git的管理库的源文件,用当前版本号作为tag
 spec.source = { :git => 'https://github.com/AFNetworking/AFNetworking.git',
             :tag => spec.version }
 
     
-// 安装前准备的命令脚本
-spec.prepare_command = <<-CMD
-                    sed -i 's/MyNameSpacedHeader/Header/g' ./**/*.h
-                    sed -i 's/MyNameOtherSpacedHeader/OtherHeader/g' ./**/*.h
-               CMD
-// 要求版本
+# 安装前准备的命令脚本
+spec.prepare_command = 'ruby build_files.rb'
+# spec.prepare_command = <<-CMD
+#                    sed -i 's/MyNameSpacedHeader/Header/g' ./**/*.h
+#                    sed -i 's/MyNameOtherSpacedHeader/OtherHeader/g' ./**/*.h
+#               CMD
+
+# 要求版本
 spec.ios.deployment_target = '8.0'
 
-// 依赖 版本简单介绍一下,如果不写版本,表示使用最新版本, ~>表示大于多少版本 '1.0'表示使用1.0版本
+# 依赖 版本简单介绍一下,如果不写版本,表示使用最新版本, ~>表示大于多少版本 '1.0'表示使用1.0版本
 spec.dependency 'AFNetworking', '~> 1.0'
 
-// 是否使用arc,默认使用
+# 是否使用arc,默认使用
 spec.requires_arc = true
 
-// 也可以这样来指定文件使用ARC,但是不使用ARC的文件,就必须用`-fno-objc-arc` compiler flag来设置了
+# 也可以这样来指定文件使用ARC,但是不使用ARC的文件,就必须用`-fno-objc-arc` compiler flag来设置了
 spec.requires_arc = ['Classes/*ARC.m', 'Classes/ARC.mm']
 
-// 依赖的framework, Foundation和 UIKit可以忽略
+# 依赖的framework, Foundation和 UIKit可以忽略
 spec.frameworks = 'QuartzCore', 'CoreData'
 
-// 系统库的连接,这里是 libxml2.tbd的东西.
+# 系统库的连接,这里是 libxml2.tbd的东西.
 spec.libraries = 'xml2', 'z'
 
-// compiler flag
+# compiler flag
 spec.compiler_flags = '-DOS_OBJECT_USE_OBJC=0', '-Wno-format'
 
-// 源文件
+# 源文件
 spec.source_files = 'Classes/**/*.{h,m}', 'More_Classes/**/*.{h,m}'
 
-// 公开头文件,如果不设置,那所有的头文件都是公开的.
+# 公开头文件,如果不设置,那所有的头文件都是公开的.
 spec.public_header_files = 'Headers/Public/*.h'
 
-// 如果要导入一个第三方或者自己的framework文件,需要使用--use-libraries
+# 如果要导入一个第三方或者自己的framework文件,需要使用--use-libraries
 spec.vendored_frameworks = 'MyFramework.framework', 'YourFramework.framework'
 
-// 需要导入的.a库.
+# 需要导入的.a库.
 spec.vendored_libraries = 'libProj4.a', 'libJavaScriptCore.a'
 
-// 需要导入的资源文件,注意,不能嵌套文件夹,简单来说,Sounds/*下面所有的文件都被导入到Pod中,包括文件夹,如Test下有个文件夹/test1/123.png,也会被导入,但是最后的123.png文件却不会被正确加载到项目中.如果要正常文件夹形式,只能通过 subspec即子库的方式来实现.
+# 需要导入的资源文件,注意,不能嵌套文件夹,简单来说,Sounds/*下面所有的文件都被导入到Pod中,包括文件夹,如Test下有个文件夹/test1/123.png,也会被导入,但是最后的123.png文件却不会被正确加载到项目中.如果要正常文件夹形式,只能通过 subspec即子库的方式来实现.
 spec.resources = ['Images/*.png', 'Sounds/*']
 
-// 子库,只有子库才能创建文件夹....
+# 子库,只有子库才能创建文件夹....
 subspec 'Pinboard' do |sp|
   sp.source_files = 'Classes/Pinboard'
 end
 
-// 指定一个默认子库,这个子库却是加载全部...而如果不设置默认子库,也会默认加载全部
+# 指定一个默认子库,这个子库却是加载全部...而如果不设置默认子库,也会默认加载全部
 s.default_subspec = 'All'
 
 ```
@@ -215,3 +219,23 @@ pod trunk register fmslikai@gmail.com 'karl' --description='karl,macpro'
 ### 注意
 
 如果你之前提交过Pod，那么`trunk`之后你需要去[Claim your Pod](https://link.jianshu.com/?t=https://trunk.cocoapods.org/claims/new)认领下，收工。
+
+
+
+### 本地私有库
+
+就是创建一个仓库，存储在本地，在本地的其它工程中直接使用
+
+1. 创建和编写仓库描述文件
+
+   1. 注意 source 配置 
+
+      ```ruby
+      spec.source = { :git => '', # 这里远程代码链接为空
+                      :tag => spec.version.to_s }
+      ```
+
+2. **使用时，podfile 文件需要指明安装本地库路径**
+
+3. 在本地私有库的主目录下创建测试工程 `pod lib create DemoBase` 命令会询问你是否创建example 工程，同意即可
+

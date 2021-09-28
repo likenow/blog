@@ -36,7 +36,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>备注</td>
    </tr>
    <tr>
-      <td rowspan="10">Cocoa</td>
+      <td rowspan="10">iOS</td>
       <td><a href="./articles/2018/2018-12-23-iOS集合相关算法知识（一）.md">iOS集合相关算法知识1</a></td>
       <td>✅</td>
    </tr>
@@ -239,12 +239,16 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>✅</td>
    </tr>
    <tr>
-      <td rowspan="17">杂烩</td>
+      <td rowspan="18">杂烩</td>
       <td><a href="./articles/2018/2018-3-9-iOS扫码功能实现.md">iOS扫码功能实现</a></td>
       <td>✅</td>
    </tr>
    <tr>
       <td><a href="./articles/2016/2016-7-23-iOS签到日历功能实现.md">iOS签到日历功能实现</a></td>
+      <td>✅</td>
+   </tr>
+   <tr>
+      <td><a href="./articles/2018/2018-9-28-shake.md">iOS摇一摇</a></td>
       <td>✅</td>
    </tr>
    <tr>

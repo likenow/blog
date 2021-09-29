@@ -456,9 +456,13 @@ Anyway~~现在就用 `GitHub` 啦！
     <td>✅</td>
    </tr>
    <tr>
-      <td rowspan="10">其它分享</td>
-      <td><a href="./articles/2019/2019-01-13-程序员自装修系列-基础设计.md">程序员自装修系列-基础设计</a></td>
+      <td rowspan="11">其它分享</td>
+      <td><a href="./articles/2021/2021-9-29-tech_offline_live.md">线下技术活动我学到了什么？</a></td>
       <td>✅</td>
+   </tr>
+  <tr>
+    <td><a href="./articles/2019/2019-01-13-程序员自装修系列-基础设计.md">程序员自装修系列-基础设计</a></td>
+    <td>✅</td>
    </tr>
    <tr>
   	 <td><a href="./articles/2019/2019-6-小课堂.md">2019年小课堂</a></td>

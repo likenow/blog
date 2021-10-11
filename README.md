@@ -100,7 +100,7 @@ Anyway~~现在就用 `GitHub` 啦！
    </tr>
    <tr>
       <td><a href="./articles/2015/2015-4-29-小结OC中的方法重写.md">小结OC中的方法重写 ✅ </a></td>
-      <td>📍</td>
+      <td><a href="./articles/2021/2021-10-9-category_association.md">分类关联对象 ✅ </a></td>
    </tr>
    <tr>
       <td rowspan="6">工程化</td>

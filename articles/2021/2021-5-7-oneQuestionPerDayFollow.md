@@ -1142,3 +1142,183 @@ public:
 };
 ```
 
+
+
+12 给定一个包含 [0，n) 中不重复整数的黑名单 blacklist ，写一个函数从 [0, n) 中返回一个不在 blacklist 中的随机整数。
+
+```c++
+对它进行优化使其尽量少调用系统方法 Math.random() 。
+
+提示:
+1 <= n <= 1000000000
+0 <= blacklist.length < min(100000, N)
+[0, n) 不包含 n ，详细参见 interval notation 。
+ 
+示例 1：
+输入：
+["Solution","pick","pick","pick"]
+[[1,[]],[],[],[]]
+输出：[null,0,0,0]
+ 
+ 
+示例 2：
+输入：
+["Solution","pick","pick","pick"]
+[[2,[]],[],[],[]]
+输出：[null,1,1,1]
+ 
+示例 3：
+输入：
+["Solution","pick","pick","pick"]
+[[3,[1]],[],[],[]]
+输出：[null,0,0,2]
+
+示例 4：
+输入： 
+["Solution","pick","pick","pick"]
+[[4,[2]],[],[],[]]
+输出：[null,1,3,1]
+ 
+输入语法说明：
+输入是两个列表：调用成员函数名和调用的参数。Solution的构造函数有两个参数，n 和黑名单 blacklist。pick 没有参数，输入参数是一个列表，即使参数为空，也会输入一个 [] 空列表。
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/random-pick-with-blacklist
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+```
+
+我擦嘞！我对题干的描述后的输入、输出和实际上题目给出的输入、输出竟然一点儿都不一样。。。直到我看了输入语法说明。。。瞬间感觉自己的思路low了，格局小了
+
+```c++
+// 维护白名单【时间复杂度O(N)/随机选择的时间复杂度O(N)、空间复杂度O(N)】
+class Solution {
+  public:
+  	vector<int> w;
+  	Solution(int n, vector<int> blacklist) {
+      unordered_set<int> W;
+      for (int i = 0; i<n; i++) W.insert(i);
+      for (int x: blacklist) W.erase(x);
+      for (auto it = W.begin(); it != W.end(); it++) W.push_back(*it);
+    }
+  
+  	int pick() {
+      return W[rand() % W.size()];
+    }
+}
+
+```
+
+二分查找解题
+
+```c++
+// 二分查找
+// 白名单中数的个数为 M = N - len(B)，那么可以直接在 [0, M) 中差生随机数 k，通过在黑名单上二分查找的方法，得到白名单中第 k 个数。即如何快速确定 白名单 中的第k个数在 总名单上的第几个位置
+
+/**
+我们设黑名单为 B，白名单为 W，给定 k，需要得到白名单中的第 k 个数 W[k]。
+首先我们将黑名单中的数进行排序，并在黑名单上二分查找。初始的值为 lo = 0 和 hi = len(B) - 1，在二分查找的每一轮中：
+  mid = (lo + hi + 1) / 2；
+  令 c = B[mid] - mid，表示比 B[mid] 小的在白名单中的数的个数；
+    如果 c > k，说明 B[mid] 大于 W[k]，因此设置 hi = mid - 1；
+    如果 c <= k，说明 B[mid] 小于 W[k]，因此设置 lo = mid；
+在二分查找结束后，会有两种情况。
+	第一种是 B 中最小的数都大于 k，那么此时 W[k] 就等于 k。
+	第二种是 W[k] 大于 B[lo]，那么此时 W[k] 等于 k + lo + 1。
+ */
+/**
+产生一定范围随机数的通用表示公式
+要取得[a,b)的随机整数，使用(rand() % (b-a))+ a;
+要取得[a,b]的随机整数，使用(rand() % (b-a+1))+ a;
+要取得(a,b]的随机整数，使用(rand() % (b-a))+ a + 1;
+通用公式:a + rand() % n；其中的a是起始值，n是整数的范围。
+要取得a到b之间的随机整数，另一种表示：a + (int)b * rand() / (RAND_MAX + 1)。
+要取得0～1之间的浮点数，可以使用rand() / double(RAND_MAX)。
+eg.
+v1 = rand() % 100;         // v1 in the range 0 to 99
+v2 = rand() % 100 + 1;     // v2 in the range 1 to 100
+v3 = rand() % 30 + 1985;   // v3 in the range 1985-2014 
+
+*/
+#ifndef Answer_hpp
+#define Answer_hpp
+
+#include <stdio.h>
+#include <vector>
+#include <iostream>
+#include <unordered_map>
+#include <unordered_set>
+
+using namespace std;
+
+class Solution {
+    int n;
+    vector<int> b;
+public:
+    Solution(int N, vector<int> blackList) {
+        n = N;
+        sort(blackList.begin(), blackList.end());
+        b = blackList;
+    }
+    
+    int pick() {
+        int k = rand() % (n-b.size());
+        int low = 0;
+        int high = b.size() -1;
+        
+        while (low < high) {
+            int i = (low + high + 1)/2;
+            if (b[i]-i > k) {
+                high = i - 1;
+            } else {
+                low = i;
+            }
+        }
+        
+        return (low == high) && (b[low] - low <= k) ? k+low+1 : k;
+    }
+};
+
+
+#endif /* Answer_hpp */
+```
+
+黑名单映射解题
+
+<img src="../../assets/image-20211014181219540.png" alt="image-20211014181219540" style="zoom:50%;" />
+
+```c++
+/*
+基本思想是：设总名单长度为N，黑名单长度为blen，则白名单长度为 N-blen。黑名单分散在总名单的各个位置，有的分布在[0,N-blen)，有的则分布在[N-blen,N)。首先我们生成[0,N-blen)中的随机数，那么：
+
+对于分布在[N-blen,N)中的黑名单成员，不用管它们，因为生成的随机数达不到这个范围。
+对于分布在[0,N-blen)中的黑名单成员，完全有可能碰撞到它们。为他们建立一一映射，映射到[N-blen,N)范围内的白名单成员中去，一旦发生碰撞则映射一次。
+最终的效果就是能够随机均匀挑选到所有白名单成员。
+
+黑名单映射代码实现
+采用集合来存储[N-blen,N)范围内的白名单成员，首先假设[N-blen,N)全是白名单成员，然后遍历黑名单，过程中删除集合中的黑名单成员。然后为[0,N-blen)中的黑名单成员建立映射即可：如果随机生成的整数出现在黑名单中，我们就返回它唯一对应的那个出现在白名单中的数即可。例如：
+例如当 N = 6，B = [0, 2, 3] 时，我们在 [0, 3) 中随机生成整数，并将 2 映射到 4，3 映射到 5，这样随机生成的整数就是 [(0)4, 1, (2)5] 中的一个。
+*/
+class Solution {
+public:
+
+    unordered_map<int, int> m;
+    int wlen;
+
+    Solution(int n, vector<int> b) {
+        wlen = n - b.size();
+        unordered_set<int> w;
+        for (int i = wlen; i < n; i++) w.insert(i);
+        for (int x : b) w.erase(x);
+        auto wi = w.begin();
+        for (int x : b)
+            if (x < wlen)
+                m[x] = *wi++;
+    }
+
+    int pick() {
+        int k = rand() % wlen;
+        return m.count(k) ? m[k] : k;
+    }
+};
+```
+

@@ -1322,3 +1322,265 @@ public:
 };
 ```
 
+
+
+13 检查方位规则是否有效
+
+```
+A rule looks like this:
+A NE B
+This means this means point A is located northeast of point B.
+A SW C
+means that point A is southwest of C.
+Given a list of rules, check if the sum of the rules validate. For example:
+A N B
+B NE C
+C N A
+does not validate, since A cannot be both north and south of C.
+A NW B
+A N B
+is considered valid.
+```
+
+思路：
+
+```
+// 坐标化规则
+// 比如 A NE B ==> A(0,0) B(-1,-1)
+// 规则落到坐标系如下：
+N y-1
+W x-1
+S y+1
+W x+1
+ps. 上述是用A计算B，如果反过来，则需要反转一下坐标再计算
+
+// 判断规则
+A N B ==> A.y > B.y
+A W B ==> A.x < B.x
+A NW B ==> A N B && A W B
+```
+
+```swift
+struct Point {
+    var x = 0
+    var y = 0
+}
+func RegularExpression (regex:String,validateString:String) -> [String]{
+    do {
+        let regex: NSRegularExpression = try NSRegularExpression(pattern: regex, options: [])
+        let matches = regex.matches(in: validateString, options: [], range: NSMakeRange(0, validateString.count))
+        
+        var data:[String] = Array()
+        for item in matches {
+            let string = (validateString as NSString).substring(with: item.range)
+            data.append(string)
+        }
+        
+        return data
+    }
+    catch {
+        return []
+    }
+}
+
+class Solution {
+    func validate(rules: [String]) -> Bool {
+        if rules.count == 0 {
+            return true
+        }
+        var dict = [String: Point]()
+        for str in rules {
+            let arr = str.split(separator: " ")
+            if arr.count != 3 {
+              print("input format error")
+              return false
+            }
+            let point1Key = String(arr[0])
+            let point2Key = String(arr[2])
+            // 正则匹配
+            let reg1 = "[^a-zA-Z]"
+            let result1 = RegularExpression(regex: reg1, validateString: point1Key)
+            let result2 = RegularExpression(regex: reg1, validateString: point2Key)
+            if result1.count>0 || result2.count>0 {
+                print("pointKey should only English letters")
+                return false
+            }
+            
+            // 初始化一个(0,0)点
+            var pointValue = Point(x: 0, y: 0)
+            // 方位
+            let direction = String(arr[1])
+            
+            if direction.count > 2 {
+                print("direction invalid")
+                return false
+            }
+            
+            // NSWE 正则匹配
+            let regex = "[^NSWE]"
+            let result = RegularExpression(regex: regex, validateString: direction)
+            if result.count>0 {
+                print("direction should only contain NSWE")
+                return false
+            }
+            
+            // 如果该条描述信息两个点都没有落坐标，那么直接落这两个点的坐标
+            if dict[point1Key] == nil && dict[point2Key] == nil {
+                // 该条描述的第一个点，当这也是整个程序开始的第一个点时为（0，0）
+                dict.updateValue(pointValue, forKey: point1Key)
+                // 该条描述的第二个点
+                pointValue = pointCal(direction: direction, releativePoint: dict[point1Key]!)
+                dict.updateValue(pointValue, forKey: point2Key)
+            } else {
+                // 如果该条描述信息两个点都有落坐标
+                let p1 = dict[point1Key]
+                let p2 = dict[point2Key]
+                var ret = false
+                if (p1 != nil) && (p2 != nil) {
+                    // 规则检查
+                    ret = ruleCheck(direction: direction, point1: p1!, point2: p2!)
+                } else if p2 != nil {
+                    // 如果第二个点落过坐标，那么需要根据第二个点计算第一个点的坐标，这时候 direction 要改成对角线的方向
+                    let invert = changeDirection(direction: direction)
+                    pointValue = pointCal(direction: invert, releativePoint: p2!)
+                    dict.updateValue(pointValue, forKey: point1Key)
+                    // 规则检查
+                    ret = ruleCheck(direction: direction, point1: dict[point1Key]!, point2: dict[point2Key]!)
+                } else {
+                    // 如果第一个点落过坐标，那么需要根据第一个点计算第二个点的坐标
+                    pointValue = pointCal(direction: direction, releativePoint: p1!)
+                    dict.updateValue(pointValue, forKey: point2Key)
+                    // 规则检查
+                    ret = ruleCheck(direction: direction, point1: dict[point1Key]!, point2: dict[point2Key]!)
+                }
+                if (ret) {
+                    continue
+                } else {
+                    return ret
+                }
+            }
+        }
+        
+        return true
+    }
+    func changeDirection(direction: String) -> String {
+        if direction.count == 1 {
+            switch direction {
+            case "N":
+                return "S"
+            case "E":
+                return "W"
+            case "S":
+                return "N"
+            case "W":
+                return "E"
+            default:
+                print("case error")
+            }
+        } else {
+            // 处理诸如：NE SW ...的情况
+            switch direction {
+            case "EN","NE":
+                return "SW"
+            case "NW","WN":
+                return "SE"
+            case "SE", "ES":
+                return "NW"
+            case "SW", "WS":
+                return "NE"
+            default:
+                print("case error")
+            }
+        }
+        
+        return ""
+    }
+    func pointCal(direction: String, releativePoint: Point) -> Point {
+        var resultPoint = releativePoint
+        /**
+         比如 A NE B ==> A(0,0) B(-1,-1)
+         规则落到坐标系如下：
+         N y-1
+         W x-1
+         S y+1
+         W x+1
+        */
+        // 处理诸如：N E S W 的情况
+        if direction.count == 1 {
+            switch direction {
+            case "N":
+                resultPoint.y -= 1
+            case "E":
+                resultPoint.x -= 1
+            case "S":
+                resultPoint.y += 1
+            case "W":
+                resultPoint.x += 1
+            default:
+                print("case error")
+            }
+        } else {
+            // 处理诸如：NE SW ...的情况
+            switch direction {
+            case "EN","NE":
+                resultPoint.y -= 1
+                resultPoint.x -= 1
+            case "NW","WN":
+                resultPoint.y -= 1
+                resultPoint.x += 1
+            case "SE", "ES":
+                resultPoint.y += 1
+                resultPoint.x -= 1
+            case "SW", "WS":
+                resultPoint.y += 1
+                resultPoint.x += 1
+            default:
+                print("case error")
+            }
+        }
+        
+        return resultPoint
+    }
+    func ruleCheck(direction: String, point1: Point, point2: Point) -> Bool {
+        var ret:Bool = false
+        /**
+         这里检查一下是否满足:
+         A N B ==> A.y > B.y
+         A W B ==> A.x < B.x
+         A NW B ==> A N B and A W B
+         ...
+         */
+        // 处理诸如：N E S W 的情况
+        if direction.count == 1 {
+            switch direction {
+            case "N":
+                ret = point1.y > point2.y
+            case "E":
+                ret = point1.x > point2.x
+            case "S":
+                ret = point1.y < point2.y
+            case "W":
+                ret = point1.x < point2.x
+            default:
+                print("case error")
+            }
+        } else {
+            // 处理诸如：NE SW ...的情况
+            switch direction {
+            case "EN","NE":
+                ret = (point1.y > point2.y) && (point1.x > point2.x)
+            case "NW","WN":
+                ret = (point1.y > point2.y) && (point1.x < point2.x)
+            case "SE", "ES":
+                ret = (point1.y < point2.y) && (point1.x > point2.x)
+            case "SW", "WS":
+                ret = (point1.y < point2.y) && (point1.x < point2.x)
+            default:
+                print("case error")
+            }
+        }
+        return ret
+    }
+}
+```
+

@@ -185,7 +185,7 @@ Anyway~~现在就用 `GitHub` 啦！
    </tr>
    <tr>
      <td><a href="./articles/2021/2021-9-13-measureExecutionTime.md">iOS 时间相关整理 ✅ </a></td>
-     <td>📍</td>
+     <td><a href="./articles/2021/2021-10-31-pi.md">树莓派使用 ✅ </a></td>
    </tr>
 </table>
 

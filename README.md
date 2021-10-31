@@ -185,7 +185,7 @@ Anyway~~现在就用 `GitHub` 啦！
    </tr>
    <tr>
      <td><a href="./articles/2021/2021-9-13-measureExecutionTime.md">iOS 时间相关整理 ✅ </a></td>
-     <td><a href="./articles/2021/2021-10-31-pi.md">树莓派使用 ✅ </a></td>
+     <td>📍</td>
    </tr>
 </table>
 
@@ -278,6 +278,11 @@ Anyway~~现在就用 `GitHub` 啦！
       <td rowspan="1">Mac OS</td>
       <td><a href="./articles/2020/2020-8-19-Mac配置开发环境.md">Mac 配置开发环境</a></td>
       <td> ✅ </td>
+   </tr>
+   <tr>
+     <td rowspan="1">树莓派</td>
+     <td><a href="./articles/2021/2021-10-31-pi.md">树莓派使用</a></td>
+     <td>✅ </td>
    </tr>
    <tr>
       <td rowspan="1">shell 脚本</td>

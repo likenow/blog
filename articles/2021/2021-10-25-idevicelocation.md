@@ -185,6 +185,31 @@ level	-- Set to 0 for no debug output or 1 to enable debug output.
 
 
 
+#### Build
+
+Enter the commands provided below.
+
+```shell-session
+$ ./autogen.sh \
+    --prefix=/opt/local \
+    --enable-debug
+$ make
+```
+
+<img src="../../assets/image-20211104180103970.png" alt="image-20211104180103970" style="zoom:80%;" />
+
+#### Install
+
+Enter the commands provided below.
+
+```shell-session
+$ sudo make install
+```
+
+
+
+
+
 ### 相关资料
 
 - [高德QA](https://lbs.amap.com/faq/advisory/others/39838)

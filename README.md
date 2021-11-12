@@ -280,9 +280,22 @@ Anyway~~现在就用 `GitHub` 啦！
       <td> ✅ </td>
    </tr>
    <tr>
-     <td rowspan="1">树莓派</td>
+     <td rowspan="3">树莓派</td>
      <td><a href="./articles/2021/2021-10-31-pi.md">树莓派使用</a></td>
      <td>✅ </td>
+   </tr>
+  <tr>
+      <td><a href="./articles/2021/2021-11-3-Linux.md">Linux 命令</a></td>
+      <td> ✅ </td>
+  </tr>
+  <tr>
+      <td><a href="./articles/2021/2021-11-11-SSDUSB4BubuntuserverLTS.md">SSD USB启动树莓派4B ubuntu server 20.04.3 LTS</a></td>
+      <td> ✅ </td>
+  </tr>
+   <tr>
+      <td rowspan="1">Mac OS</td>
+      <td><a href="./articles/2020/2020-8-19-Mac配置开发环境.md">Mac 配置开发环境</a></td>
+      <td> ✅ </td>
    </tr>
    <tr>
       <td rowspan="1">shell 脚本</td>
@@ -290,6 +303,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td> ✅ </td>
    </tr>
 </table>
+
 
 
 ## 🕸 网络

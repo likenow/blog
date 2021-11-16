@@ -21,19 +21,61 @@
 
 
 
-这次用了树莓派官方的烧录工具，把 SSD 撞到壳子里以后插上电脑：
+把 SSD 装到壳子里以后插上电脑：
 
 <img src="../../assets/image-20211110124657938.png" alt="image-20211110124657938" style="zoom:50%;" />
 
 遇到这个不用推出。
 
-然后开始烧录系统：
+这次用了树莓派官方的烧录工具，开始烧录raspios系统：
 
 <img src="../../assets/image-20211110153502291.png" alt="image-20211110153502291" style="zoom:50%;" />
 
-点继续，傻瓜式烧录系统。烧好了SSD 放在一边，现在用不到。
+点继续，傻瓜式烧录raspberry pi os 系统。
+
+> 1 开启SSH：在boot分区下，新建空文件，文件名为ssh，系统在加载的时候即可开启ssh。
+>
+> 2 修改密码：
+>
+> 2.1 使用用户`pi`，默认密码`raspberry`登录到树莓派，修改pi用户的默认密码：
+>
+> ```bash
+> sudo passwd pi
+> ```
+>
+> 2.2 修改root用户的密码，并解锁root账户（如果需要的话）：
+>
+> ```bash
+> #修改root密码
+> sudo passwd root
+> #解锁root用户
+> sudo passwd --unlock root
+> ```
+>
+> 3 校正时区
+>
+> ```bash
+> sudo dpkg-reconfigure tzdata
+> ```
+>
+> 选择Asia/Shanghai即可
+>
+> 4 [修改清华源](https://mirrors.tuna.tsinghua.edu.cn/help/raspbian/)
+>
+> ```bash
+> # 编辑 `/etc/apt/sources.list` 文件，删除原文件所有内容，用以下内容取代：
+> deb http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/ buster main non-free contrib rpi
+> deb-src http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/ buster main non-free contrib rpi
+> 
+> # 编辑 `/etc/apt/sources.list.d/raspi.list` 文件，删除原文件所有内容，用以下内容取代：
+> deb http://mirrors.tuna.tsinghua.edu.cn/raspberrypi/ buster main ui
+> ```
+>
+> 5 如果不是最新固件，需要更新固件，然后设置 USB 启动 （最新的固件可忽略）
 
 
+
+把 Ubuntu 烧录到 SSD 然后放在一边，现在用不到。
 
 然后打开SD卡上刷好的树莓派系统，插电启动，ssh 连接然后一顿操作失败案例：
 

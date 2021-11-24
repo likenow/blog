@@ -1,5 +1,9 @@
 ## SSD USB启动树莓派4B ubuntu server 20.04.3 LTS
 
+[toc]
+
+
+
 在上一篇文章中 [树莓派](./articles/2021/2021-10-31-pi.md) 我已经在 SD卡中刷了一个 Ubuntu server 20.04.3 LTS 双十一期间，又在某宝上买了一张 128G 的SSD 如下：
 
 <img src="../../assets/image-20211111141536915.png" alt="image-20211111141536915" style="zoom:50%;" />

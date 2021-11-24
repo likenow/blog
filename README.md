@@ -280,7 +280,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td> ✅ </td>
    </tr>
    <tr>
-     <td rowspan="5">树莓派</td>
+     <td rowspan="6">树莓派</td>
      <td><a href="./articles/2021/2021-10-31-pi.md">树莓派使用</a></td>
      <td>✅ </td>
    </tr>
@@ -300,6 +300,10 @@ Anyway~~现在就用 `GitHub` 啦！
       <td><a href="./articles/2021/2021-11-22-openwrt.md">树莓派 4B 8G Ubuntu Server 20.04.3 LTS 编译 Lean/openwrt</a></td>
       <td> ✅ </td>
   </tr>
+  <tr>
+      <td><a href="./articles/2021/2021-11-24-ubuntu-server-start.md">Ubuntu Server 20.04.3 LTS 开机执行脚本</a></td>
+      <td> ✅ </td>
+  </tr>
    <tr>
       <td rowspan="1">Mac OS</td>
       <td><a href="./articles/2020/2020-8-19-Mac配置开发环境.md">Mac 配置开发环境</a></td>
@@ -311,6 +315,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td> ✅ </td>
    </tr>
 </table>
+
 
 
 

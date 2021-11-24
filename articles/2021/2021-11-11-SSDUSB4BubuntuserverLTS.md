@@ -233,6 +233,16 @@ sudo deluser --remove-home username
 
 
 
+#### 修改时区
+
+```bash
+timedatectl list-timezones
+
+sudo timedatectl set-timezone Asia/shanghai
+```
+
+
+
 ### 参考
 
 - [Make Ubuntu server 20.04 boot from an SSD on Raspberry Pi 4](https://medium.com/@zsmahi/make-ubuntu-server-20-04-boot-from-an-ssd-on-raspberry-pi-4-33f15c66acd4)

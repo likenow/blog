@@ -280,7 +280,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td> ✅ </td>
    </tr>
    <tr>
-     <td rowspan="4">树莓派</td>
+     <td rowspan="5">树莓派</td>
      <td><a href="./articles/2021/2021-10-31-pi.md">树莓派使用</a></td>
      <td>✅ </td>
    </tr>
@@ -294,6 +294,10 @@ Anyway~~现在就用 `GitHub` 啦！
   </tr>
   <tr>
       <td><a href="./articles/2021/2021-11-19-Seafile.md">部署 Seafile（树莓派4B ubuntu server 20.04.3 LTS）</a></td>
+      <td> ✅ </td>
+  </tr>
+  <tr>
+      <td><a href="./articles/2021/2021-11-22-openwrt.md">树莓派 4B 8G Ubuntu Server 20.04.3 LTS 编译 Lean/openwrt</a></td>
       <td> ✅ </td>
   </tr>
    <tr>

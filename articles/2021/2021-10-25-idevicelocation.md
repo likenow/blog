@@ -124,6 +124,74 @@ level	-- Set to 0 for no debug output or 1 to enable debug output.
 
 **4. 有尝试把 libimobiledevice 编译出一个iOS依赖包，然后进行iOS App 的开发。在 M1中libimobiledevice编译失败了**
 
+我在arm64 的树莓派中编译了该库：
+
+```bash
+sudo apt install build-essential checkinstall git autoconf automake libtool-bin libssl-dev pkg-config cython libusb-1.0-0-dev
+
+git clone https://github.com/libimobiledevice/libplist
+git clone https://github.com/libimobiledevice/libimobiledevice-glue
+git clone https://github.com/libimobiledevice/libusbmuxd
+git clone https://github.com/libimobiledevice/usbmuxd
+git clone https://github.com/libimobiledevice/libimobiledevice
+
+cd libplist
+./autogen.sh
+make && sudo make install
+sudo ldconfig
+
+cd ..
+cd libimobiledevice-glue
+./autogen.sh
+make && sudo make install
+sudo ldconfig
+
+cd ..
+cd libusbmuxd
+PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./autogen.sh
+make && sudo make install
+sudo ldconfig
+
+cd ..
+cd usbmuxd
+PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./autogen.sh --prefix=/usr --sysconfdir=/etc --localstatedir=/var --runstatedir=/run
+make && sudo make install
+sudo killall usbmuxd
+
+cd ..
+cd libimobiledevice
+PKG_CONFIG_PATH=/usr/local/lib/pkgconfig ./autogen.sh --enable-debug
+make && sudo make install
+
+
+rm -fr libplist/ libusbmuxd/ libimobiledevice/ usbmuxd/ libimobiledevice-glue/
+```
+
+
+
+在使用的时候也报错了:
+
+```bash
+ld: warning: ignoring file ~/tmpf/VLocation/Device/libimobiledevice/libimobiledevice-1.0.a, building for iOS-arm64 but attempting to link with file built for unknown-unsupported file format ( 0x21 0x3C 0x61 0x72 0x63 0x68 0x3E 0x0A 0x2F 0x20 0x20 0x20 0x20 0x20 0x20 0x20 )
+ld: warning: ignoring file ~/tmpf/VLocation/Device/plist/libplist-2.0.a, building for iOS-arm64 but attempting to link with file built for unknown-unsupported file format ( 0x21 0x3C 0x61 0x72 0x63 0x68 0x3E 0x0A 0x2F 0x20 0x20 0x20 0x20 0x20 0x20 0x20 )
+ld: warning: ignoring file ~/tmpf/VLocation/Device/usbmuxd/libusbmuxd-2.0.a, building for iOS-arm64 but attempting to link with file built for unknown-unsupported file format ( 0x21 0x3C 0x61 0x72 0x63 0x68 0x3E 0x0A 0x2F 0x20 0x20 0x20 0x20 0x20 0x20 0x20 )
+Undefined symbols for architecture arm64:
+  "_usbmuxd_subscribe", referenced from:
+      -[KLDeviceMonitor start] in KLDeviceMonitor.o
+  "_idevice_get_device_list", referenced from:
+      ___37-[KLDeviceMonitor updateDeviceStatus]_block_invoke in KLDeviceMonitor.o
+  "_idevice_device_list_free", referenced from:
+      ___37-[KLDeviceMonitor updateDeviceStatus]_block_invoke in KLDeviceMonitor.o
+ld: symbol(s) not found for architecture arm64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+```
+
+应该不是 build for iOS 😭
+
+
+
+**5 通过苹果iAP2协议产生的坐标系统，海拔精度会被苹果限制在0.1m，经纬度精度限制到小数点后8-9位。**
+
 
 
 ### com.apple.dt.simulatelocation

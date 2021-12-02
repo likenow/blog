@@ -280,7 +280,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td> ✅ </td>
    </tr>
    <tr>
-     <td rowspan="8">树莓派</td>
+     <td rowspan="8">🔥 树莓派</td>
      <td><a href="./articles/2021/2021-10-31-pi.md">树莓派使用</a></td>
      <td>✅ </td>
    </tr>
@@ -446,7 +446,7 @@ Anyway~~现在就用 `GitHub` 啦！
 </table>
 
 
-## 🔥 Flutter
+## Flutter
 
 <table>
    <tr>

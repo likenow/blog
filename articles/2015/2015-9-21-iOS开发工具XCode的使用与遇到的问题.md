@@ -378,6 +378,40 @@ Unix的标准静态库实现和Objective-C的动态特性之间有一些冲突�
 
 
 
+
+
+### 曾经的一次上传 ipa
+
+![image-20211202111810715](../../assets/image-20211202111810715.png)
+
+使用了高版本SDK API 会报错
+
+<img src="../../assets/image-20211202112513490.png" alt="image-20211202112513490" style="zoom:80%;" />
+
+<img src="../../assets/image-20211202112542517.png" alt="image-20211202112542517" style="zoom:80%;" />
+
+<img src="../../assets/image-20211202112633818.png" alt="image-20211202112633818" style="zoom:80%;" />
+
+<img src="../../assets/image-20211202112608811.png" alt="image-20211202112608811" style="zoom:80%;" />
+
+<img src="../../assets/image-20211202112709116.png" alt="image-20211202112709116" style="zoom:80%;" />
+
+<img src="../../assets/image-20211202112811580.png" alt="image-20211202112811580" style="zoom:80%;" />
+
+<img src="../../assets/image-20211202112749471.png" alt="image-20211202112749471" style="zoom:80%;" />
+
+<img src="../../assets/image-20211202112209482.png" alt="image-20211202112209482" style="zoom:80%;" />
+
+<img src="../../assets/image-20211202112841798.png" alt="image-20211202112841798" style="zoom:80%;" />
+
+<img src="../../assets/image-20211202112923781.png" alt="image-20211202112923781" style="zoom:80%;" />
+
+<img src="../../assets/image-20211202112419770.png" alt="image-20211202112419770" style="zoom:80%;" />
+
+
+
+
+
 ## 参考文献
 
 - [Xcode操作流](https://blog.csdn.net/phunxm/article/details/17044337)

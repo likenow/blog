@@ -189,6 +189,10 @@ self.timer = timer;
 
 ##### 2.2 Proxy
 
+[NSProxy](https://developer.apple.com/documentation/foundation/nsproxy?language=objc) 替身😝
+
+> An abstract superclass defining an API for objects that act as **stand-ins** for other objects or for objects that don’t exist yet.
+
 ```objective-c
 @interface TestTimerProxy : NSProxy
 

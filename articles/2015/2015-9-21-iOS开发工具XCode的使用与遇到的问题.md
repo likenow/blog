@@ -26,6 +26,33 @@ categories:
 
 <img src="../../assets/image-20200907112056864.png" alt="image-20200907112056864" style="zoom:80%;" />
 
+> If you are using custom `XCConfig` files, you can simply add this line for excluding simulator architecture.
+>
+> ```undefined
+> EXCLUDED_ARCHS[sdk=iphonesimulator*] = arm64
+> ```
+>
+> **Then**
+>
+> You have to do the same for the **Pod project** until all the Cocoa pod vendors are done adding following in their **Podspec**.
+>
+> ```rb
+> s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+> s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+> ```
+>
+> You can manually add the *Excluded Architecture* in your Pod project's **Build Settings**, but it will be overwritten when you use `pod install`.
+>
+> In place of this, you can add this snippet in your `Podfile`. It will write the necessary **Build Settings** every time you run `pod install`.
+>
+> ```rb
+> post_install do |installer|
+>   installer.pods_project.build_configurations.each do |config|
+>     config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+>   end
+> end
+> ```
+
 
 
 <img src="../../assets/image-20200907112237568.png" alt="image-20200907112237568" style="zoom:80%;" />
@@ -360,6 +387,17 @@ Unix的标准静态库实现和Objective-C的动态特性之间有一些冲突�
 规避解决：
 1. 避免对系统类加 `category` 这样，别人用到你的库时，不加 `-ObjC` 参数也可以用你的库
 2. 如果库中用到了其它的第三方的源代码，尤其是用的比较普遍的，如 `Reachability`，一定要对这些类重命名，最常见的做法是给类加个**前缀**，以避免别人用你的库时，产生 `duplicate symbols` 的问题。
+
+> There are 2 other possibilities for this error besides duplicate files
+>
+> 1. You may importing `.m` file instead of `.h` by mistake
+> 2. Constants kXXX already defined in some other files. As you are defining those constants in constant file then just import that file in `Prefix.pch` file and remove from everywhere else.
+
+
+
+<img src="../../assets/image-20211209154534927.png" alt="image-20211209154534927" style="zoom:80%;" />
+
+
 
 #### `-all_load`  `-force_load`
 本来这样就可以解决问题了，不过在64位的Mac系统或者iOS系统下，链接器有一个 bug，会导致只包含有类别的静态库无法使用 `-ObjC` 标志来加载文件。变通方法是使用 `-all_load` 或者 `-force_load` 标志，它们的作用都是加载静态库中所有文件，即使没有objc代码。

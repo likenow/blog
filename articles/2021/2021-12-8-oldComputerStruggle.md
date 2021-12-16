@@ -34,7 +34,7 @@
 
 #### 1.1 用 balenaEtcher 刷 ❌
 
-<img src="/Users/kaili/Library/Application Support/typora-user-images/image-20211208103456834.png" alt="image-20211208103456834" style="zoom:50%;" />
+<img src="../../assets/image-20211208103456834.png" alt="image-20211208103456834" style="zoom:50%;" />
 
 
 

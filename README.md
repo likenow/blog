@@ -280,6 +280,11 @@ Anyway~~现在就用 `GitHub` 啦！
       <td> ✅ </td>
    </tr>
    <tr>
+      <td rowspan="1">Windows</td>
+      <td><a href="./articles/2021/2021-12-8-oldComputerStruggle.md">联想 G470 加装内存 和 SSD</a></td>
+      <td> ✅ </td>
+   </tr>
+   <tr>
       <td rowspan="1">进程</td>
       <td><a href="./articles/2021/2021-12-9-IPC.md">进程间通信</a></td>
       <td> ✅ </td>

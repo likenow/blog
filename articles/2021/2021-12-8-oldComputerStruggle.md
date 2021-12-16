@@ -1,4 +1,4 @@
-## 老电脑的挣扎
+## 老电脑的挣扎~~联想G470
 
 10年前的老电脑，实打实用了4年，又吃了6年的灰。不谈情怀，就是想换个SSD，加个内存条，折腾一下，简单记录下过程。
 
@@ -90,9 +90,15 @@ F12 进入从 USB 启动，可以刷系统
 
 ### 2.0 以下需要拆电脑了：
 
+
+
 <img src="../../assets/image-20211215105424521.png" alt="image-20211215105424521" style="zoom:80%;" />
 
-注意：红色圈的螺丝是有锁扣的，不需要完全拧下来
+注意：
+
+- 红色圈的螺丝是有锁扣的，不需要完全拧下来
+- 装内存条，黄色圈的不用拆就可以
+- 白色圈的位置是固定光驱的螺丝
 
 <img src="../../assets/image-20211215105659178.png" alt="image-20211215105659178" style="zoom:80%;" />
 
@@ -166,3 +172,44 @@ F12 进入从 USB 启动，可以刷系统
 
 猜测分区类型选了 GPT 而不是MBR导致的，所以需要重新制作一个 刷系统u盘了
 
+
+
+### 4 SSD 上刷64位系统 from [爱纯净](http://www.aichunjing.com/win7/)
+
+> 文件: Win7x64-2021.12.GHO（GHO格式版本MD5,需要解压出来检测里面的GHO后缀）
+>
+> 大小: 6641743195 字节
+>
+> MD5: DDDDE6F91966111022F531E90B64EC76
+>
+> SHA1: 2AE1821F3826622588A0608B8D4468F6265C12CF
+>
+> CRC32: 41A65298
+
+<img src="../../assets/image-20211216101800668.png" alt="image-20211216101800668" style="zoom:50%;" />
+
+<img src="../../assets/image-20211216101846583.png" alt="image-20211216101846583" style="zoom:50%;" />
+
+
+
+<img src="../../assets/image-20211216102015031.png" alt="image-20211216102015031" style="zoom:50%;" />
+
+<img src="../../assets/image-20211216102032675.png" alt="image-20211216102032675" style="zoom:50%;" />
+
+<img src="../../assets/image-20211216102058754.png" alt="image-20211216102058754" style="zoom:50%;" />
+
+<img src="../../assets/image-20211216102128697.png" alt="image-20211216102128697" style="zoom:50%;" />
+
+开机20s👌
+
+
+
+#### 拆下来的硬盘可能让我搞坏了。。。😭
+
+<img src="../../assets/image-20211216101945671.png" alt="image-20211216101945671" style="zoom:50%;" />
+
+<img src="../../assets/image-20211216102245097.png" alt="image-20211216102245097.png" style="zoom:50%;" />
+
+
+
+<img src="../../assets/image-20211216102315122.png" alt="image-20211216102315122" style="zoom:50%;" />

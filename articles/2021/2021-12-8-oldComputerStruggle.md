@@ -204,7 +204,23 @@ F12 进入从 USB 启动，可以刷系统
 
 
 
-#### 拆下来的硬盘可能让我搞坏了。。。😭
+#### 5 SSD 上刷64位Win10系统 from [爱纯净](http://www.aichunjing.com/win10/)
+
+<img src="../../assets/image-20211221105412953.png" alt="image-20211221105412953" style="zoom:50%;" />
+
+<img src="../../assets/image-20211221105350976.png" alt="image-20211221105350976" style="zoom:50%;" />
+
+<img src="../../assets/image-20211221105444244.png" alt="image-20211221105444244" style="zoom:50%;" />
+
+报了一个错误，`D:\` 应该是光驱。点确定以后，系统装完成。使用没遇到什么问题。
+
+
+
+**But** 开机慢了好多啊，1分半。。。
+
+
+
+#### ps. 拆下来的硬盘可能让我搞坏了。。。😭
 
 <img src="../../assets/image-20211216101945671.png" alt="image-20211216101945671" style="zoom:50%;" />
 

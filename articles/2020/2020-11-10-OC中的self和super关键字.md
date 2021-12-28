@@ -6,7 +6,7 @@
 >
 >调用 `[self method]` 时，会转化成 `objc_msgSend`函数。看下函数定义：
 > 
->    ```objc
+>    ```objective-c
 >    id objc_msgSend(id self, SEL op, ...)
 > ```
 > 
@@ -14,13 +14,13 @@
 > 
 > 而在调用` [super method]`时，会转化成 `objc_msgSendSuper`函数。看下函数定义:
 > 
-> ```objc
+> ```objective-c
 >    id objc_msgSendSuper(struct objc_super *super, SEL op, ...)
 > ```
 > 
 >第一个参数是 `objc_super` 这样一个结构体，其定义如下:
 > 
->```objc
+>```objective-c
 > struct objc_super {
 >    /// Specifies an instance of a class.
 >     __unsafe_unretained id receiver;
@@ -121,13 +121,13 @@ Apple 官方文档 [Working with Objects](https://developer.apple.com/library/ar
 >
 > 1 一开始的 `child` 对象调用自己的实例方法 `- selfIntroduce`，实际上底层调用是这样子的：
 >
-> ```objc
+> ```objective-c
 > objc_msgSend(self, @selector(selfIntrduce))
 > ```
 >
 > 2 然后执行方法实现中 `[self saySomething]` 和 `[super selfIntroduce]`
 >
-> ```objc
+> ```objective-c
 > objc_msgSend(self, @selector(selfIntrduce))
 > objc_msgSendSuper({self, class_getSuperclass(objc_getClass("OCTChild"))},@selector(selfIntroduce))
 > 
@@ -138,7 +138,7 @@ Apple 官方文档 [Working with Objects](https://developer.apple.com/library/ar
 >
 > 4 `[super selfIntroduce]` 执行，查找 `OCTChild` 父类中是否有 `- selfIntroduce` 方法，按照继承链，找到它的第一个父类 `OCTFather`，然后调用其实现，执行 `[self saySomething]`
 >
-> ```objc
+> ```objective-c
 > objc_msgSend(self, @selector(selfIntrduce))
 > // 注意：这里的 self 仍为我们一开始生成的 OCTChild 的实例对象 child，它是通过 objc_msgSendSuper 里面的 objc_super 这一 struct 带过来的。
 > ```
@@ -164,7 +164,7 @@ Apple 官方文档 [Working with Objects](https://developer.apple.com/library/ar
 >
 > 这个问题问得好，我们先来看下 `self` 在运行时是怎么玩的？
 >
-> ```objc
+> ```objective-c
 > NSLog(@"%@", self);
 > ```
 >

@@ -269,38 +269,38 @@ NSArray *array = [[[NSArray alloc] init] autorelease];
 
 #### 管理自动释放池
 
-```objc
+```objective-c
 - release // Releases and pops the receiver.
 ```
 
-```objc
+```objective-c
 /*
 In a reference-counted environment, releases and pops the receiver; in a garbage-collected environment, triggers garbage collection if the memory allocated since the last collection is greater than the current threshold.
 */
 - drain 
 ```
 
-```objc
+```objective-c
 - autorelease // Raises an exception.
 ```
 
-```objc
+```objective-c
 - retain // Raises an exception.
 ```
 
 #### 往自动释放池添加对象
 
-```objc
+```objective-c
 + addObject: // Adds a given object to the active autorelease pool in the current thread.
 ```
 
-```objc
+```objective-c
 - addObject: // Adds a given object to the receiver
 ```
 
 #### 调试
 
-```objc
+```objective-c
 + showPools // Displays the state of the current thread's autorelease pool stack to stderr.
 ```
 

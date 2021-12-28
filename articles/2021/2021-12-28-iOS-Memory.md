@@ -108,7 +108,7 @@
 >
 > 一个常见的误解是，在ARC中没有`autorelease`，因为这样一个“自动释放”看起来好像有点多余。这个误解可能源自于将ARC的“自动”和`autorelease`“自动”的混淆。其实你只要看一下每个iOS App的`main.m`
 >
-> ```objc
+> ```objective-c
 > int main(int argc, char * argv[]) {
 >     @autoreleasepool {
 >         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
@@ -118,7 +118,7 @@
 >
 > 以下两行代码的意义是相同的。
 >
-> ```objc
+> ```objective-c
 > NSString *str = [[[NSString alloc] initWithFormat:@"hehe"] autorelease]; // MRC
 > NSString *__autoreleasing str = [[NSString alloc] initWithFormat:@"hehe"]; // ARC
 > ```
@@ -131,7 +131,7 @@
 >
 > 比如常用的 `NSError`的使用：
 >
-> ```objc
+> ```objective-c
 > NSError *__autoreleasing error; 
 > ￼if (![data writeToFile:filename options:NSDataWritingAtomic error:&error]) 
 > ￼{ 
@@ -143,7 +143,7 @@
 >
 > 注意，如果你的 `error`定义为了 `strong` 型，那么，编译器会帮你隐式地做如下事情，保证最终传入函数的参数依然是个 `__autoreleasing` 类型的引用。
 >
-> ```objc
+> ```objective-c
 > NSError *error; 
 > NSError *__autoreleasing tempError = error; // 编译器添加 
 > if (![data writeToFile:filename options:NSDataWritingAtomic error:&tempError]) 
@@ -155,13 +155,13 @@
 >
 > 所以为了提高效率，避免这种情况，我们一般在定义error的时候将其声明为`__autoreleasing`类型的：
 >
-> ```objc
+> ```objective-c
 > NSError *__autoreleasing error;
 > ```
 >
 > 在这里，加上`__autoreleasing`之后，相当于在MRC中对返回值error做了如下事情：
 >
-> ```objc
+> ```objective-c
 > *error = [[[NSError alloc] init] autorelease];
 > ```
 >
@@ -171,7 +171,7 @@
 >
 > 比如下面的两段代码是等同的：
 >
-> ```objc
+> ```objective-c
 > - (NSString *)doSomething:(NSNumber **)value
 > {
 >         // do something  
@@ -188,7 +188,7 @@
 >
 > 比如`NSDictionary`的`[enumerateKeysAndObjectsUsingBlock]`方法：
 >
-> ```objc
+> ```objective-c
 > - (void)loopThroughDictionary:(NSDictionary *)dict error:(NSError **)error
 > {
 >     [dict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
@@ -203,7 +203,7 @@
 >
 > 会隐式地创建一个`autorelease pool`，上面代码实际类似于：
 >
-> ```objc
+> ```objective-c
 > - (void)loopThroughDictionary:(NSDictionary *)dict error:(NSError **)error
 > {
 >     [dict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
@@ -223,7 +223,7 @@
 >
 > 为了能够正常的使用`*error`，我们需要一个`strong`型的临时引用，在dict的枚举Block中是用这个临时引用，保证引用指向的对象不会在出了dict的枚举Block后被释放，正确的方式如下：
 >
-> ```objc
+> ```objective-c
 > - (void)loopThroughDictionary:(NSDictionary *)dict error:(NSError **)error
 > {
 > 　　__block NSError* tempError; // 加__block保证可以在Block内被修改  
@@ -257,19 +257,19 @@
 > >
 > > the correct format is:
 > >
-> > ```objc
+> > ```objective-c
 > > ClassName * qualifier variableName;
 > > ```
 >
 > 按照这个说明，要定义一个weak型的NSString引用，它的写法应该是：
 >
-> ```objc
+> ```objective-c
 > NSString * __weak str = @"hehe"; // 正确！
 > ```
 >
 > 而不应该是：
 >
-> ```objc
+> ```objective-c
 > __weak NSString *str = @"hehe";  // 错误！
 > ```
 >
@@ -287,7 +287,7 @@
 >
 > 在ARC中，以下代码会输出null而不是crash:)
 >
-> ```objc
+> ```objective-c
 > - (void)myMethod 
 > {
 >     NSString *name;
@@ -305,7 +305,7 @@
 >
 > 这件事情在下面代码展示的情况中要更加额外小心。
 >
-> ```objc
+> ```objective-c
 > MyViewController *myController = [[MyViewController alloc] init…];
 > 
 > // 隐式地调用[myController retain];造成循环引用
@@ -333,7 +333,7 @@
 >
 > 使用这种方法，我们对代码做出修改，解决了循环引用的问题：
 >
-> ```objc
+> ```objective-c
 > MyViewController * __block myController = [[MyViewController alloc] init…];
 > // ...
 > myController.completionHandler =  ^(NSInteger result) {
@@ -350,7 +350,7 @@
 >
 > 于是我们还需要对原代码做修改。简单的情况我们可以这样写：
 >
-> ```objc
+> ```objective-c
 > __block MyViewController * myController = [[MyViewController alloc] init…];
 > // ...
 > myController.completionHandler =  ^(NSInteger result) {
@@ -365,7 +365,7 @@
 >
 > 为了保证`completionHandler`这个Block对`myController`没有强引用，我们可以定义一个临时的弱引用`weakMyViewController`来指向原`myController`的对象，并把这个弱引用传入到Block内，这样就保证了Block对`myController`持有的是一个弱引用，而不是一个强引用。如此，我们继续修改代码：
 >
-> ```objc
+> ```objective-c
 > MyViewController *myController = [[MyViewController alloc] init…];
 > // ...
 > MyViewController * __weak weakMyViewController = myController;
@@ -378,7 +378,7 @@
 >
 > 为了保证在Block内能够访问到正确的`myController`，我们在block内新定义一个强引用`strongMyController`来指向`weakMyController`指向的对象，这样多了一个强引用，就能保证这个`myController`对象不会在`completionHandler`被调用前释放掉了。于是，我们对代码再次做出修改：
 >
-> ```objc
+> ```objective-c
 > MyViewController *myController = [[MyViewController alloc] init…];
 > // ...
 > MyViewController * __weak weakMyController = myController;
@@ -404,7 +404,7 @@
 >
 > 为了更清楚地说明问题，这里用一个简单的程序举例。比如我们有如下程序：
 >
-> ```objc
+> ```objective-c
 > #include <stdio.h>
 > 
 > int main()
@@ -517,7 +517,7 @@
 >
 > 好的，最后再提一点，在ARC中，对Block捕获对象的内存管理已经简化了很多，由于没有了`retain` 和 `release`等操作，实际只需要考虑循环引用的问题就行了。比如下面这种，是没有内存泄露的问题的：
 >
-> ```objc
+> ```objective-c
 > TestObject *aObject = [[TestObject alloc] init];
 > aObject.name = @"hehe";
 > self.aBlock = ^(){
@@ -537,7 +537,7 @@
 >
 > Toll-Free Briding保证了在程序中，可以方便和谐的使用Core Foundation类型的对象和Objective-C类型的对象。详细的内容可参考[官方文档](https://developer.apple.com/library/ios/documentation/General/Conceptual/CocoaEncyclopedia/Toll-FreeBridgin/Toll-FreeBridgin.html)。以下是官方文档中给出的一些例子：
 >
-> ```objc
+> ```objective-c
 > NSLocale *gbNSLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"];
 > CFLocaleRef gbCFLocale = (CFLocaleRef) gbNSLocale;
 > CFStringRef cfIdentifier = CFLocaleGetIdentifier (gbCFLocale);
@@ -571,7 +571,7 @@
 >
 > 比如：
 >
-> ```objc
+> ```objective-c
 > CFStringRef s1 = (__bridge CFStringRef) [[NSString alloc] initWithFormat:@"Hello, %@!", name];
 > ```
 >
@@ -583,7 +583,7 @@
 >
 > 比如，还是上面那个例子
 >
-> ```objc
+> ```objective-c
 > NSString *s1 = [[NSString alloc] initWithFormat:@"Hello, %@!", name];
 > ￼CFStringRef s2 = (__bridge_retained CFStringRef)s1;
 > ￼// do something with s2
@@ -595,7 +595,7 @@
 >
 > 等同的，我们的程序也可以写成：
 >
-> ```objc
+> ```objective-c
 > NSString *s1 = [[NSString alloc] initWithFormat:@"Hello, %@!", name];
 > ￼CFStringRef s2 = (CFStringRef)CFBridgingRetain(s1);
 > ￼// do something with s2
@@ -609,7 +609,7 @@
 >
 > 比如：
 >
-> ```objc
+> ```objective-c
 > CFStringRef result = CFURLCreateStringByAddingPercentEscapes(. . .);
 > ￼NSString *s = (__bridge_transfer NSString *)result;
 > //or NSString *s = (NSString *)CFBridgingRelease(result);

@@ -160,13 +160,35 @@ int main(int argc, const char * argv[]) {
 
 ### Autorelease Pool 原理分析
 
-- 自动释放池是由 `AutoreleasePoolPage` 以**双向链**表的方式实现的
-- 当对象调用 `autorelease` 方法时，会将对象加入 `AutoreleasePoolPage` 的栈中
-- 调用 `AutoreleasePoolPage::pop` 方法会向栈中的对象发送释放消息
 
-![](../../assets/autoreleasepool2018.png)
+
+> Autorelease pool implementation
+>
+> A thread's autorelease pool is a stack of pointers.
+>
+> Each pointer is either an object to release, or POOL_BOUNDARY which is an autorelease pool boundary.
+>
+> A pool token is a pointer to the POOL_BOUNDARY for that pool. When the pool is popped, every object hotter than the sentinel is released.
+>
+> The stack is divided into a doubly-linked list of pages. Pages are added and deleted as necessary.
+>
+> Thread-local storage points to the hot page, where newly autoreleased objects are stored.
+>
+> 一个线程的自动释放池是一个指针的堆栈结构。
+>
+> 每个指针代表一个需要释放的对象或者POOL_BOUNDARY(自动释放池边界)
+>
+> 一个 pool token 就是这个 pool 所对应的 POOL_BOUNDARY 的内存地址。当这个 pool 被 pop 的时候，所有内存地址在 pool token 之后的对象都会被 release。 这个堆栈被划分成了一个以 page 为结点的双向链表。pages 会在必要的时候动态地增加或删除。
+>
+> Thread-local storage（线程局部存储）指向 hot page ，即最新添加的 autoreleased 对象所在的那个 page 。
+>
+> 
+
+
 
 #### AutoreleasePoolPage
+
+
 
 [objc4-723](https://opensource.apple.com/tarballs/objc4/)/runtime/NSObject.mm
 
@@ -200,6 +222,12 @@ class AutoreleasePoolPage
     // ...
 ```
 
+- **POOL_BOUNDARY**：
+  - 只是nil的别名。前世叫做`POOL_SENTINEL`，称为**哨兵对象**或者**边界对象**；
+  - `POOL_BOUNDARY`用来区分不同的自动释放池，以解决自动释放池嵌套的问题
+  - 每当创建一个自动释放池，就会调用`push()`方法将一个`POOL_BOUNDARY`入栈，并返回其存放的内存地址；
+  - 当往自动释放池中添加`autorelease`对象时，将`autorelease`对象的内存地址入栈，它们前面**至少有一个**`POOL_BOUNDARY`；
+  - 当销毁一个自动释放池时，会调用`pop()`方法并传入一个`POOL_BOUNDARY`，会从自动释放池中最后一个对象开始，依次给它们发送`release`消息，直到遇到这个`POOL_BOUNDARY`。
 - `magic` 用于对当前 `AutoreleasePoolPage` **完整性**的校验
 - `thread` 保存了当前页所在的线程
 - 上面的`id *next`指针作为游标指向栈顶最新`add`进来的`autorelease`对象的下一个位置
@@ -207,16 +235,39 @@ class AutoreleasePoolPage
 - `parent`指向父结点，第一个结点的 parent 值为`nil`
 - `child`指向子结点，最后一个结点的 child 值为 `nil`
 - `depth`代表深度，从 0 开始，往后递增 1
+- hiwat：代表high water Mark**最大入栈数**。
 - 当 `next == begin()` 时，表示 AutoreleasePoolPage 为空；当 `next == end()` 时，表示 AutoreleasePoolPage 已满。
+- *next：next指向的是下一个`AutoreleasePoolPage`中下一个为空的内存地址（新来的对象会存储到next处），初始化时指向**begin()**。
 - 一个`AutoreleasePoolPage`的空间被占满时，会新建一个`AutoreleasePoolPage`对象，连接链表，后来的`autorelease`对象在新的`page`加入
 - 每一个` AutoreleasePoolPage` 的大小都是 `4096` 字节（16 进制 0x1000）
+- SIZE：AutoreleasePoolPage的大小，值为`PAGE_MAX_SIZE`,4096个字节,其中`56`个字节用来存储自己的变量，剩下的`4040`个字节用来存储要释放的对象，也就是最多`505`个对象。
 
 ```c++
 #define I386_PGBYTES		4096		/* bytes per 80386 page */
 #define PAGE_SIZE I386_PGBYTES
 ```
 
-这一部分，可以移步看下这篇文章[黑幕背后的Autorelease](http://blog.sunnyxx.com/2014/10/15/behind-autorelease/) 我在这里不再赘述。
+
+
+`AutoreleasePoolPage`是以栈为结点通过双向链表的形式组合而成；遵循先进后出规则，整个自动释放池由一系列的`AutoreleasePoolPage`组成的，而`AutoreleasePoolPage`是以双向链表的形式连接起来。
+
+自动释放池与线程一一对应；
+
+每个`AutoreleasePoolPage`对象占用`4096`字节内存，其中`56`个字节用来存放它内部的成员变量，剩下的空间（4040个字节）用来存放autorelease对象的地址。要注意的是第一页只有504个对象，因为在创建page的时候会在`next`的位置插入1个`POOL_SENTINEL`。
+
+`POOL_BOUNDARY`为哨兵对象，入栈时插入，出栈时释放对象到此传入的哨兵对象
+
+双向链表结构：
+
+![](../../assets/autoreleasepool2018.png)
+
+双向链表+栈结构（图片来源「[iOS底层学习 - 内存管理之Autoreleasepool](https://juejin.cn/post/6844904197003935751#heading-17)」）：
+
+![image-20211229152532341](../../assets/image-20211229152532341.png)
+
+
+
+
 
 
 
@@ -258,6 +309,108 @@ NSArray *array = [[[NSArray alloc] init] autorelease];
 ```
 
 上面的`array`就会在`[pool drain]`执行时被释放。
+
+
+
+### 嵌套
+
+#### 单 page 嵌套
+
+```objective-c
+extern void _objc_autoreleasePoolPrint();
+
+int main(int argc, char * argv[]) {
+    _objc_autoreleasePoolPrint(); // print1
+    @autoreleasepool { // a1=push()
+        _objc_autoreleasePoolPrint(); // print2
+        NSObject *obj = [NSObject new];
+        _objc_autoreleasePoolPrint(); // print3
+        @autoreleasepool { // a2=push()
+            NSInteger count = 3;
+            for(NSInteger i=0; i<count; i++){
+                NSObject *obj = [NSObject new];
+            }
+            _objc_autoreleasePoolPrint(); // print4
+            @autoreleasepool { // a3=push()
+                NSInteger count = 2;
+                for(NSInteger i=0; i<count; i++){
+                    NSObject *obj = [NSObject new];
+                }
+                _objc_autoreleasePoolPrint(); // print5
+            } // pop(a3)
+            _objc_autoreleasePoolPrint(); // print6
+        } // pop(a2)
+        _objc_autoreleasePoolPrint(); // print7
+    } // pop(a1)
+    _objc_autoreleasePoolPrint(); // print8
+        
+    return 0;
+}
+/*
+objc[21907]: ##############
+objc[21907]: AUTORELEASE POOLS for thread 0x10082bd40
+objc[21907]: 0 releases pending.
+objc[21907]: ##############
+
+objc[21907]: ##############
+objc[21907]: AUTORELEASE POOLS for thread 0x10082bd40
+objc[21907]: 0 releases pending.
+objc[21907]: [0x1]  ................  PAGE (placeholder)
+objc[21907]: [0x1]  ################  POOL (placeholder)
+objc[21907]: ##############
+
+objc[21907]: ##############
+objc[21907]: AUTORELEASE POOLS for thread 0x10082bd40
+objc[21907]: 0 releases pending.
+objc[21907]: [0x1]  ................  PAGE (placeholder)
+objc[21907]: [0x1]  ################  POOL (placeholder)
+objc[21907]: ##############
+
+objc[21907]: ##############
+objc[21907]: AUTORELEASE POOLS for thread 0x10082bd40
+objc[21907]: 2 releases pending.
+objc[21907]: [0x158809000]  ................  PAGE  (hot) (cold)
+objc[21907]: [0x158809038]  ################  POOL 0x158809038
+objc[21907]: [0x158809040]  ################  POOL 0x158809040
+objc[21907]: ##############
+
+objc[21907]: ##############
+objc[21907]: AUTORELEASE POOLS for thread 0x10082bd40
+objc[21907]: 3 releases pending.
+objc[21907]: [0x158809000]  ................  PAGE  (hot) (cold)
+objc[21907]: [0x158809038]  ################  POOL 0x158809038
+objc[21907]: [0x158809040]  ################  POOL 0x158809040
+objc[21907]: [0x158809048]  ################  POOL 0x158809048
+objc[21907]: ##############
+
+objc[21907]: ##############
+objc[21907]: AUTORELEASE POOLS for thread 0x10082bd40
+objc[21907]: 2 releases pending.
+objc[21907]: [0x158809000]  ................  PAGE  (hot) (cold)
+objc[21907]: [0x158809038]  ################  POOL 0x158809038
+objc[21907]: [0x158809040]  ################  POOL 0x158809040
+objc[21907]: ##############
+
+objc[21907]: ##############
+objc[21907]: AUTORELEASE POOLS for thread 0x10082bd40
+objc[21907]: 1 releases pending.
+objc[21907]: [0x158809000]  ................  PAGE  (hot) (cold)
+objc[21907]: [0x158809038]  ################  POOL 0x158809038
+objc[21907]: ##############
+
+objc[21907]: ##############
+objc[21907]: AUTORELEASE POOLS for thread 0x10082bd40
+objc[21907]: 0 releases pending.
+objc[21907]: [0x158809000]  ................  PAGE  (hot) (cold)
+objc[21907]: ##############
+
+
+*/
+```
+
+作用域只在`@autoreleasepool {}`之间，超过之后就全部调用pop释放
+
+<img src="../../assets/image-20211229162921016.png" alt="image-20211229162921016" style="zoom:80%;" />
 
 
 
@@ -314,7 +467,7 @@ In a reference-counted environment, releases and pops the receiver; in a garbage
 }
 ```
 
-可以嵌套：
+嵌套
 
 ```objective-c
 @autoreleasepool {
@@ -326,7 +479,9 @@ In a reference-counted environment, releases and pops the receiver; in a garbage
 }
 ```
 
-使用场景：
+
+
+### 3. Autorelease Pool 使用场景：
 
 > There are, however, three occasions when you might use your own autorelease pool blocks:
 >

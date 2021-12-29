@@ -498,8 +498,22 @@ In a reference-counted environment, releases and pops the receiver; in a garbage
 
 
 - 写基于命令行的的程序时，就是没有`UI`框架，如`AppKit`等`Cocoa`框架时。
-- 写循环，循环里面包含了大量临时创建的对象。（本文的例子）
+
+- 写循环，循环里面包含了大量临时创建的对象。
+
+  ```objective-c
+  while (ok) {
+      @autoreleasepool {
+          // some variable
+          // do something
+      }
+  }
+  ```
+
+  
+
 - 创建了新的线程。（非`Cocoa`程序创建线程时才需要）
+
 - 长时间在后台运行的任务。
 
 

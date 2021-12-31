@@ -512,12 +512,16 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>🔥🎉📌📍 <font color="red">持续更新中️</font></td>
    </tr>
    <tr>
-      <td rowspan="2">个人总结</td>
-      <td><a href="./articles/2018/2018-11-24-杂谈之2018流水账记事.md">2018年流水账记事</a></td>
+      <td rowspan="3">个人总结</td>
+      <td><a href="./articles/2018/2018-11-24-杂谈之2018流水账记事.md">2018📍</a></td>
       <td> ✅ </td>
    </tr>
    <tr>
-  	 <td><a href="./articles/2021/2021-3-2020年度总结.md">2020年流水账记事</a></td>
+  	 <td><a href="./articles/2021/2021-3-2020年度总结.md">2020📍</a></td>
+    <td> ✅ </td>
+   </tr>
+   <tr>
+  	 <td><a href="./articles/2021/2021-12-31总结.md">2021📍</a></td>
     <td> ✅ </td>
    </tr>
    <tr>

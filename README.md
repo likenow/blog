@@ -413,12 +413,16 @@ Anyway~~现在就用 `GitHub` 啦！
       <td> ✅ </td>
    </tr>
    <tr>
-      <td rowspan="2"> 题目 </td>
+      <td rowspan="3"> 题目 </td>
       <td><a href="./articles/2021/2021-5-7-oneQuestionPerDayFollow.md">刷题</a></td>
       <td> ✅ </td>
    </tr>
    <tr>
       <td><a href="./articles/2021/2021-07-14-LRU.md">LRU</a></td>
+      <td> ✅ </td>
+   </tr>
+   <tr>
+      <td><a href="./articles/2022/2022-1-7-algorithmPractice.md"> 刷题2 </a></td>
       <td> ✅ </td>
    </tr>
 </table>
@@ -512,7 +516,7 @@ Anyway~~现在就用 `GitHub` 啦！
       <td>🔥🎉📌📍 <font color="red">持续更新中️</font></td>
    </tr>
    <tr>
-      <td rowspan="3">个人总结</td>
+      <td rowspan="4">个人总结</td>
       <td><a href="./articles/2018/2018-11-24-杂谈之2018流水账记事.md">2018📍</a></td>
       <td> ✅ </td>
    </tr>
@@ -522,6 +526,10 @@ Anyway~~现在就用 `GitHub` 啦！
    </tr>
    <tr>
   	 <td><a href="./articles/2021/2021-12-31总结.md">2021📍</a></td>
+    <td> ✅ </td>
+   </tr>
+   <tr>
+  	 <td><a href="./articles/2022/2022-1-4-decade.md">10📍</a></td>
     <td> ✅ </td>
    </tr>
    <tr>

@@ -404,6 +404,11 @@
       <td> ✅ </td>
    </tr>
    <tr>
+      <td rowspan="1"> 二分 </td>
+      <td><a href="./articles/2022/2022-1-14-二分.md">二分</a></td>
+      <td> ✅ </td>
+   </tr>
+   <tr>
       <td rowspan="3"> 题目 </td>
       <td><a href="./articles/2021/2021-5-7-oneQuestionPerDayFollow.md">刷题</a></td>
       <td> ✅ </td>

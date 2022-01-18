@@ -277,7 +277,34 @@ class AutoreleasePoolPage
 
 这里又涉及到了 `runLoop`的知识，因为篇幅问题暂且不做展开。
 
+```objective-c
+/***********************************************************************
+   Autorelease pool implementation
+
+   A thread's autorelease pool is a stack of pointers. 
+   Each pointer is either an object to release, or POOL_BOUNDARY which is 
+     an autorelease pool boundary.
+   A pool token is a pointer to the POOL_BOUNDARY for that pool. When 
+     the pool is popped, every object hotter than the sentinel is released.
+   The stack is divided into a doubly-linked list of pages. Pages are added 
+     and deleted as necessary. 
+   Thread-local storage points to the hot page, where newly autoreleased 
+     objects are stored. 
+**********************************************************************/
+```
+
+
+
 苹果文档中说，在开始每一个事件循环之前系统会在主线程创建一个自动释放池, 并且在事件循环结束的时候把前面创建的释放池释放, 回收内存。
+
+> App  启动后，苹果在主线程 Runloop 注册了两个 observer，其回调都是 `_wrapRunLoopWithAutoreleasePoolHandler()`
+>
+> 1. 第一个 Observer 监视的事件是 Entry（即将进入 Loop），其回调内会调用 `_objc_autoreleasePoolPush()` 创建自动释放池。
+> 2. 第二个 Observer 监听了两个事件：
+>    - BeforeWaiting（准备进入休眠）时调用 `_objc_autoreleasePoolPop()` 和 `_objc_autoreleasePoolPush()` 释放旧的pool 并创建新的 pool
+>    - exit（即将退出Loop）时调用 `_objc_autoreleasePoolPop()` 来释放autoreleasepool 
+>
+> 在主线程执行的代码，通常是写在诸如事件回调、Timer回调内的。这些回调会被 RunLoop 创建好的 AutoreleasePool 环绕着，所以不会出现内存泄漏，开发者也不必显示创建 Pool 了。
 
 ### Autorelease 对象延迟释放
 

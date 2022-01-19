@@ -919,7 +919,73 @@ class SearchWord {
 
 eg.
 
-**实例1：八皇后问题**
+**实例1：分割回文串**
+
+> 给定一个字符串 s，将 s 分割成一些子串，使每个子串都是回文串。
+>
+> 返回 s 所有可能的分割方案。
+>
+> 示例:
+>
+> 输入: "aab"
+> 输出:
+> [
+>   ["aa","b"],
+>   ["a","a","b"]
+> ]
+
+```swift
+class Solution {
+    func severPalindromeString(s: String?) -> [[String]] {
+        guard let s = s, s.count > 0 else { return [] }
+        var array:[[String]] = [[String]]()
+        var tempArray = [String]()
+        backtrack(twoDimensionalArray: &array, tempArray: &tempArray, s: s, start: 0)
+        return array
+    }
+    
+    func backtrack(twoDimensionalArray: inout [[String]], tempArray: inout [String], s: String, start: Int) -> Void {
+        if start == s.count {
+            twoDimensionalArray.append(tempArray)
+        } else {
+            for i in start..<s.count {
+                if isPalindrome(s: s, low: start, high: i) {
+                    let startIndex = s.index(s.startIndex, offsetBy: start)
+                    let endIndex = s.index(s.startIndex, offsetBy: i+1)
+                    let range: Range = startIndex..<endIndex
+                    let subString: String = String(s[range])
+                    tempArray.append(subString)
+                    backtrack(twoDimensionalArray: &twoDimensionalArray, tempArray: &tempArray, s: s, start: i+1)
+                    tempArray.remove(at: tempArray.count-1)
+                }
+            }
+        }
+    }
+    
+    func isPalindrome(s: String, low: Int, high: Int) -> Bool {
+        var l = low, h = high
+        while l<h {
+            let lIndex = s.index(s.startIndex, offsetBy: l)
+            let hIndex = s.index(s.startIndex, offsetBy: h)
+            if s[lIndex] != s[hIndex] {
+                return false
+            } else {
+                l += 1;
+                h -= 1;
+            }
+        }
+        return true
+    }
+}
+/*
+print(Solution.init().severPalindromeString(s: "aab"))
+[["a", "a", "b"], ["aa", "b"]]
+*/
+```
+
+
+
+**实例2：八皇后问题**
 
 > **八皇后问题**是一个以[国际象棋](https://zh.wikipedia.org/wiki/国际象棋)为背景的问题：如何能够在8×8的国际象棋棋盘上放置八个[皇后](https://zh.wikipedia.org/wiki/后_(国际象棋))，使得任何一个皇后都无法直接吃掉其他的皇后？为了达到此目的，任两个皇后都不能处于同一条横行、纵行或斜线上。八皇后问题可以推广为更一般的**n皇后摆放问题**：这时棋盘的大小变为*n*×*n*，而皇后个数也变成*n*。[当且仅当](https://zh.wikipedia.org/wiki/当且仅当)*n* = 1或*n* ≥ 4时问题有解[[1\]](https://zh.wikipedia.org/wiki/八皇后问题#cite_note-1)
 >

@@ -983,9 +983,93 @@ print(Solution.init().severPalindromeString(s: "aab"))
 */
 ```
 
+**实例2：**
+
+> 给你一个 无重复元素 的整数数组 candidates 和一个目标整数 target ，找出 candidates 中可以使数字和为目标数 target 的 所有不同组合 ，并以列表形式返回。你可以按 任意顺序 返回这些组合。
+>
+> candidates 中的 同一个 数字可以 无限制重复被选取 。如果至少一个数字的被选数量不同，则两种组合是不同的。 
+>
+> 对于给定的输入，保证和为 target 的不同组合数少于 150 个。
+>
+> 示例 1：
+>
+> 输入：candidates = [2,3,6,7], target = 7
+> 输出：[[2,2,3],[7]]
+> 解释：
+> 2 和 3 可以形成一组候选，2 + 2 + 3 = 7 。注意 2 可以使用多次。
+> 7 也是一个候选， 7 = 7 。
+> 仅有这两种组合。
+> 示例 2：
+>
+> 输入: candidates = [2,3,5], target = 8
+> 输出: [[2,2,2,2],[2,3,3],[3,5]]
+> 示例 3：
+>
+> 输入: candidates = [2], target = 1
+> 输出: []
+> 示例 4：
+>
+> 输入: candidates = [1], target = 1
+> 输出: [[1]]
+> 示例 5：
+>
+> 输入: candidates = [1], target = 2
+> 输出: [[1,1]]
+>
+>
+> 提示：
+>
+> 1 <= candidates.length <= 30
+> 1 <= candidates[i] <= 200
+> candidate 中的每个元素都 互不相同
+> 1 <= target <= 500
+
+```swift
+class Solution {
+    /// combination sum
+    /// - Parameters:
+    ///   - nums: input nums
+    ///   - target: target num
+    /// - Returns: two dimensional array
+    func combinationSum(nums: [Int], target: Int) -> [[Int]] {
+        guard nums.count > 0, target > 0 else { return [] }
+        var tempArray = [Int]()
+        let sortedNums = nums.sorted()
+        var results = [[Int]]()
+        backtrack(results: &results, tempArray: &tempArray, nums: sortedNums, remain: target, start: 0)
+        return results
+    }
+    
+    /// backtracking
+    /// - Parameters:
+    ///   - results: results description
+    ///   - tempArray: tempArray description
+    ///   - nums: input nums
+    ///   - remain: remain num
+    ///   - start: start description
+    /// - Returns: void
+    func backtrack(results: inout [[Int]], tempArray: inout [Int], nums:[Int], remain: Int, start: Int) -> Void {
+        if remain < 0 {
+            return
+        } else if (remain == 0) {
+            results.append(tempArray)
+        } else {
+            for i in start..<nums.count {
+                tempArray.append(nums[i])
+                // not i + 1 because we can reuse same elements
+                backtrack(results: &results, tempArray: &tempArray, nums: nums, remain: (remain-nums[i]), start: i)
+                tempArray.remove(at: (tempArray.count-1))
+            }
+        }
+    }
+}
+```
 
 
-**实例2：八皇后问题**
+
+
+
+**实例3：八皇后问题**
 
 > **八皇后问题**是一个以[国际象棋](https://zh.wikipedia.org/wiki/国际象棋)为背景的问题：如何能够在8×8的国际象棋棋盘上放置八个[皇后](https://zh.wikipedia.org/wiki/后_(国际象棋))，使得任何一个皇后都无法直接吃掉其他的皇后？为了达到此目的，任两个皇后都不能处于同一条横行、纵行或斜线上。八皇后问题可以推广为更一般的**n皇后摆放问题**：这时棋盘的大小变为*n*×*n*，而皇后个数也变成*n*。[当且仅当](https://zh.wikipedia.org/wiki/当且仅当)*n* = 1或*n* ≥ 4时问题有解[[1\]](https://zh.wikipedia.org/wiki/八皇后问题#cite_note-1)
 >

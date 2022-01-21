@@ -1065,11 +1065,111 @@ class Solution {
 }
 ```
 
+**实例3**
+
+> 给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的子集（幂集）。
+>
+> 解集 不能 包含重复的子集。你可以按 任意顺序 返回解集。
+>
+> 示例 1：
+>
+> 输入：nums = [1,2,3]
+> 输出：[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+>
+> 示例 2：
+>
+> 输入：nums = [0]
+> 输出：[[],[0]]
+>
+> 
+>
+>
+> 提示：
+>
+> 1 <= nums.length <= 10
+> -10 <= nums[i] <= 10
+> nums 中的所有元素互不相同
+
+```swift
+class Solution {
+    func subsets(nums: [Int]) -> [[Int]] {
+        guard nums.count > 0 else {
+            return []
+        }
+        var results = [[Int]]()
+        var temps = [Int]()
+        let sortedNums = nums.sorted()
+        
+        backtrack(results: &results, temps: &temps, nums: sortedNums, start: 0)
+        
+        return results
+    }
+    
+    func backtrack(results: inout [[Int]], temps: inout [Int], nums:[Int], start: Int ) -> Void {
+        results.append(temps)
+        for i in start..<nums.count {
+            temps.append(nums[i])
+            backtrack(results: &results, temps: &temps, nums: nums, start: i+1)
+            temps.remove(at: temps.count-1)
+        }
+    }
+}
+```
+
+> 给你一个整数数组 nums ，其中可能包含重复元素，请你返回该数组所有可能的子集（幂集）。
+>
+> 解集 不能 包含重复的子集。返回的解集中，子集可以按 任意顺序 排列。 
+>
+> 示例 1：
+>
+> 输入：nums = [1,2,2]
+> 输出：[[],[1],[1,2],[1,2,2],[2],[2,2]]
+> 示例 2：
+>
+> 输入：nums = [0]
+> 输出：[[],[0]]
+>
+>
+> 提示：
+>
+> 1 <= nums.length <= 10
+> -10 <= nums[i] <= 10
+
+```swift
+class Solution {
+    func subsets2(nums: [Int]) -> [[Int]] {
+        guard nums.count > 0 else {
+            return []
+        }
+        var results = [[Int]]()
+        var temps = [Int]()
+        let sortedNums = nums.sorted()
+        
+        backtrack(results: &results, temps: &temps, nums: sortedNums, start: 0)
+        
+        return results
+    }
+    
+    func backtrack(results: inout [[Int]], temps: inout [Int], nums:[Int], start: Int ) -> Void {
+        results.append(temps)
+        /// skip duplicates
+        for i in start..<nums.count {
+            if i>start && nums[i]==nums[i-1] {
+                continue
+            }
+            temps.append(nums[i])
+            backtrack2(results: &results, temps: &temps, nums: nums, start: i+1)
+            temps.remove(at: temps.count-1)
+        }
+    }
+}
+```
 
 
 
 
-**实例3：八皇后问题**
+
+**实例4：八皇后问题**
 
 > **八皇后问题**是一个以[国际象棋](https://zh.wikipedia.org/wiki/国际象棋)为背景的问题：如何能够在8×8的国际象棋棋盘上放置八个[皇后](https://zh.wikipedia.org/wiki/后_(国际象棋))，使得任何一个皇后都无法直接吃掉其他的皇后？为了达到此目的，任两个皇后都不能处于同一条横行、纵行或斜线上。八皇后问题可以推广为更一般的**n皇后摆放问题**：这时棋盘的大小变为*n*×*n*，而皇后个数也变成*n*。[当且仅当](https://zh.wikipedia.org/wiki/当且仅当)*n* = 1或*n* ≥ 4时问题有解[[1\]](https://zh.wikipedia.org/wiki/八皇后问题#cite_note-1)
 >

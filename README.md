@@ -386,7 +386,7 @@
       <td> ✅ </td>
    </tr>
    <tr>
-    	<td rowspan="3"> 树 </td>
+    	<td rowspan="4"> 树 </td>
       <td><a href="./articles/2020/2020-10-9-遍历二叉树1.md">遍历二叉树（一）</a></td>
       <td> ✅ </td>
    </tr>
@@ -396,6 +396,10 @@
    </tr>
    <tr>
       <td><a href="./articles/2021/2021-06-22-SuffixTree.md">后缀树</a></td>
+      <td> ✅ </td>
+   </tr>
+   <tr>
+      <td><a href="./articles/2022/2022-1-21-redblacktree.md">Swift实现红黑树</a></td>
       <td> ✅ </td>
    </tr>
    <tr>

@@ -1167,9 +1167,131 @@ class Solution {
 
 
 
+**实例4：排列**
+
+> 给定一个不含重复数字的数组 nums ，返回其 所有可能的全排列 。你可以 按任意顺序 返回答案。
+>
+> 示例 1：
+>
+> 输入：nums = [1,2,3]
+> 输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+> 示例 2：
+>
+> 输入：nums = [0,1]
+> 输出：[[0,1],[1,0]]
+> 示例 3：
+>
+> 输入：nums = [1]
+> 输出：[[1]]
+>
+>
+> 提示：
+>
+> 1 <= nums.length <= 6
+> -10 <= nums[i] <= 10
+> nums 中的所有整数 互不相同
+
+```swift
+class Solution {
+    func permutations(nums:[Int]) -> [[Int]] {
+        guard nums.count > 0 else {
+            return []
+        }
+        
+        var results = [[Int]]()
+        
+        var tempArray = [Int]()
+        
+        let sortedNums = nums.sorted()
+        
+        backtrack(results: &results, temps: &tempArray, nums: sortedNums)
+        
+        return results
+    }
+    
+    func backtrack(results: inout [[Int]], temps: inout [Int], nums: [Int]) -> Void {
+        if temps.count == nums.count {
+            results.append(temps)
+        } else {
+            for i in 0..<nums.count {
+                if temps.contains(nums[i]) {
+                    continue
+                }
+                temps.append(nums[i])
+                backtrack(results: &results, temps: &temps, nums: nums)
+                temps.remove(at: temps.count-1)
+            }
+        }
+    }
+}
+```
+
+>Given a collection of numbers, `nums`, that might contain duplicates, return *all possible unique permutations **in any order**.*
+>
+>**Example 1:**
+>
+>```
+>Input: nums = [1,1,2]
+>Output:
+>[[1,1,2],
+> [1,2,1],
+> [2,1,1]]
+>```
+>
+>**Example 2:**
+>
+>```
+>Input: nums = [1,2,3]
+>Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+>```
+>
+>**Constraints:**
+>
+>- `1 <= nums.length <= 8`
+>- `-10 <= nums[i] <= 10`
+
+```swift
+class Solution {
+    func permuteUnique(_ nums: [Int]) -> [[Int]] {
+        guard nums.count > 0 else {
+            return []
+        }
+        
+        var results = [[Int]]()
+        
+        var tempArray = [Int]()
+        
+        let sortedNums = nums.sorted()
+        
+        var usedArray = [Bool](repeating: false, count: sortedNums.count)
+
+        backtrack(results: &results, temps: &tempArray, nums: sortedNums, used: &usedArray)
+        
+        return results
+    }
+    func backtrack(results: inout [[Int]], temps: inout [Int], nums: [Int], used: inout [Bool]) -> Void {
+        if temps.count == nums.count {
+            results.append(temps)
+        } else {
+            for i in 0..<nums.count {
+                // 运算符优先级：! 大于  > 大于 == 大于 && 大于 ||
+                if used[i] || i > 0 && nums[i] == nums[i-1] && !used[i - 1] {
+                    continue
+                }
+                used[i] = true
+                temps.append(nums[i])
+                backtrack(results: &results, temps: &temps, nums: nums, used: &used)
+                used[i] = false
+                temps.remove(at: temps.count-1)
+            }
+        }
+    }
+}
+```
 
 
-**实例4：八皇后问题**
+
+**实例5：八皇后问题**
 
 > **八皇后问题**是一个以[国际象棋](https://zh.wikipedia.org/wiki/国际象棋)为背景的问题：如何能够在8×8的国际象棋棋盘上放置八个[皇后](https://zh.wikipedia.org/wiki/后_(国际象棋))，使得任何一个皇后都无法直接吃掉其他的皇后？为了达到此目的，任两个皇后都不能处于同一条横行、纵行或斜线上。八皇后问题可以推广为更一般的**n皇后摆放问题**：这时棋盘的大小变为*n*×*n*，而皇后个数也变成*n*。[当且仅当](https://zh.wikipedia.org/wiki/当且仅当)*n* = 1或*n* ≥ 4时问题有解[[1\]](https://zh.wikipedia.org/wiki/八皇后问题#cite_note-1)
 >

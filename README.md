@@ -133,6 +133,11 @@
       <td><a href="./articles/2016/2016-5-14-FMDB使用.md">FMDB使用 ✅ </a></td>
    </tr>
    <tr>
+      <td rowspan="1">图片处理</td>
+      <td><a href="./articles/2022/2022-1-26-graphic.md">了解移动端图片处理 ✅ </a></td>
+      <td>✅ </td>
+   </tr>
+   <tr>
       <td rowspan="2">设计模式</td>
       <td><a href="./articles/2015/2015-10-22-iOS单例设计模式.md">iOS单例设计模式 ✅ </a></td>
       <td><a href="./articles/2017/2017-9-22-iOS架构与设计模式.md">iOS架构与设计模式 ✅ </a></td>
@@ -243,6 +248,11 @@
       <td rowspan="1">杂烩</td>
       <td><a href="./articles/2015/2015-6-6-用Phaser来制作一个html5游戏.md">用Phaser来制作一个html5游戏 ✅ </a></td>
       <td><a href="./articles/2019/2019-5-19-前端异常监控.md">前端异常监控 ✅ </a></td>
+   </tr>
+  <tr>
+      <td rowspan="1">前端开发</td>
+      <td><a href="./articles/2022/2022-1-27-observe.md">前端开发观察 ✅ </a></td>
+      <td> ✅ </td>
    </tr>
 </table>
 

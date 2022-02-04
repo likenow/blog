@@ -42,12 +42,12 @@
       <td><a href="./articles/2021/2021-5-6-CGAffineTransform.md">CGAffineTransform ✅ </a></td>
    </tr>
    <tr>
-      <td><a href="./articles/2020/2020-08-19-码页面要点记录.md">码页面要点记录🔥🎉📌📍 <font color="red">持续更新中️</font></a></td>
+      <td><a href="./articles/2020/2020-08-19-码页面要点记录.md">码页面要点记录📌 </a></td>
       <td><a href="./articles/2021/2021-9-10-animation.md">Animation 动画 ✅ </a></td>
    </tr>
   <tr>
-      <td><a href="./articles/2021/2021-10-25-idevicelocation.md">iOS 虚拟定位 📌</a></td>
-      <td><a href="./articles/2021/2021-12-28-iOS-Memory.md">iOS 内存相关✅📌 </a></td>
+      <td><a href="./articles/2021/2021-10-25-idevicelocation.md">iOS 虚拟定位 ✅</a></td>
+      <td><a href="./articles/2021/2021-12-28-iOS-Memory.md">iOS 内存相关✅ </a></td>
    </tr>
    <tr>
       <td rowspan="3">多线程</td>
@@ -118,7 +118,7 @@
    </tr>
    <tr>
   		<td><a href="./articles/2021/2021-9-1-iosCollectCrashLog.md">关于 iOS Crash Log 收集 ✅ </a></td>
-    	<td>📍</td>
+    	<td> ✏️ </td>
    </tr>
    <tr>
       <td rowspan="1">Swift</td>
@@ -142,7 +142,7 @@
    </tr>
    <tr>
       <td><a href="./articles/2015/2015-7-19-OC协议与代理设计模式.md">OC协议与代理设计模式 ✅ </a></td>
-      <td>📍</td>
+      <td> ✏️ </td>
    </tr>
    <tr>
       <td rowspan="11">杂烩</td>
@@ -155,7 +155,7 @@
    </tr>
    <tr>
       <td><a href="./articles/2019/2019-4-21-脚本生成icon.md">脚本生成iOS 多尺寸图 ✅ </a></td>
-      <td><a href="./"> 📍 </a></td>
+      <td> ✏️ </td>
    </tr>
    <tr>
       <td><a href="./articles/2016/2016-8-7-作为移动应用开发者应该了解APP测试.md">作为移动应用开发者应该了解APP测试 ✅ </a></td>
@@ -163,10 +163,10 @@
    </tr>
    <tr>
       <td><a href="./articles/2017/2017-6-1-用户行为统计探索.md">用户行为统计探索 ✅ </a></td>
-      <td><a href="./articles/2020/2020-9-2-iOS问题汇总.md">iOS遇到的开发问题汇总🔥🎉📌📍<font color="red">持续更新中️</font></a></td>
+      <td><a href="./articles/2020/2020-9-2-iOS问题汇总.md">iOS遇到的开发问题汇总 📌</a></td>
    </tr>
    <tr>
-      <td><a href="./articles/2020/2020-9-2-iOS适配.md">iOS适配🔥🎉📌📍<font color="red">持续更新中️</font></a></td>
+      <td><a href="./articles/2020/2020-9-2-iOS适配.md">iOS适配 📌</a></td>
       <td><a href="./articles/2016/2016-2-23-iOS开发之XIB.md">iOS 开发之 XIB ✅ </a></td>
    </tr>
    <tr>
@@ -206,7 +206,7 @@
    </tr>
    <tr>
       <td><a href="./articles/2017/2017-8-5-iOS集成ijkplayer播放视频.md">iOS集成ijkplayer播放视频 ✅ </a></td>
-      <td><a href="./articles/2020/2020-07-22-视频概念整理.md">视频概念整理🔥🎉📌📍<font color="red">持续更新中️</font></a></td>
+      <td><a href="./articles/2020/2020-07-22-视频概念整理.md">视频概念整理 📌</a></td>
    </tr>
 </table>
 
@@ -223,7 +223,7 @@
    <tr>
       <td> 小程序 </td>
       <td><a href="./articles/2018/2018-06-23-APP拉起微信小程序.md">APP拉起微信小程序 ✅ </a></td>
-      <td>📍</td>
+      <td> ✏️ </td>
    </tr>
    <tr>
       <td rowspan="4">Hybrid 系列</td>
@@ -521,24 +521,24 @@
    <tr>
       <td>读书总结</td>
       <td><a href="./articles/others/书籍记录.md">书籍记录</a></td>
-      <td>🔥🎉📌📍 <font color="red">持续更新中️</font></td>
+      <td> 📌 </td>
    </tr>
    <tr>
       <td rowspan="4">个人总结</td>
-      <td><a href="./articles/2018/2018-11-24-杂谈之2018流水账记事.md">2018📍</a></td>
-      <td> ✅ </td>
+      <td><a href="./articles/2018/2018-11-24-杂谈之2018流水账记事.md">2018</a></td>
+      <td> 📍 </td>
    </tr>
    <tr>
-  	 <td><a href="./articles/2021/2021-3-2020年度总结.md">2020📍</a></td>
-    <td> ✅ </td>
+  	 <td><a href="./articles/2021/2021-3-2020年度总结.md">2020</a></td>
+    <td> 📍 </td>
    </tr>
    <tr>
-  	 <td><a href="./articles/2021/2021-12-31总结.md">2021📍</a></td>
-    <td> ✅ </td>
+  	 <td><a href="./articles/2021/2021-12-31总结.md">2021</a></td>
+    <td> 📍 </td>
    </tr>
    <tr>
-  	 <td><a href="./articles/2022/2022-1-4-decade.md">10📍</a></td>
-    <td> ✅ </td>
+  	 <td><a href="./articles/2022/2022-1-4-decade.md">10</a></td>
+    <td> 📍 </td>
    </tr>
    <tr>
       <td rowspan="11">其它分享</td>
@@ -600,7 +600,7 @@
    </tr>
    <tr>
       <td><a href="./articles/2015/2015-9-21-iOS开发工具XCode的使用与遇到的问题.md">iOS开发工具XCode的使用与遇到的问题</a></td>
-      <td>🔥🎉📌📍<font color="red">持续更新中️</font></td>
+      <td> 📌 </td>
    </tr>
    <tr>
       <td><a href="./articles/2020/2020-7-21-使用SourceTree.md">使用SourceTree</a></td>
@@ -618,7 +618,7 @@
 
 
 
-## 🤦‍♂️ 未分类文章
+## 🗂 未分类文章
 <table>
    <tr>
       <td>主题</td>
@@ -679,7 +679,7 @@
       <td><a href="./articles/2015/set-use-github.md">配置 Github 时遇到的问题  ✅  </a></td>
    </tr>
    <tr>
-      <td><a href="./articles/2014/skin-change.md">换肤功能</a></td>
+      <td><a href="./articles/2014/skin-change.md">换肤功能 ✅ </a></td>
       <td><a href="./articles/2013/st-color.md">让你的Sublime Text编辑器丰富多“彩”  ✅  </a></td>
    </tr>
    <tr>

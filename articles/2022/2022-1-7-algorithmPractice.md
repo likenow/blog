@@ -167,7 +167,137 @@ class Solution {
 
 
 
-### 3 零钱兑换
+### 3 分桶
+
+```swift
+在整数数组 nums 中，是否存在两个下标 i 和 j，使得 nums [i] 和 nums [j] 的差的绝对值小于等于 t ，且满足 i 和 j 的差的绝对值也小于等于 ķ 。
+如果存在则返回 true，不存在返回 false。
+
+
+示例 1:
+输入: nums = [1,2,3,1], k = 3, t = 0
+输出: true
+
+示例 2:
+输入: nums = [1,0,1,1], k = 1, t = 2
+输出: true
+
+示例 3:
+输入: nums = [1,5,9,1,5,9], k = 2, t = 3
+输出: false
+  
+当擦除hashmap中的元素时，键的计算方法应该和插入时的计算方法一致。否则会错误地擦除需要的元素或者保留不需要的元素。
+例如：
+输入：nums = [-1,10,20,1], k = 2, t = 3
+预期结果：false
+实际输出：true
+解释：当i = 3时, 删除了nums[i-k]/mod = 0的键，但实际上值"-1"存储在键为-1的桶中，造成i=4时的错误判断。  
+```
+
+
+
+```swift
+/// 简单的思路: 双层循环，找出所有的两两组合。然后逐个判断其是否满足 nums [i] 和 nums [j] 的差的绝对值最大为 t，并且 i 和 j 之间的差的绝对值最大为 ķ。
+class Solution {
+  
+/// 双循环
+    func containsNearbyAlmostDuplicate1(nums: [Int], k: Int, t: Int) -> Bool {
+        let numsCount = nums.count
+        for i in 0..<numsCount {
+            for j in i+1..<numsCount {
+                if (abs(nums[i]-nums[j]) <= t) && (j-i <= k) {
+                    return true
+                }
+            }
+            /// 剪枝
+            /// 实际上我们只需要 i + 1 到 min(len(nums), i + k + 1)
+            /*
+            for j in i+1..<min(numsCount, i+k+1) {
+                if abs(nums[i]-nums[j]) <= t {
+                    return true
+                }
+            }
+            */
+        }
+        return false
+    }
+  
+///////////////////////////////////////////////////////////////////////////
+
+/// 分桶
+    /**
+     使用 t+1 个桶，将所有数据除以（t+1）的结果作为编号存到一个哈希表中，哈希表的编号范围将是：
+     [0,t]
+     经过这个处理
+     - 如果两个数字的编号相同，那么意味着绝对值差小于等于 t
+     - 如果两个数字的编号不同，相邻编号也可能是绝对值差小于等于 t。需要检查以下情况：
+        - 当前编号
+        - 左边相邻的编号
+        - 右边相邻的编号
+     题干要求，索引差小于等于 k，
+     因此我们可以固定一个窗口大小为 k 的滑动窗口，
+     每次都仅处理窗口内的元素，
+     这样可以保证窗口内的数任意两个数都满足索引之差的绝对值小于等于k。
+     因此我们需要清除不在窗口内的信息。
+     
+     */
+    /**
+    优质评论：
+    很多小伙伴对getID有点迷惑,就是为什么取负数,如w=10, 因为非负数是0~9，10~19...这种一组，而负数是-1~-10, -11~-20...这些是一组，如果-1~-10直接除以10，会被分到两组中，而不是-1这一组，所以先+1变成-0--9,与正数一致，再除以10，最后减1，正好是-1这一组，其它组也是同理
+    */
+    func getId(x: Int, w: Int) -> Int {
+        if x >= 0 {
+            return x/w
+        }
+        return (x+1)/w - 1
+    }
+    func containsNearbyAlmostDuplicate(nums: [Int], k: Int, t: Int) -> Bool {
+        if t<0 {
+            return false
+        }
+        var bucket: [Int: Int] = [:]
+        for (i,v) in nums.enumerated() {
+            let id = getId(x: v, w: t+1)
+            
+            if bucket.keys.contains(id) {
+                return true
+            }
+            if let a = bucket[id-1], abs(v - a) <= t {
+                return true
+            }
+            if let b = bucket[id+1], abs(v - b) <= t {
+                return true
+            }
+            /// 不存在的话暂时添加到 bucket
+            bucket.updateValue(v, forKey: id)
+            ///  维护大小为k的滑动窗口，清除不在窗口内的信息
+            if i >= k {
+                bucket.removeValue(forKey: getId(x: nums[i-k], w: t+1))
+            }
+        }
+        
+        return false
+    }
+  	/**
+  优质评论：
+  桶的解法相当凝练，不过有一点可以啰嗦两句。不知道有没有人疑惑，在比较id - 1和id + 1这两个相邻桶时，只比较了一个元素，这足够吗？哈希表的行为不是会用新元素覆盖旧元素，一个桶里有多个元素怎么办？
+  其实是覆盖根本不会发生...因为一旦要覆盖，就说明存在两个元素同属一个桶，直接返回true了。这就是题解说的“一个桶内至多只会有一个元素”——数组输入里当然可以有多个元素属于同一个桶，但是一旦出现一对，算法就结束了。
+  	*/
+  
+  
+  /*
+  时间复杂度：O(n)，其中 n 是给定数组的长度。每个元素至多被插入哈希表和从哈希表中删除一次，每次操作的时间复杂度均为 O(1)。
+
+	空间复杂度：O(min(n, k))，其中 nn 是给定数组的长度。哈希表中至多包含 min(n, k + 1) 个元素。
+*/
+}
+```
+
+
+
+
+
+### 4 零钱兑换
 
 > ```swift
 > /*

@@ -9,7 +9,7 @@
 | <a href="./articles/2022/2022-1-26-graphic.md">了解移动端图片处理 ✅ </a> |
 | <a href="./articles/2021/2021-07-20-ad.md">移动端广告相关内容总结 ✅</a> |
 | <a href="./articles/2021/2021-02-07-云.md">听了一场后端服务架构技术分享 ✅ </a> |
-| <a href="./articles/2022/2022-1-27-observe.md">前端开发观察 ✅ </a> |
+| <a href="./articles/2022/2022-1-27-frontend.md">前端开发观察 ✅ </a> |
 | <a href="./articles/2021/2021-12-15-ECDHE.md">加密交换算法 ECDHE ✅</a> |
 | <a href="./articles/2020/2020-12-24-AVPlayer边下边播.md">AVPlayer 边下边播 ✅</a> |
 | <a href="./articles/others/书籍记录.md">书籍记录 ✅</a>       |
@@ -249,7 +249,7 @@
    </tr>
   <tr>
       <td rowspan="1">前端开发</td>
-      <td><a href="./articles/2022/2022-1-27-observe.md">前端开发观察 ✅ </a></td>
+      <td><a href="./articles/2022/2022-1-27-frontend.md">前端开发观察 ✅ </a></td>
       <td> ✅ </td>
    </tr>
 </table>

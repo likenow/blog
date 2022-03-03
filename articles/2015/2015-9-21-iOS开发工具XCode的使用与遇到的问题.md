@@ -77,8 +77,7 @@ Make build again
 
 ## `$(SRCROOT)` 和 `$(PROJECT_DIR)`
 
-[What the different between SRCROOT and PROJECT_DIR?
-](https://stackoverflow.com/questions/36323031/what-the-different-between-srcroot-and-project-dir/40739356)
+[What the different between SRCROOT and PROJECT_DIR?](https://stackoverflow.com/questions/36323031/what-the-different-between-srcroot-and-project-dir/40739356)
 
 > Exchangeable in practice, while the documentation makes these subtle theoretical distinctions:
 > 1. SRCROOT

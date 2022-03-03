@@ -155,7 +155,7 @@
    </tr>
    <tr>
       <td><a href="./articles/2019/2019-4-21-脚本生成icon.md">脚本生成iOS 多尺寸图 ✅ </a></td>
-      <td> ✏️ </td>
+      <td><a href="./articles/2022/2022-3-3-iphone-break.md">iphone 6 Jailbreak ✅ </a></td>
    </tr>
    <tr>
       <td><a href="./articles/2016/2016-8-7-作为移动应用开发者应该了解APP测试.md">作为移动应用开发者应该了解APP测试 ✅ </a></td>

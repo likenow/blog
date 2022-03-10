@@ -126,6 +126,46 @@ end
 
 
 
+---
 
+### 2022-3-10 M1 执行 pod install --verbose 报错
 
+**2022 Update**
 
+If you can use Homebrew to manage cocoapods.
+
+```dart
+# Uninstall the local cocoapods gem
+sudo gem uninstall cocoapods
+
+# Reinstall cocoapods via Homebrew
+brew install cocoapods
+```
+
+------
+
+**2021 Solution**
+
+```dart
+#1 Install ffi
+sudo arch -x86_64 gem install ffi
+
+#2 Re-install dependencies
+arch -x86_64 pod install
+```
+
+ 
+
+In addition to running terminal in Rosetta:
+
+1. Right-click on Terminal in Finder
+2. Get Info
+3. Open with Rosetta
+
+I installed a gem that seems to be related to the symbol not found in the error:
+
+```dart
+sudo gem install ffi
+```
+
+After doing this, cocoapods runs as expected.

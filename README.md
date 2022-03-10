@@ -528,7 +528,7 @@
       <td> 📌 </td>
    </tr>
    <tr>
-      <td rowspan="4">个人总结</td>
+      <td rowspan="5">个人总结</td>
       <td><a href="./articles/2018/2018-11-24-杂谈之2018流水账记事.md">2018</a></td>
       <td> 📍 </td>
    </tr>
@@ -542,6 +542,10 @@
    </tr>
    <tr>
   	 <td><a href="./articles/2022/2022-1-4-decade.md">10</a></td>
+    <td> 📍 </td>
+   </tr>
+   <tr>
+  	 <td><a href="./articles/2022/2022-2-26-goskiing.md">滑雪🏂</a></td>
     <td> 📍 </td>
    </tr>
    <tr>

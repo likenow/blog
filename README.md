@@ -200,13 +200,17 @@
       <td></td>
    </tr>
    <tr>
-      <td rowspan="2">杂烩</td>
+      <td rowspan="3">杂烩</td>
       <td><a href="./articles/2016/2016-11-27-语音视频信息的app应用初步涉猎.md">语音视频信息的app应用初步涉猎 ✅ </a></td>
       <td><a href="./articles/2020/2020-12-24-AVPlayer边下边播.md">AVPlayer 边下边播 ✅ </a></td>
    </tr>
    <tr>
       <td><a href="./articles/2017/2017-8-5-iOS集成ijkplayer播放视频.md">iOS集成ijkplayer播放视频 ✅ </a></td>
       <td><a href="./articles/2020/2020-07-22-视频概念整理.md">视频概念整理 📌</a></td>
+   </tr>
+  <tr>
+      <td><a href="./articles/2022/2022-3-8-AVPlayerQuestion.md">iOS AVPlayer 使用遇到的问题 ✅ </a></td>
+      <td><a href="">✅</a></td>
    </tr>
 </table>
 

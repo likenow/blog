@@ -1,10 +1,34 @@
 ## 学习 Web3
 
-[toc]
+- [学习 Web3](#学习-web3)
+  - [写在开头](#写在开头)
+  - [以太坊](#以太坊)
+  - [DApp](#dapp)
+    - [DApp 架构概述](#dapp-架构概述)
+    - [DApp 优劣概述](#dapp-优劣概述)
+  - [区块链开发测试网络、本地环境与私有链](#区块链开发测试网络本地环境与私有链)
+    - [使用测试网络部署合约](#使用测试网络部署合约)
+    - [开发工具](#开发工具)
+    - [能不能搭建本地私有链？答案是当然可以😁](#能不能搭建本地私有链答案是当然可以)
+  - [NFT](#nft)
+  - [开发实践浅谈](#开发实践浅谈)
+    - [MyFirstNFT 项目学习](#myfirstnft-项目学习)
+      - [1 合约代码仓库：](#1-合约代码仓库)
+      - [2 网站仓库：](#2-网站仓库)
+      - [3 上述应该是 Mac + VSCode + 命令行 + npm + Git + JavaScript 的一套开发流程。我看官方也推荐了 remix 这个IDE，可以在线使用，也可以本地化部署。](#3-上述应该是-mac--vscode--命令行--npm--git--javascript-的一套开发流程我看官方也推荐了-remix-这个ide可以在线使用也可以本地化部署)
+    - [Native 调用合约](#native-调用合约)
+  - [最后推荐一些学习资料](#最后推荐一些学习资料)
 
-#### 写在前边
+### 写在开头
 
 如果对区块链、加密货币、挖矿、智能合约以及去中心化也这些概念不熟悉的读者，需要自行检索词条，了解其概念。本文也没有具体代码。主要是我当前对 Web3 的理解和可以着手做的事情的学习笔记。
+
+### 以太坊
+
+目前我了解到的来说，以太坊（[以太坊简介](https://ethereum.org/zh/developers/docs/intro-to-ethereum/)）应该是头部的区块链生态。其作为一个去中心化的开源的有智能合约功能的公共区块链平台。如果想了解更多底层的东西，可以从 GitHub 上看到Go语言版本的 [Ethereum](https://github.com/ethereum/go-ethereum) 比如 `geth` `EVM`等等。推荐两篇文章：
+
+- [ETH函数调用图](https://chuwt.github.io/post/eth%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%9B%BE/)
+- [EVM运行原理](https://chuwt.github.io/post/evm%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/)
 
 ### DApp 
 
@@ -61,16 +85,9 @@
 
 对于支付挖矿的费用这一点而言是必须的，但是让用户掏钱，必须解决其真正的痛点。要知道当前互联网的一大特点是，“免费”。 ps.当然这种免费是建立在把用户当做商品一部分销售获得盈利的基础上（让用户看广告）。
 
-#### 怎么免费体验一下区块链呢？
+### 区块链开发测试网络、本地环境与私有链
 
-上述，我从 DApp 为切入点，去了解区块链，Web3。目前我了解到的来说，以太坊（[以太坊简介](https://ethereum.org/zh/developers/docs/intro-to-ethereum/)）应该是头部的区块链生态。其作为一个去中心化的开源的有智能合约功能的公共区块链平台。如果想了解更多底层的东西，可以从 GitHub 上看到Go语言版本的 [Ethereum](https://github.com/ethereum/go-ethereum) 比如 `geth` `EVM`等等。推荐两篇文章：
-
-- [ETH函数调用图](https://chuwt.github.io/post/eth%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%9B%BE/)
-- [EVM运行原理](https://chuwt.github.io/post/evm%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/)
-
-##### 测试网络、本地环境与私有链
-
-1. 使用测试网络部署合约
+#### 使用测试网络部署合约
 
 - 以太坊测试网络 Rinkeby 可以领取以太坊代币
   - https://www.rinkeby.io/#faucet
@@ -80,8 +97,12 @@
 
 这样领到代币后，可以把智能合约部署到测试网络上而不需要破费干瘪的口袋。但是这有一个缺点就是，网络拥堵的时候会比较慢。
 
-2. 开发工具，例如： [Hardhat](https://hardhat.org/) 它使 Ethereum 开发者可以更方便的在本地运行的网络中编译、部署、调试和测试他们的智能合约而不需要到线上环境。
-2. 能不能搭建本地私有链？答案是当然可以😁
+#### 开发工具
+
+例如： [Hardhat](https://hardhat.org/) 它使 Ethereum 开发者可以更方便的在本地运行的网络中编译、部署、调试和测试他们的智能合约而不需要到线上环境。
+
+#### 能不能搭建本地私有链？答案是当然可以😁
+
 - 如何搭建环境
   
 - 怎么创建私有链的创世区块
@@ -142,7 +163,7 @@
 
 其实从 github 的star 数量来看，**[Web3.js](https://github.com/ChainSafe/web3.js) **貌似有更多的开发者使用，但是他不是 MIT 协议的。
 
-###### 3 上述应该是 Mac + VSCode + 命令行 + npm + Git + JavaScript 的一套开发流程。我看官方也推荐了 [remix](https://remix.ethereum.org/#optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.7+commit.e28d00a7.js) 这个IDE，可以在线使用，也可以本地化部署。
+##### 3 上述应该是 Mac + VSCode + 命令行 + npm + Git + JavaScript 的一套开发流程。我看官方也推荐了 [remix](https://remix.ethereum.org/#optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.7+commit.e28d00a7.js) 这个IDE，可以在线使用，也可以本地化部署。
 
 
 

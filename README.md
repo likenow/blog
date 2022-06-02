@@ -254,7 +254,7 @@
   <tr>
       <td rowspan="1">前端开发</td>
       <td><a href="./articles/2022/2022-1-27-frontend.md">前端开发观察 ✅ </a></td>
-      <td> ✅ </td>
+      <td><a href="./articles/2022/2022-6-1-Web3Learning.md">学习 Web3 ✅ </a> </td>
    </tr>
 </table>
 

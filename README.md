@@ -252,9 +252,13 @@
       <td><a href="./articles/2019/2019-5-19-前端异常监控.md">前端异常监控 ✅ </a></td>
    </tr>
   <tr>
-      <td rowspan="1">前端开发</td>
+      <td rowspan="2">前端开发</td>
       <td><a href="./articles/2022/2022-1-27-frontend.md">前端开发观察 ✅ </a></td>
       <td><a href="./articles/2022/2022-6-1-Web3Learning.md">学习 Web3 ✅ </a> </td>
+   </tr>
+  <tr>
+      <td><a href="./articles/2022/2022-6-4-LearningSolidity.md">Solidity 学习 ✅ </a></td>
+      <td> ✅ </td>
    </tr>
 </table>
 

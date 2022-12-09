@@ -252,13 +252,13 @@
       <td><a href="./articles/2019/2019-5-19-前端异常监控.md">前端异常监控 ✅ </a></td>
    </tr>
   <tr>
-      <td rowspan="2">前端开发</td>
-      <td><a href="./articles/2022/2022-1-27-frontend.md">前端开发观察 ✅ </a></td>
+      <td rowspan="2">Web 开发</td>
+      <td><a href="./articles/2022/2022-1-27-frontend.md">Web开发观察 ✅ </a></td>
       <td><a href="./articles/2022/2022-6-1-Web3Learning.md">学习 Web3 ✅ </a> </td>
    </tr>
   <tr>
       <td><a href="./articles/2022/2022-6-4-LearningSolidity.md">Solidity 学习 ✅ </a></td>
-      <td> ✅ </td>
+      <td><a href="./articles/2022/2022-AboutDAppNote.md">Web3 -- DAPP 见闻分享 ✅ </a> </td>
    </tr>
 </table>
 

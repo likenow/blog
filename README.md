@@ -12,7 +12,7 @@
 | <a href="./articles/2022/2022-1-27-frontend.md">前端开发观察 ✅ </a> |
 | <a href="./articles/2021/2021-12-15-ECDHE.md">加密交换算法 ECDHE ✅</a> |
 | <a href="./articles/2020/2020-12-24-AVPlayer边下边播.md">AVPlayer 边下边播 ✅</a> |
-| <a href="./articles/others/书籍记录.md">书籍记录 ✅</a>       |
+| <a href="./articles/2023/2023-3-3-Web3Record.md">Web3 学习笔记✅</a> |
 
 
 
@@ -252,15 +252,19 @@
       <td><a href="./articles/2019/2019-5-19-前端异常监控.md">前端异常监控 ✅ </a></td>
    </tr>
   <tr>
-      <td rowspan="2">Web 开发</td>
+      <td rowspan="3">Web 开发</td>
       <td><a href="./articles/2022/2022-1-27-frontend.md">Web开发观察 ✅ </a></td>
       <td><a href="./articles/2022/2022-6-1-Web3Learning.md">学习 Web3 ✅ </a> </td>
    </tr>
   <tr>
       <td><a href="./articles/2022/2022-6-4-LearningSolidity.md">Solidity 学习 ✅ </a></td>
       <td><a href="./articles/2022/2022-AboutDAppNote.md">Web3 -- DAPP 见闻分享 ✅ </a> </td>
+  </tr>
+  <tr>
+    <td><a href="./articles/2023/2023-3-3-Web3Record.md">Web3 学习笔记✅</a></td>
    </tr>
 </table>
+
 
 
 
@@ -536,7 +540,7 @@
       <td> 📌 </td>
    </tr>
    <tr>
-      <td rowspan="5">个人总结</td>
+      <td rowspan="6">个人总结</td>
       <td><a href="./articles/2018/2018-11-24-杂谈之2018流水账记事.md">2018</a></td>
       <td> 📍 </td>
    </tr>
@@ -546,6 +550,10 @@
    </tr>
    <tr>
   	 <td><a href="./articles/2021/2021-12-31总结.md">2021</a></td>
+    <td> 📍 </td>
+   </tr>
+   <tr>
+  	 <td><a href="./articles/2022/2022-12-31-zongjie.md">2022</a></td>
     <td> 📍 </td>
    </tr>
    <tr>
@@ -627,6 +635,7 @@
       <td> ✅ </td>
    </tr>
 </table>
+
 
 
 

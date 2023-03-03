@@ -149,18 +149,23 @@ like [IPFS](https://ipfs.io/) or [Swarm](https://www.ethswarm.org/)
 
 #### 链上扩容
 
-##### 区块分片
+##### 区块分片（Sharding）
 
-
+由于链上扩容的 Sharding 是对以太坊主网的变更，将会对所有历史数据进行迁移，因此进程缓慢，官方预期Sharding会在2023年实现；
 
 #### 链下扩容
 
 ##### [Layer 2](https://ethereum.org/en/layer-2/)
 
-- Rollups
+- Rollups（Rollups是以太坊社区选定的主要路线、也是扩容路线图的短期重点）
   - [Optimistic rollups](https://ethereum.org/en/developers/docs/scaling/optimistic-rollups/) （乐观卷叠）
   - [Zero-knowledge rollup](https://ethereum.org/en/developers/docs/scaling/zk-rollups/)（零知识卷叠）
 - [State Channel](https://ethereum.org/en/developers/docs/scaling/state-channels/)（状态通道）
--  [sidechains](https://ethereum.org/en/developers/docs/scaling/sidechains/)（侧链）
--  [plasma chains](https://ethereum.org/en/developers/docs/scaling/plasma/) （plasma 链）
-- [validiums](https://ethereum.org/en/developers/docs/scaling/validium/)
+
+
+
+[sidechains](https://ethereum.org/en/developers/docs/scaling/sidechains/)（侧链）
+
+[plasma chains](https://ethereum.org/en/developers/docs/scaling/plasma/) （plasma 链）
+
+[validiums](https://ethereum.org/en/developers/docs/scaling/validium/)

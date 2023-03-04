@@ -6,6 +6,18 @@
 
 ## Layer2
 
+可扩展性三难困境
+
+```html
+                Decentralizeation
+                /               \
+               /                 \
+             Security  —— ——  Scalability
+         
+```
+
+**以太坊网络是主链，所有直接发生在其上的交易都是“链上”，而其他任何交易都被视为“链下”。侧链和L2等一些脱链解决方案可以帮助以太坊扩大规模，提高交易速度，增加网络可以处理的交易数量。**
+
 ### 扩容
 
 > TPS：TPS=(gasLimit/gas)/time
@@ -44,9 +56,13 @@
 
 
 
-#### 侧链
+> 参考：[Layer 2 Blockchain scaling solutions: Channels, Sidechains, Rollups and Plasma (Part 16)](https://medium.com/techskill-brew/layer-2-blockchain-scaling-solutions-channels-sidechains-rollups-and-plasma-part-16-79819e058ef6)
 
 #### State Channel
+
+<img src="../../assets/image-20230304212020844.png" alt="image-20230304212020844" style="zoom:50%;" />
+
+> 图片来源[Overview of Layer 2 approaches: Plasma, State Channels, Side Chains, Roll Ups](https://near.org/blog/layer-2/)
 
 > 整个计算都发生在 layer2，计算结果上 layer1
 >
@@ -61,6 +77,45 @@
 > Lightning Network是建立在Bitcoin和其他一些加密货币上的支付协议。它利用支付通道的概念来建立一个网络，让用户能够在其中创建支付通道并进行快速的、低成本的交易。Lightning Network的目标是解决区块链可扩展性问题，通过在链下进行交易，减少区块链的负载。
 >
 > 因此，Payment channel是Lightning Network的基础之一。Lightning Network利用支付通道的概念，建立了一个可扩展、高效的支付网络，使得加密货币交易更加方便和经济。
+
+#### Rollup
+
+<img src="../../assets/image-20230304212209802.png" alt="image-20230304212209802" style="zoom:50%;" />
+
+> 图片来源[Overview of Layer 2 approaches: Plasma, State Channels, Side Chains, Roll Ups](https://near.org/blog/layer-2/)
+
+##### Zero-knowledge rollup
+
+使用有效性证明
+
+##### Optimistic rollup
+
+使用欺诈证明
+
+#### plasma
+
+<img src="../../assets/image-20230304212137901.png" alt="image-20230304212137901" style="zoom:50%;" />
+
+> 图片来源[Overview of Layer 2 approaches: Plasma, State Channels, Side Chains, Roll Ups](https://near.org/blog/layer-2/)
+
+可以将Plasma视为以太坊的原生侧链，使用智能合约和默克尔树（Merkle Tree）的组合来创建子链的无限分支。这些子链是以太坊主链的较小副本，具有自己的共识机制。
+
+
+
+#### 侧链
+
+> The main difference between sidechains and Ethereum layer 2 solutions is that **while layer 2 inherits the security of the main Ethereum network, sidechains rely on their own security**.
+>
+> **侧链和以太坊L2解决方案的主要区别是，L2继承以太坊主网络的安全性，而侧链依赖于自己的安全性。**
+
+##### 侧链：
+
+<img src="../../assets/image-20230304212121632.png" alt="image-20230304212121632" style="zoom:50%;" />
+
+图片来源[Overview of Layer 2 approaches: Plasma, State Channels, Side Chains, Roll Ups](https://near.org/blog/layer-2/)
+
+- **侧链有自己的共识协议，通常是为特定类型的交易设计的，目的是为了交易能够更快、更实惠。**然而，这也意味着它们通常不会继承以太坊的安全属性，当使用侧链时，我们只依赖于侧链的安全性，包括参与其自己的共识协议的节点。流行的侧链包括Polygon PoS， Skale和Rootstock。
+- **侧链通过一个双向挂钩系统或将桥与主链相连。**
 
 
 

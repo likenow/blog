@@ -126,9 +126,13 @@
       <td><a href="./articles/2017/2017-03-04-Charts使用.md">Charts 使用❎</a></td>
    </tr>
    <tr>
-      <td rowspan="1">数据库</td>
+      <td rowspan="2">数据库</td>
       <td><a href="./articles/2020/2020-5-17-了解SQLite.md">了解SQLite ✅ </a></td>
       <td><a href="./articles/2016/2016-5-14-FMDB使用.md">FMDB使用 ✅ </a></td>
+   </tr>
+   <tr>
+      <td><a href="./articles/2023/2023-3-20-MySQL.md">MySQL ✅ </a></td>
+      <td>✅ </td>
    </tr>
    <tr>
       <td rowspan="1">图片处理</td>

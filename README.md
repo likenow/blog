@@ -494,7 +494,14 @@
       <td><a href="./articles/2014/2014-8-17-C语言学习static和extern关键字.md">C语言学习static和extern关键字 ✅ </a></td>
       <td><a href="./articles/2017/2017-11-18-C与C++语言struct与typedef.md">C与C++语言struct与typedef ✅ </a></td>
    </tr>
+  <tr>
+      <td rowspan="2">C++语言</td>
+      <td><a href="./articles/2017/2017-11-18-C与C++语言struct与typedef.md">C与C++语言struct与typedef ✅ </a></td>
+      <td><a href="./articles/2023/2023-4-2-C++StudyRecord.md">C++语言学习笔记 ✅ </a></td>
+   </tr>
+   </tr>
 </table>
+
 
 
 ## Flutter

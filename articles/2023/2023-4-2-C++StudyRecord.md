@@ -1065,6 +1065,359 @@ int main()
 
 
 
+### 箭头操作符
+
+```C++
+    Entity e;
+    e.GetName();
+
+    Entity* ptr = &e;
+    // 这里指针不能用上边的 点号调用类方法
+    // ptr.GetName();
+    
+    // 逆向指针
+    (*ptr).GetName();
+    // 引用
+    Entity& entity = *ptr;
+    entity.GetName();
+    
+    // 箭头操作符号
+    ptr->GetName();
+class ScopedPtr
+{
+private:
+    Entity0* m_Ptr;
+public:
+    ScopedPtr(Entity0* ptr)
+        : m_Ptr(ptr)
+    {
+    }
+
+    ~ScopedPtr()
+    {
+        delete m_Ptr;
+    }
+    // Entity0* GetPtr() { return m_Ptr; }
+    // 重载箭头运算符
+    Entity0* operator->()
+    {
+        return m_Ptr;
+    }
+};
+
+int main()
+{
+    ScopedPtr entity = new Entity0();
+    // entity.GetPtr()->GetName();
+    entity->GetName();
+    
+    
+}
+```
+
+#### 偏移量（使用箭头运算符，来获取内存中某个值的偏移量）
+
+```C++
+    // get x memory address
+    // ((Vector3*)nullptr)->x; 
+    int offset = (int)&((Vector3*)0)->z; // x, y, z
+    std::cout << offset << std::endl;    // 0, 4, 8
+```
+
+### 动态数组
+
+标准模板库
+
+（模板可以处理你提供的底层数据类型）
+
+Vector -- array list
+
+> 标准库不是以速度为第一优先级的，所以，很多团队会有比标准库更快的实现。
+
+我是否应该，把指向堆分配的类对象的指针，存储在我的 vector 中。或者我应该存储栈分配，一条线上（连续的内存，不是碎片）分配的 类或者结构体。-- 视情况而定！！！
+
+存储对象比存储指针在技术上更优！
+
+```C++
+    std::vector<Vector2> vector2s;
+    vector2s.push_back({ 1,3 });
+    vector2s.push_back({ 5,7 });
+
+    for (int i = 0; i < vector2s.size(); i++)
+    {
+        std::cout << vector2s[i] << std::endl;
+    }
+
+    // ⚠️这里的 & 可以避免将每个 vector2 复制到这个for范围循环中
+    for (auto& v : vector2s)
+    {
+        std::cout << v << std::endl;
+    }
+    
+    // 会将数组大小设回 0
+    vector2s.clear();
+    // 或者单独移除某个 vector，比如移除第2个元素
+    vector2s.erase(vector2s.begin() + 1);
+```
+
+### std::vector 使用优化
+
+> 优化的前提是了解你的环境，了解事情是如何运作的
+
+如果 vector 的容量不够大，不能容纳你想要的新元素，vector 需要分配新的内存，至少足够容纳这些想要加入的新元素。当前的 vector 的内容，从内存中的旧位置复制到内存中的新位置，然后删除旧位置的内存。
+
+- 避免经常重新分配大小
+- 避免不必要的复制对象
+
+```C++
+struct Vector2 {
+    float x, y;
+    Vector2(float x, float y)
+        : x(x), y(y) {}
+
+    // copy init
+    Vector2(const Vector2& other)
+        : x(other.x), y(other.y)
+    {
+        std::cout << "copied !!" << std::endl;
+    }
+}    
+int main()
+{    
+    std::vector<Vector2> vector2s;
+    // 分配3个空间
+    vector2s.reserve(3);
+    
+    // 我想在实际的vector中构造，--> 使用 emplace_back
+    // 不是传递我们已经构建的 vector 对象，而只是传递了构造函数的参数列表
+    vector2s.emplace_back(1,3);
+    
+    
+    // vector2s.push_back({ 5,7 });
+    vector2s.push_back({ 9,11 });
+
+    for (int i = 0; i < vector2s.size(); i++)
+    {
+        std::cout << vector2s[i] << std::endl;
+    }
+    /*
+    上述产生了6次 copy
+    1 对象从main函数栈上拷贝到vector中
+    优化：在适当的位置构造vector2， 在 vector 分配的内存中
+    2 vector 默认分配 1（capacity） ，随着push_back 添加元素，会从内存中的旧位置复制到内存中的新位置
+    优化：直接分配足够大的内存
+    */
+}
+```
+
+### 使用静态库（静态链接）
+
+Virtual studio 可以添加另一个项目，该项目包含你的依赖库的源代码，然后将其编译为静态或动态库。
+
+链接二进制文件，会更快更容易。但是如果项目足够重要，时间也足够，肯定会选择编译他，因为它有助于调试。甚至想稍微修改一下。
+
+库通常包含两部分：
+
+- Includes
+  - 头文件
+- Library
+  - 预先构建的二进制文件
+  - 
+  - 动态库（比如 dll 是一种运行时动态链接库）
+  - 静态库
+
+```Plain
+Project
+Properties
+  C/  C++   --> General
+  Configuration    Platform
+    Additional include Directories （$(SolutionDir)Dependencies\GLWF\include）
+    ps. Inherit from parent or project defaults 没有勾选！！！
+    
+  C/  C++   --> linker --> general --> Additional library directories（静态库路径）
+  (这里包含依赖库文件的根目录)  
+  C/  C++   --> linker --> input --> Additional Dependencies
+  
+// can use <GLFW/glfw3.h>
+// "" first find relative path
+#include "GLFW/glfw3.h"
+
+/**
+双引号会优先检查相对路径（从相对路径查找文件），如果没找到任何相对于这个文件的东西
+它就会去找编译器，检查编译器的 include 路径
+
+如果这个源文件在 visual studio 中 ==> 用双引号
+如果是一个完全的外部依赖，或者外部库，不在virtual studio中和我的solution一起编译 ==> 尖括号
+*/
+```
+
+头文件提供声明，告诉我们那些函数是可用的，库文件我们提供了定义，这样我们就可以链接到那些函数，并在 C++ 中调用函数时执行正确的代码。
+
+### 动态库
+
+动态链接
+
+发生在运行时
+
+一类是，“静态的” 动态库版本，应用程序现场需要这个动态链接库，已经知道里边有什么函数，可以使用什么。
+
+另一类是，任意加载这个动态库，甚至不知道里面有什么，但想取出一些东西，或者我想用它做很多事情。
+
+还是以 GLFW 为例
+
+```undefined
+glfw3.dll
+glfw3dll.lib 
+// glfw3dll.lib  是一堆指向 dll 文件的指针。这样我们就不用在运行时去检索所有东西的位置
+
+// 同时编译这两个文件是非常重要的，他们是直接相关的
+//（否则可能会得到不匹配的函数和错误类型的内存地址，函数指针不会正常工作）
+C/  C++   --> linker --> input --> Additional Dependencies（glfw3dll.lib 动态库文件名）
+```
+
+运行会遇到错误
+
+```
+❌由于找不到 glfw3.dll，无法继续执行代码。重新安装程序可能会解决此问题
+```
+
+
+
+```Plain
+Dependencies\GLFW\lib-vc2022\glfw3.dll : fatal error LNK1107: invalid or corrupt file: cannot read at 0x2F8
+
+// 简单的做法是：把 dll 库和 exe 放在同级目录（自动搜索路径）
+// 确保在一个可访问的地方有 dll 文件，可以在整个应用程序中，设置库搜索位置
+```
+
+> 为什么我可以不需要 declspec dllimport？
+>
+> 总结一下__declspec(dllimport)的作用作者：朱金灿
+>
+> 是时候总结一下`__declspec(dllimport)`的作用了。可能有人会问：`__declspec(dllimport)`和`__declspec(dllexport)`是一对的，在动态链接库中`__declspec(dllexport)`管导出，`__declspec(dllimport)`管导出，就像一个国家一样，有出口也有进口，有什么难理解的呢？这是一种很自然的思路，开始我也是这样理解。
+>
+> 但是在两年前的一个项目中，我发现不用`__declspec(dllimport)`似乎也可以。比如现在我新建一个使用共享MFC DLL的规则DLL工程：DllDlg。然后我新建两个文件：DllApi.h和DllApi.cpp。DllApi.h作为接口文 件，DllApi.cpp作为实现文件。
+>
+> 接着在DllApi.h声明一个函数：
+>
+> ```cpp
+> __declspec(dllexport) void HelloWorld();  
+> ```
+>
+> 在DllApi.cpp写这个函数的实现：
+>
+> ```cpp
+> void HelloWorld()  
+> {  
+>     AfxMessageBox(_T("HelloWorld"));  
+> }  
+> ```
+>
+> 这样外部的应用程序或dll就能调用HelloWorld函数。这里要特别提醒的是：有些网友说要把DllApi.h中的`__declspec(dllexport) void HelloWorld()`;改为`__declspec(dllimport) void HelloWorld();`才能提供给外部调用，实际上这并不需要，这个我已经测试过。从那时我就产生一个疑问：照这样，像类似下面的：
+>
+> ```cpp
+> #ifdef _EXPORTING  
+> #define API_DECLSPEC    __declspec(dllexport)  
+> #else  
+> #define API_DECLSPEC    __declspec(dllimport)  
+> #endif 
+> ```
+>
+> 是不是就只剩下一种作用：让外部调用者看得更自然些，知道哪些接口是自己工程需要导入的？`__declspec(dllimport)`是不是一点实际作用都没有呢？这个疑问一直盘旋在我的脑海。直到最近，我在CSDN论坛上发了一个帖子：
+>  [`__declspec(dllimport) `的作用到底在哪里呢？](http://topic.csdn.net/u/20100322/00/17389242-a3f7-46d1-992b-ae4c4e2976bb.html)
+>
+> 总结了各位大虾的发言，特得出如下结论：
+>
+> 1. 在导入动态链接库中的全局变量方面起作用：
+>     使用类似
+>
+> ```cpp
+> #ifdef _EXPORTING  
+> #define API_DECLSPEC    __declspec(dllexport)  
+> #else  
+> #define API_DECLSPEC    __declspec(dllimport)  
+> #endif 
+> ```
+>
+> 可以更好地导出dll中的全局变量，比如按照的宏，可以在dll中这样导出全局变量：
+>
+> ```undefined
+> API_DECLSPEC CBtt g_Btt;  
+> ```
+>
+> 然后在调用程序这样导入：
+>
+> ```undefined
+> API_DECLSPEC CBtt g_Btt;  
+> ```
+>
+> 当然也可以使用extern关键字，比如在dll中这样导出全局变量：
+>
+> ```undefined
+> CBtt g_Btt;  
+> ```
+>
+> 然后在调用程序这样导入：
+>
+> ```cpp
+> extern CBtt g_Btt;  
+> ```
+>
+> 但据说使用`__declspec(dllimport)`更有效。
+>
+> 1. __declspec(dllimport)的作用主要体现在导出类的静态成员方面，
+>     比如在动态链接库中定义这样一个导出类：
+>
+> ```cpp
+> class __declspec(dllexport) CBtt  
+> {  
+> public:  
+>     CBtt(void);  
+>     ~CBtt(void);  
+> public:  
+>     CString m_str;  
+>     static int GetValue()  
+>     {  
+>         return m_nValue;  
+>     }  
+> private:  
+>     static int m_nValue;  
+> }; 
+> ```
+>
+> 照上面这样声明，外部虽然可以使用CBtt类，但不能使用CBtt类的GetValue函数，一使用就会出现无法解析的外部符号 "`public: static int CBtt::m_nValue`" `(?m_nValue@CBtt@@2HA)`。只有如下声明才能使用CBtt类的GetValue函数：
+>
+> ```cpp
+> #ifdef _EXPORTING  
+> #define API_DECLSPEC    __declspec(dllexport)  
+> #else  
+> #define API_DECLSPEC    __declspec(dllimport)  
+> #endif  
+> class API_DECLSPEC CBtt  
+> {  
+> public:  
+>     CBtt(void);  
+>     ~CBtt(void);  
+> public:  
+>     CString m_str;  
+>     static int GetValue()  
+>     {  
+>         return m_nValue;  
+>     }  
+> private:  
+>     static int m_nValue;  
+> };  
+> ```
+>
+> 1. 使用隐式使用dll时，不加`__declspec(dllimport)`完全可以，使用上没什么区别，只是在生成的二进制代码上稍微有点效率损失。
+>
+> a、 不加`__declspec(dllimport)`时，在使用dll中的函数时，编译器并不能区别这是个普通函数，还是从其它dll里导入的函数
+> b、有 `__declspec(dllimport)`时，编译器知道这是要从外部dll导入的函数，从而在生成的exe的输入表里留有该项，以便在运行 exe，PE载入器加载exe时对输入地址表IAT进行填写
+>
+> 参考文献：
+>
+> 1. [__declspec(dllimport) 到底有什么用？](http://blog.csdn.net/Repeaterbin/archive/2009/06/15/4269666.aspx)
+
 
 
 

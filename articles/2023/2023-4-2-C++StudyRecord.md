@@ -78,17 +78,22 @@ if (condition) {
 
 配置
 
-```undefined
+```
+// 不使用 vs 的虚拟目录
 Show all files
 
-
+// 新建 folder
 src folder
 
+// 新增文件
+add new item
+
+// project --> properties
 Configuration: all configurations
 platform: all platforms
 General:
-output directory -- $(SolutionDir)\bin\$(Platform)\$(Configuration)\
-Intermediate directory  -- $(SolutionDir)\bin\intermediates\$(Platform)\$(Configuration)\
+output directory -- $(SolutionDir)bin\$(Platform)\$(Configuration)\
+Intermediate directory  -- $(SolutionDir)bin\intermediates\$(Platform)\$(Configuration)\
 ```
 
 ### 循环
@@ -833,7 +838,230 @@ void PrintEntity0(const Entity0& e)
 
 
 
+### 对象生存周期（栈作用域生存期）
 
+以下是问题代码：
+
+```C++
+int* CreateArray()
+{
+    int array[50];
+    return array;
+}
+
+int main()
+{
+    int* a = CreateArray();
+}
+```
+
+常见的错误：创建一个基于栈的变量，然后尝试返回指向它的指针。
+
+```C++
+// 直接在堆上分配
+int main()
+{
+    int* a = new int[50];
+}
+
+// 赋值给一个在栈作用域之外存在的变量
+void CreateArray(int* array)
+{
+    // file our array
+}
+
+int main()
+{
+    int array[50];
+    int* a = CreateArray(array);
+    
+    
+}
+```
+
+**作用域指针**，它基本上是一个类，它是一个指针的包装器，在构造时用堆分配指针然后在析构时删除指针。
+
+```C++
+class ScopedPtr
+{
+private:
+    Entity0* m_Ptr;
+public:
+    ScopedPtr(Entity0* ptr)
+        : m_Ptr(ptr)
+    {
+    }
+
+    ~ScopedPtr()
+    {
+        delete m_Ptr;
+    }
+};
+```
+
+### 智能指针
+
+本质上是原始指针的包装
+
+在很多情况下使用智能指针，你调用了 new，不需要手动调用 delete
+
+#### unique_ptr
+
+唯一
+
+作用域指针，是超出作用域时，它会被销毁，然后调用 delete
+
+```C++
+    {
+        // std::unique_ptr<EntityZero> entity(new EntityZero());
+        // meke_unique 出于异常安全建议使用该方法
+        // 最终不会得到一个没有引用的悬空指针，从而造成内存泄漏
+        std::unique_ptr<EntityZero> entity = std::make_unique<EntityZero>();
+        // std::unique_ptr<EntityZero> e2 = entity; // 这是不被允许的
+        // unique_ptr(const unique_ptr&)            = delete;
+        // unique_ptr& operator=(const unique_ptr&) = delete;
+        std::cout << entity->GetX() << std::endl;
+    }
+```
+
+#### shared_ptr
+
+实现的方式实际上取决于编译器和你在编译器中使用的标准库。
+
+引用计数，可以跟踪你的指针有多少个引用。
+
+```C++
+std::shared_ptr<EntityZero> e0;
+{
+    // 增加引用计数 + 分配 EntityZero  内存
+    std::shared_ptr<EntityZero> e3 = std::make_shared<EntityZero>();
+    std::cout << e3->GetX() << std::endl;
+    // 增加引用计数
+    e0 = e3;
+    // weak_ptr 不会增加引用计数 + 分配 EntityZero  内存
+    std::weak_ptr<EntityZero> e5 = std::make_shared<EntityZero>();
+    
+}
+```
+
+shared_ptr 需要分配另一块内存，叫做控制块，用来存储引用计数。
+
+#### weak_ptr
+
+### 复制与拷贝构造函数
+
+对于只读的，或者修改已经存在的对象，尽量避免复制，因为复制是增加开销的。
+
+当你使用赋值操作符，将一个变量设置为另一个变量时，你总是在复制值。除了引用，因为引用只是在改变指针的指向，并没有复制。
+
+在指针的情况下，你在复制指针，也就是内存地址，内存地址的数字，就是数字而已。而不是指针指向的实际内存。
+
+```C++
+struct Vector
+{
+public 
+    float x, y;
+};
+
+int main()
+{
+    vector* a = new Vector();
+    vector* b = a;
+    b->x = 2;
+}
+class String
+{
+private:
+    char* m_Buffer;
+    unsigned int m_Size;
+    
+public:
+    String(const char* string)
+    {
+        m_Size = strlen(string);
+        // 注意：空终止字符
+        m_Buffer = new char[m_Size+1];
+        // memcpy(m_Buffer, string, m_Size+1);
+        memcpy(m_Buffer, string, m_Size);
+        m_Buffer[m_Size] = 0;
+    }
+    
+    String(const String& other)
+        : m_Size(other.m_Size)
+    {
+        m_Buffer = new char[m_Size+1];
+         memcpy(m_Buffer, other.m_Buffer, m_Size+1);
+    }
+    /**
+    // 不可拷贝
+    String(const Stirng& other) = delete;
+    
+    */
+    /**
+    
+    String(const String& other)
+        : m_Buffer(other.m_Buffer), m_Size(other.m_Size)
+    {
+        
+    }
+    */
+    
+    /**
+    String(const Stirng& other)
+    {
+        memcpy(this, &other, sizeof(String));
+    }
+    */
+    
+    ~String()
+    {
+        delete[] m_Buffer;
+    }
+    friend std::ostream& operator<<(std::ostream& stream, const String& string);
+};
+
+std::ostream& operator<<(std::ostream& stream, const String& string)
+{
+    // friend
+    stream << string.m_Buffer;
+    return stream;
+}
+
+void PrintString(const String& string)
+{
+    std::cout << string << std::endl;
+}
+
+int main()
+{
+    /**
+    以下代码存在问题：
+    内存中有两个 string ---- 有相同的 char* 指针
+    因为他们直接进行了复制（浅拷贝）
+        复制 char*
+        复制 int
+    程序打印结束的时候，析构函数会被调用，
+    然后执行 delete[] m_Buffer 两次 
+    程序试图两次释放同一个内存块！！！
+    */
+    String string = "liuxing";
+    String second = string;
+    std::cout << string << std::endl;
+    std::cout << second << std::endl;
+    
+    /**
+    深拷贝
+    拷贝构造函数 -- 是一个构造函数
+    当你复制第二个字符串时，他会被调用。
+    当你把一个字符串赋值给一个对象时，这个对象也是一个字符串，
+    当你试图创建一个新的变量并给它分配另一个变量时，
+    它和你正在创建的变量有相同的类型。
+    你复制这个变量，也就是所谓的拷贝构造函数。
+    
+    c++ 在默认情况喜爱会为你提供一个拷贝构造函数
+    */
+}
+```
 
 
 

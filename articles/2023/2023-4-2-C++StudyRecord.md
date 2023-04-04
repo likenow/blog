@@ -2,6 +2,10 @@
 
 > 感谢 https://www.youtube.com/@TheCherno 的视频教学！！！
 
+[toc]
+
+
+
 ### 编译
 
 ### 链接
@@ -1253,7 +1257,7 @@ Properties
 
 头文件提供声明，告诉我们那些函数是可用的，库文件我们提供了定义，这样我们就可以链接到那些函数，并在 C++ 中调用函数时执行正确的代码。
 
-### 动态库
+### 使用动态库
 
 动态链接
 
@@ -1292,7 +1296,15 @@ Dependencies\GLFW\lib-vc2022\glfw3.dll : fatal error LNK1107: invalid or corrupt
 
 > 为什么我可以不需要 declspec dllimport？
 >
-> 总结一下__declspec(dllimport)的作用作者：朱金灿
+> 
+>
+> 
+>
+> ---
+>
+> 
+>
+> [总结一下__declspec(dllimport)的作用](https://blog.csdn.net/clever101/article/details/5421782) 作者：朱金灿
 >
 > 是时候总结一下`__declspec(dllimport)`的作用了。可能有人会问：`__declspec(dllimport)`和`__declspec(dllexport)`是一对的，在动态链接库中`__declspec(dllexport)`管导出，`__declspec(dllimport)`管导出，就像一个国家一样，有出口也有进口，有什么难理解的呢？这是一种很自然的思路，开始我也是这样理解。
 >

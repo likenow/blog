@@ -1434,23 +1434,559 @@ Dependencies\GLFW\lib-vc2022\glfw3.dll : fatal error LNK1107: invalid or corrupt
 
 
 
+### 创建与使用库
+
+```undefined
+new project
+c++ empty project --> Game
+
+project 右键 add new project --> Engine
+
+All Configurations/ All Platforms
+Game properities  General Configuration Type --> Application
+Enigine properities  General Configuration Type --> Static Library
+// 相对路径引用
+#include "../../Engine/src/Engine.h"
+
+// 绝对路径，特别是使用编译器的包含路径
+/*
+Game properties C/C++ General Additional include Directories
+*/
+#include "Engine.h"
+
+/*
+// #include "Engine.h"
+namespace engine
+{
+        PrintMessage();
+}
+*/
+
+int main()
+{
+        engine::PrintMessage();
+        return 0;
+}
+Virtual studio (vs) 中
+点击 Game 点击 add 然后是 reference
+我们可以在项目的解决方案中，选择 Engine
+现在会把 Engine.lib 链接到我们的可执行文件中，就像我们已经把它添加到连接器输入一样。
+```
 
 
----
+
+### 如何处理多返回值
+
+#### 输入参数
+
+```C++
+// 输入参数（引用类型）
+static void int ParseShader(const std::string& vertexSource, const std::string& fragmentSource)
+{
+    // ...
+}
+
+// 输入参数（指针类型）
+static void int ParseShader(const std::string* outVertexSource, const std::string* outFragmentSource)
+{
+    // ...
+    // null 判断
+    if (outVertexSource)
+    {
+        // ..
+        *outVertexSource = xxx;
+    }
+    if (outFragmentSource)
+    {
+        *outFragmentSource = xxx;
+    }
+}
+
+void func
+{
+    // ...
+    // 声明两个字符串，然后像这样传递进来。
+    std::stirng vs, fs;
+    // 引用
+    ParseShader(vs, fs);
+    
+    // 指针
+    ParseShader(&vs, &fs);
+}
+```
+
+#### 返回一个数组
+
+```C++
+static std::string* ParseShader()
+{
+    // ...
+    std::string vs = ss[0].str();
+    std::string fs = ss[1].str();
+        
+    // 新分配内存
+    return new std::string[] {vs, fs};
+}
+
+
+void func
+{
+    // ...
+    std::string* sources = ParseShader();
+    
+}
+
+// -------
+
+#include <vector>
+// 存储在堆上
+static std::vector<std::string> ParseShader()
+{
+    // ...
+    std::string vs = ss[0].str();
+    std::string fs = ss[1].str();
+    
+    std::vector<std::string> results;
+    results[0] = vs;
+    results[1] = fs;
+    return results;
+}
+
+
+void func
+{
+    // ...
+    std::vector sources = ParseShader();
+    
+}
+
+
+#include <array>
+// 存储在栈上
+static std::array<std::string, 2> ParseShader()
+{
+    // ...
+    std::string vs = ss[0].str();
+    std::string fs = ss[1].str();
+    
+    std::array<std::string, 2> results;
+    results[0] = vs;
+    results[1] = fs;
+    return results;
+}
+
+
+void func
+{
+    // ...
+    std::array sources = ParseShader();
+    
+}
+```
+
+Tuple 元组
+
+```C++
+//#include <utility>
+#include <functional>
+
+static std::tuple<std::string, std::string> ParseShader()
+{
+    // ...
+    std::string vs = ss[0].str();
+    std::string fs = ss[1].str();
+    
+    
+    return std::make_pair(vs,fs);
+}
+
+
+void func
+{
+    // ...
+    auto sources = ParseShader();
+    std::string vs = std::get<0>(sources);
+    std::string fs = std::get<1>(sources);
+    
+}
+```
+
+Pair
+
+```C++
+#include <functional>
+
+static std::pair<std::string, std::string> ParseShader()
+{
+    // ...
+    std::string vs = ss[0].str();
+    std::string fs = ss[1].str();
+    
+    
+    return std::make_pair(vs,fs);
+}
+
+
+void func
+{
+    // ...
+    auto sources = ParseShader();
+    std::string vs = sources.first;
+    std::string fs = sources.second;
+    
+}
+```
+
+#### 返回一个结构体
+
+阅读性更好！
+
+```C++
+struct ShaderProgramSource
+{
+    std::string VertexSource;
+    std::string FragmentSource;    
+}
+
+static ShaderProgramSource ParseShader()
+{
+    // ...
+    std::string vs = ss[0].str();
+    std::string fs = ss[1].str();
+    
+    
+    return {vs,fs};
+}
+
+
+void func
+{
+    // ...
+    auto sources = ParseShader();
+    std::string vs = sources.VertexSource;
+    std::string fs = sources.FragmentSource;
+    
+}
+```
+
+### 模板 template
+
+编译器为你写代码！！！基于你给他的规则，基于函数或类的使用，或类似的东西
+
+```C++
+/**
+这不是一个真的函数
+只有当我们实际调用它的时候，这些函数才被真的创建
+当我们调用这个函数的时候，基于传递的参数，这个函数才被创建出来
+并作为源代码被编译。
+*/
+
+template<typename T>
+void printMsg(T msg)
+{
+    std::cout << msg << std::endl;
+}
+template<typename T, int N>
+class Array
+{
+private:
+    T m_Array[N];
+public:
+    int GetSize() const { return N; }    
+};
+
+int main()
+{
+    Array<int, 5> array;
+    std::cout << array.GetSize() << std::endl;
+
+}
+```
+
+日志系统，可以使用模板。当模板搞得越来越复杂，可能没人知道干什么。。。
+
+### 栈和堆
+
+```C++
+#include <iostream>
+
+struct Vector3
+{
+    float x, y, z;
+    
+    Vector3()
+        : x(0), y(0), z(0)
+    {
+    
+    }
+}
+
+int main()
+{
+    // 栈，一行 cpu 指令，分配 快
+    // 作用域结束，所有在站内分配的东西，都会被弹出，被释放，被回收
+    // 不需要将栈指针反向移动然后返回栈指针地址，
+    // 只需要将栈指针，指向开始
+    int value = 5;
+    int array[5];
+    Vector3 vector;
+    
+    
+    // 堆，分配 慢
+    // new，malloc函数（memory allocate）
+    // 这样做通常会调用底层操作系统或平台的特定函数
+    // 这将在堆上为你分配内存（得到一定数量的物理 ram）
+    // 程序维护一个叫做 free list 空闲列表的东西
+    // 跟踪哪些内存块是空闲的
+    int* hvalue = new int;
+    *hvalue = 5;
+    
+    int* harray = new int[5];
+    
+    Vector3* hvector = new Vector();
+    
+    delete hvalue;
+    delete[] harray;
+    delete hvector;
+}
+```
+
+### 宏
+
+预处理器
+
+文本替换
+
+```C++
+#if PR_DEBUG == 1
+#define LOG(x) std::cout << x << std::endl
+#elif defined(PR_RELEASE)
+#define LOG(x)
+#endif
+
+// 多行的宏
+#define MAIN int main() \
+{\
+    LOG("HELLO");\
+    std::cin.get();\
+}
+
+MAIN
+project -> properties -> C/C++ -> Preprocessor Definitions
+```
+
+### Auto 关键字
+
+C++ 自己推导类型
+
+- 有了 auto 还需要写类型吗？当然！！！
+- 可否到处使用 auto？可读性变差！！！
+
+编程风格
+
+硬币的两面：
+
+客户端不需要做任何的改动，我甚至不知道 API 已经改变了。但是因为我不知道 API 改变了，它可能会破坏依赖于特定类型的代码！
+
+```C++
+#include <vector>
+
+int main()
+{
+    std::vector<std::string> strings;
+    strings.push_back("Apple");
+    strings.push_back("Orange");
+    
+    // for (std::vector<std::string>::interator it = strings.begin(); it != strings.end(); it++)
+    // 使用 auto，类型长度变短了
+    for (auto it = strings.begin(); it != strings.end(); it++)    
+    {
+        std::cout << *it <<std::endl;
+    }    
+
+}
+#include <unordered_map>
+
+class Device {};
+
+class DeviceManager
+{
+private:
+    std::unordered_map<std::string, std::vector<Device*>> m_Devices;
+public:
+    const std::unordered_map<std::string, std::vector<Device*>>& GetDevices() const
+    {
+        return m_Devices;
+    }        
+};
+
+int main()
+{
+    DeviceManager dm;
+    const std::unordered_map<std::string, std::vector<Device*>>& devices = dm.GetDevices();
+}
+
+int main()
+{
+    using DeviceMap = const std::unordered_map<std::string, std::vector<Device*>>;
+    DeviceManager dm;
+    DeviceMap& devices = dm.GetDevices();
+}
+
+int main()
+{
+    typedef std::unordered_map<std::string, std::vector<Device*>> DeviceMap;
+    DeviceManager dm;
+    const DeviceMap& devices = dm.GetDevices();
+}
+
+int main()
+{
+    DeviceManager dm;
+    const auto& devices = dm.GetDevices();
+}
+```
+
+### 静态数组
+
+```C++
+#include <array>
+
+int main()
+{
+    std::array<int, 5> data;
+    // size 模板的参数
+    // template<class _Ty, size_t _Size> class array {}
+    data.size();
+    data[0] = 100;
+    
+    // std::array 有边界检查（可选）_ITERATOR_DEBUG_LEVEL
+    
+    
+    int data1[5];
+    data1[0] = 200;
+}
+```
+
+### 函数指针
+
+讲一个函数赋值给一个变量的方法。
+
+对 函数指针，使用 auto typedef 或者 using
+
+```C++
+void HelloWorld()
+{
+    std::cout << "hello world" << std::endl;
+}
+
+int main()
+{
+    void(*f1)() = HelloWorld;
+    
+    f1();
+    
+    
+    auto f2 = HelloWorld;
+    
+    
+    typedef void(*HelloWorldFunction)();
+    //typedef void(*f)() HelloWorldFunction;
+    HelloWorldFunction f3 = HelloWorld;
+    f3();
+    
+}
+#include <iostream>
+
+void HelloWorld(int a)
+{
+    std::cout << "hello world value = " << a << std::endl;
+}
+
+int main()
+{
+    typedef void(*HelloWorldFunction)(int);
+    //typedef void(*f)() HelloWorldFunction;
+    HelloWorldFunction f3 = HelloWorld;
+    f3(100);
+    
+}
+#include <vector>
+
+void PrintValue(int value)
+{
+    std::cout << "value = " << value << std::endl;    
+}
+
+void ForEach(const std::vector<int>& values, void(*func)(int))
+{
+    for (int value : values)
+        func(value);
+}
+
+int main()
+{
+    std::vector<int> values = {1,5,4,2,3};
+    ForEach(values, PrintValue);
+}
+#include <vector>
+
+void ForEach(const std::vector<int>& values, void(*func)(int))
+{
+    for (int value : values)
+        func(value);
+}
+
+int main()
+{
+    std::vector<int> values = {1,5,4,2,3};
+    // lambda
+    // [] 捕获方式 (参数列表)
+    ForEach(values, [](int value){ std::cout << "value = " << value << std::endl; });
+}
+```
 
 
 
-### 用 c++ 编写桌面程序的最佳方法
+### lambda
 
-Dear ImGui
+只要你有一个函数指针，你都可以使用 lambda。我们会设置函数指针指向函数的任何地方，我们都可以将它设置为 lambda。
 
-imGUI 如果你有非常大的数据集，如果他们在每一帧都被渲染刷新，你可能会遇到一些问题。
+```C++
+#include <vector>
 
-即时模式 immediate mode
+void ForEach(const std::vector<int>& values, void(*func)(int))
+{
+    for (int value : values)
+        func(value);
+}
 
-每次都会重新绘制所有的元素，绝大多数游戏是这类模式。
+int main()
+{
+    std::vector<int> values = {1,5,4,2,3};
+    // lambda
+    // [] 捕获方式 (参数列表)
+    // [a, &b] / [this] / [&] / [=] / []
+    ForEach(values, [](int value){ std::cout << "value = " << value << std::endl; });
+}
+#include <vector>
+#include <functional>
 
-保留模式 retain mode
+void ForEach(const std::vector<int>& values, const std::function<void(int)>& func)
+{
+    for (int value : values)
+        func(value);
+}
 
-当需要改变时，执行的是改变的处理，绝大多数应用程序是用的这种模式。
+int main()
+{
+    std::vector<int> values = {1,5,4,2,3};
+    // lambda
+    // [] 捕获方式 (参数列表)
+    // [a, &b] / [this] / [&] / [=] / []
+    ForEach(values, [=](int value){ std::cout << "value = " << value << std::endl; });
+}
+```
+
+
 

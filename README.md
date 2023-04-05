@@ -495,9 +495,13 @@
       <td><a href="./articles/2017/2017-11-18-C与C++语言struct与typedef.md">C与C++语言struct与typedef ✅ </a></td>
    </tr>
   <tr>
-      <td rowspan="2">C++语言</td>
+      <td rowspan="3">C++语言</td>
       <td><a href="./articles/2017/2017-11-18-C与C++语言struct与typedef.md">C与C++语言struct与typedef ✅ </a></td>
       <td><a href="./articles/2023/2023-4-2-C++StudyRecord.md">C++语言学习笔记 ✅ </a></td>
+   </tr>
+  <tr>
+      <td><a href="./articles/2023/2023-4-5-C++StudyRecord1.md">C++语言学习笔记1 ✅ </a></td>
+      <td><a href="./articles/2023/2023-4-5-C++StudyRecord2.md">C++语言学习笔记2 ✅ </a></td>
    </tr>
    </tr>
 </table>

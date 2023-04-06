@@ -130,6 +130,80 @@ int main()
 
 ### 多维数组
 
+```C++
+void f11()
+{
+    // 50 * 4 -> 200 个字节
+    int* a = new int[50];
+    delete[] a;
+    
+    // a pointer to a pointer 一个指向 int 指针的指针
+    // 分配了 50 个指针 * 4 -> 200 字节（区别于上述一维数组，现在存储空间存了200个字节的指针）
+    // 我们有一个包含 50 个数组的内存位置的数组
+    // 我们存储的实际数组其实还没有被分配
+    int** a2d = new int* [50];
+    for (int i = 0; i < 50; i++)
+    {
+        a2d[i] = new int[50];
+    }
+
+    int*** a3d = new int** [50];
+    for (int i = 0; i < 50; i++)
+    {
+        a3d[i] = new int*[50];
+        for (int j = 0; j < 50; j++)
+        {
+            a3d[i][j] = new int[50];
+            /*
+            int** ptr = a3d[i];
+            prt[j] = new int[50];
+            */
+        }
+    }
+    /*
+    删除，需要遍历，然后 delete 所有的数组（没有 delete[][]！）
+    */
+    for (int i = 0; i < 50; i++)
+    {
+        delete[] a2d[i];
+    }
+    delete[] a2d;
+    
+    for (int i = 0; i < 50; i++)
+    {
+        delete[] a3d[i];
+        for (int j = 0; j < 50; j++)
+        {
+            delete[] a3d[i][j];
+        }
+    }
+    delete[] a3d;
+}
+
+// 上述会产生碎片，会导致 cache miss
+// 速度比 一维数组 慢！
+/*
+优化内存访问
+如果你能将要访问的内存存储在一起
+那么你在定位数据时，会有更多的 cache hits（缓存命中）以及更少的 cache miss
+*/
+
+// 一维数组实现，可以像二维数组一样访问，这是连续的内存，它更快
+void f12()
+{
+    int* array = new int[50 * 50];
+    for (int i = 0; i < 50; i++)
+    {
+        for (int j = 0; j < 50; j++)
+        {
+            // 每次i + 1， 就向前跳50个元素
+            // 相当于你的数组网格向下跳一行
+            array[i + j * 50] = 1;
+        }
+    }
+}
+```
+
 ### 排序
 
 标准库 algorithm sort 可以为你进行排序，或者为你提供它的任何类型的迭代器执行排序。nlogN

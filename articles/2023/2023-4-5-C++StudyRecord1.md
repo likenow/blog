@@ -539,3 +539,378 @@ actions
 
 断点会拖慢程序
 
+
+
+### C++ 安全及 cherno 观点
+
+降低崩溃、内存泄漏、非法访问等问题，这往往是人为错误
+
+智能指针和自动内存管理系统可以降低人犯错的概率
+
+原始指针和智能指针的讨论。
+
+智能指针围绕原始指针做了额外的辅助代码，以便自动化所有事情，但本质上只是删除和释放内存。
+
+### 预编译头文件 Precompiled header
+
+在你想要编译 main 文件之前，预处理器必须把所有这些文件复制到，比如 vector 文件，这就有上十万行代码了，它需要解析，并以某种形式标记并编译。
+
+如果main 引入了 vector，那么 vector 必须复制并粘贴到  main 文件中，然后是整个代码，所有的代码每次都需要被解析和编译。
+
+如果你要改变我们正在编译的main 文件，main 文件就是一个 cpp 文件，就是我们现在正在做的那个修改，整个文件都要重新编译。
+
+如果你的项目中有许多的 cpp 文件，很多地方都会 #include <vector> ，显然它们会被单独包含在每个文件中，因为这就是编译器的工作方式。每个翻译单元都是单独编译的，然后再进行链接，把所有的东西连接在一起。
+
+所以那个 vector 类或者 vector 文件必须被复制并粘贴到你的 c++ 文件中，从头开始重新解析并重新编译。这意味着你的编译事件将比潜在的要长的多。
+
+不仅如此，考虑到你的项目中有多个 c++ 文件，它们都包含了 vector 你不得不一遍又一遍解析同样的代码。对你实际要编译的每个翻译单元，每个cpp文件，每一次都是如此。
+
+所以你可以用一个叫 预编译头文件的东西来代替。它的作用是接收一堆你告诉它要接收的头文件。基本上是一堆代码，它只编译一次。它以二进制格式存储，这对编译器来说比单纯的文本处理要快得多。
+
+这样你不需要解析整个vector文件，每次它只需要看预编译的头文件，他已经是非常快速且容易使用的，对编译器来说很容易使用的二进制格式。每次你需要 vector 的时候都要用到这些二进制格式，因为你已经在你当前编译的源文件中包含了预编译的头文件。 -- 编译提速！
+
+不要把项目中经常修改变动的文件，放到 PCH 中，因为变动后整个预编译头文件都需要重新编译，速度又变回慢了。。。
+
+PCH 真正有用的是外部依赖（😊预编译头文件可能比实际代码多很多倍～～）
+
+- C++ 库
+- 标准模板库
+- Windows API
+- ...
+
+Pch 被包含在每个你写的 cpp 文件中。导致一个问题，如果你只单独看 CPP 文件，你并不知道她需要什么依赖。在模块化和代码重用方面，这可能非常困难！
+
+```undefined
+project -> properties -> C/C++ -> preprocessor -> Preprocess to a file
+pch.h
+
+pch.cpp
+
+pch.cpp -> properties -> C/C++ -> precompiled headers -> precompiled header -> create(/Yc)
+
+project -> properties -> C/C++ -> precompiled headers -> precompiled header -> use(/Yu)
+project -> properties -> C/C++ -> precompiled headers -> precompiled header file -> pch.h
+
+Main.cpp -> properties -> C/C++ -> precompiled headers -> precompiled header -> use(/Yu)
+// 构建时长
+tools -> options -> projects and solutions -> vc++ project settings -> build timing 设置为 yes
+```
+
+GCC 编译器
+
+```undefined
+time g++ -std=c++11 Main.cpp
+// pch.gc.h 114M
+```
+
+在你的预编译头文件中放入什么，是一个可探讨的问题 😜
+
+### dynamic_cast 动态类型转换
+
+更像是一个函数，在运行时计算。
+
+举个例子，一个 Entity 类，玩家Player类和敌人enemy类都是继承自 Entity类，如果把一个  Entity 指针转换成玩儿家Player类该怎么做？
+
+dynamic_cast 常用来做验证，如果把 Entity 转换成 Player玩家失败，会返回一个  NULL 指针
+
+```C++
+class Entity
+{
+public:
+    virtual void PrintName() {}
+
+}
+
+class Player : public Entity
+{
+
+}
+
+class Enemy : public Entity
+{
+
+}
+
+int main()
+{
+    Player* player = new Player();
+    Entity* acutallyPlayer = new Player(); // 隐式转换
+    Entity* acutallyEnemy = new Enemy(); // 隐式转换
+    
+    // dynamic_cast 它会告诉我们它需要一个多态类类型
+    // 我们需要一个虚函数表
+    // runtime type information
+    Player* p = dynamic_cast<Player*>(acutallyPlayer); // 成功
+    
+    Player* p1 = dynamic_cast<Player*>(acutallyEnemy); // NULL
+    
+    /*
+    actuallEnemy is Player --> c#
+    actuallEnemy instanceof Player --> java
+    */
+}
+```
+
+Rtti 增加了开销，因为类型需要存储更多关于自己的信息。
+
+dynamic_cast 也需要时间，因为我们需要检查类型信息是否匹配。
+
+```undefined
+// 可以关闭 RTTI
+virtual studio --> c/c++ -> language -> enable runtime type information
+
+// 'dynamic cast' used on polymorphic type entity with / GR-
+```
+
+### 测试基准
+
+```C++
+#include "pch.h"
+
+class MyTimer
+{
+public:
+    MyTimer()
+    {
+        m_StartTimePoint = std::chrono::high_resolution_clock::now();
+    }
+    ~MyTimer()
+    {
+        Stop();
+    }
+    void Stop()
+    {
+        auto endTimePoint = std::chrono::high_resolution_clock::now();
+        auto start = std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTimePoint).time_since_epoch().count();
+        auto end = std::chrono::time_point_cast<std::chrono::microseconds>(endTimePoint).time_since_epoch().count();
+        auto duration = end - start;
+        double ms = duration * 0.001;
+        std::cout << "Timer took " << duration << " us    " << ms << " ms" << std::endl;
+    }
+private:
+    std::chrono::time_point<std::chrono::steady_clock> m_StartTimePoint;
+};
+
+int main()
+{
+
+    int value = 0;
+    {
+        MyTimer t;
+        for (int i = 0; i < 1000000; i++)
+        {
+            value += 2;
+        }
+    }
+
+    std::cout << value << std::endl;
+    
+
+    __debugbreak();
+}
+```
+
+比如上述代码，在 debug 模式，你可以看到汇编代码执行 add 指令。但在 release 模式下，编译器看了这段代码，并意识到，这并不需要在运行时计算，于是进行了优化，直接在编译时就计算出来了。只需要打印 2百万就可以了。我们没有做任何形式的增量计算。那么这里计时器的结果将完全是无用功！！！因为 timer 啥也没测量，我们基本上是在测量打印需要多长时间。。。。事实上甚至都不是，因为那个计时范围不包括打印函数😢 你要确保自己并不是在测量什么都没有发生的事情，因为编译器实际上会非常积极地改变你的代码！！！
+
+```C++
+void fn2()
+{
+    struct Vector2
+    {
+        float x, y;
+    };
+
+    std::cout << "Make shared \n";
+    {
+        std::array<std::shared_ptr<Vector2>, 1000> sharedPtrs;
+        MyTimer t;
+        for (int i = 0; i < sharedPtrs.size(); i++)
+        {
+            sharedPtrs[i] = std::make_shared<Vector2>();
+        }
+    }
+    
+    std::cout << "New shared \n";
+    {
+        std::array<std::shared_ptr<Vector2>, 1000> sharedPtrs;
+        MyTimer t;
+        for (int i = 0; i < sharedPtrs.size(); i++)
+        {
+            sharedPtrs[i] = std::shared_ptr<Vector2>(new Vector2());
+        }
+    }
+
+    std::cout << "Make unique \n";
+    {
+        std::array<std::unique_ptr<Vector2>, 1000> uniquePtrs;
+        MyTimer t;
+        for (int i = 0; i < uniquePtrs.size(); i++)
+        {
+            uniquePtrs[i] = std::make_unique<Vector2>();
+        }
+    }
+}
+```
+
+### 结构化绑定 structured bindings c++17
+
+更好的处理多返回值，特别是如何处理元组 tuple 和 对组 pairs 以及返回诸如此类的东西。
+
+```undefined
+// 切换 c++ 版本
+
+project --> properties --> C/C++ --> Language --> Standard --> C++17
+```
+
+### 如何处理 OPTIONAL 数据 std::optional c++17
+
+```C++
+std::optional<std::string> ReadFileAsString(const std::string& filePath)
+{
+    /*
+    std::filesystem::path absolutePath = std::filesystem::absolute(filePath);
+    std::cout << "Absolute path: " << absolutePath << std::endl;
+    */
+    std::filesystem::path file_path(filePath);
+    if (!std::filesystem::exists(file_path))
+    {
+        std::cout << "File dose not exist \n";
+        return {};
+    }
+
+    // Check the file permissions
+    std::filesystem::file_status status = std::filesystem::status(file_path);
+    if ((status.permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::none)
+    {
+        std::cerr << "No permission to read file" << std::endl;
+        return {};
+    }
+
+    std::ifstream infile(file_path);
+    if (!infile)
+    {
+        std::cout << "Error opening file \n";
+        return {};
+    }
+    std::string reslut;
+    // read file
+    std::string line;
+    while (std::getline(infile, line)) { // read each line of the file
+        reslut += line;
+        std::cout << line << std::endl; // output the line
+    }
+    infile.close();
+    return reslut;
+}
+
+int main()
+{
+    // C:\\Users\\fmsli\\dev\\Project1\\Project1\\src\\Test.txt
+    // absolute path
+    std::optional<std::string> data = ReadFileAsString("C:\\Users\fmsli\dev\Project1\Project1\src\Test.txt");
+    //if (data.has_value())
+    if (data)
+    {
+        std::cout << "File read successfully! \n";
+    }
+    else
+    {
+        std::cout << "File read error! \n";
+    }
+    //__debugbreak();
+}
+```
+
+> 这个例子用了打开文件，注意 virtual studio 中，打开文件的路径！！！
+>
+> 这里我用了绝对路径才访问到。。。
+
+### 单一变量存放多种类型的数据 c++17
+
+```C++
+#include <variant>
+
+
+void fn6()
+{
+    std::variant<std::string, int> data;
+    data = "liuxing";
+    
+    data = 24;
+    
+    if (auto v = std::get_if<std::string>(&data))
+    {
+        std::cout << std::get<std::string>(data) << "name \n";
+    }
+    else if (auto v = std::get_if<int>(&data))
+    {
+        std::cout << "age = " << std::get<int>(data) << std::endl;
+    }
+
+}
+```
+
+Variant 是一个类型安全的 union
+
+### 存储任意类型的数据 c++17
+
+鸡肋。。。
+
+```C++
+// void*
+
+// std::any
+
+#include <any>
+
+void fn7()
+{
+    //std::any data = std::make_any();
+    std::any data;
+    data = 2;
+    // 这是一个 const char 类型
+    data = "liuxing";
+    data = std::string("liu");
+    
+    // 取值的时候你必须知道它是哪个类型，然后把它转换成那个类型，你可以使用 std::any_cast
+    // 如果类型不对，会抛出类型转换异常的错误
+    // 会产生复制
+    std::string string1 = std::any_cast<std::string>(data);
+    
+    // 不产生复制，通过引用返回
+    std::string& string2 = std::any_cast<std::string&>(data);
+    
+}
+```
+
+Any 动态分配内存
+
+小空间 -- union
+
+超过了 32 个字节
+
+大空间 -- void*
+
+简单重写一个 new 操作符，来看一下 Any 的动态分配内存
+
+```C++
+void* operator new(size_t size)
+{
+    return malloc(size);
+}
+
+struct CustomClass
+{
+    std::string s0, s1;
+}
+
+int main()
+{
+    std::any data;
+    // Big_Storage, 会在这里调用 new
+    data = CustomClass();
+}
+```
+
+
+

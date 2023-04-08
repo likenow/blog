@@ -914,3 +914,477 @@ int main()
 
 
 
+### 让 C++ 运行的更快
+
+多线程
+
+数据流化
+
+```C++
+#include <future>
+
+/*
+当某些资源不能被同时访问，你必须 锁定资源 做你想做的事情，比如：修改它，然后解锁它
+这样另一个线程才能访问它。
+方法是使用：mutex/ spinlock ...
+*/
+static std::mutex s_MeshesMutex;
+
+// meshes 是一个指针拷贝
+// filepath 是一个拷贝，因为你可能会访问已经被删除的内存
+static void LoadMesh(std::vector<Ref<Mesh>>* meshes, std::string filepath)
+{
+    auto mesh = Mesh::Load(filepath);
+    // 锁定资源
+    std::lock_guard<std::mutex> lock(s_MeshesMutex);
+    meshes->push_back(mesh);
+}
+
+
+void EditorLayer::loadMeshes()
+{
+    std::ifstream stream("src/Models.txt");
+    std::string line;
+    std::vector<std::string> meshFilepaths;
+    while (std::getline(stream, line)
+    {
+        meshFilepaths.push_back(line);
+    }
+#define ASYNC 1
+#if ASYNC
+    for (const auto& file : meshFilepaths)
+    {
+        m_Meshes.push_back(Mesh::Load(file));
+    }
+#else
+    for (const auto& file : meshFilepaths)
+    {
+        m_Futures.push_back(std::async(std::launch::async, LoadMesh, &m_Meshes,file));
+    }
+#endif    
+}
+
+void func()
+{
+    // 这主要是为了持有 future 避免for循环结束，释放
+    std::vetcor<std::future<void>> m_Futures;
+}
+```
+
+### 让字符串更快
+
+```C++
+static uint32_t s_AllocCount = 0;
+
+void* operator new(size_t size)
+{
+    s_AllocCount++;
+    std::cout << "Allocating = " << size << "bytes \n";
+    return malloc(size);
+}
+
+void PrintName(const std::string& name)
+{
+    std::cout << name << std::endl;
+}
+
+void PrintNameView(std::string_view name)
+{
+    std::cout << name << std::endl;
+}
+
+void fn8()
+{
+#if 0
+    std::string name = "liu xing";
+    std::string fname = name.substr(0, 3);
+    std::string lname = name.substr(4, 7);
+    PrintName(lname);
+    /*
+    Allocating = 16bytes
+    Allocating = 16bytes
+    Allocating = 16bytes
+    xing
+    3 allocations
+    */
+#elif 0
+    std::string name = "liu xing";
+    std::string_view firstName(name.c_str(), 3);
+    std::string_view lastName(name.c_str() + 4, 4);
+    PrintNameView(lastName);
+    /*
+    Allocating = 16bytes
+    xing
+    1 allocations
+    */
+#else
+    const char* name = "liu xing";
+    std::string_view firstName(name, 3);
+    std::string_view lastName(name + 4, 4);
+    PrintNameView(lastName);
+    /*
+    xing
+    0 allocations
+    */
+#endif
+
+    std::cout << s_AllocCount << " allocations \n";
+
+        
+}
+
+int main()
+{
+    fn8();
+    //__debugbreak();
+}
+```
+
+string_view -- c++17
+
+本质上只是一个指向现有内存的指针，换句话说，就是一个 const char 指针，指向其他人拥有的现有字符串，再加上一个大小 size
+
+没有内存分配，按值传递字符串视图是非常轻量级的
+
+### 可视化基准测试
+
+> chrome://tracing/
+>
+> json
+
+```C++
+#pragma once
+#include <string>
+#include <chrono>
+#include <algorithm>
+#include <fstream>
+
+#include <thread>
+#include <mutex>
+
+#define COMBINE_HELPER(X,Y) X##Y
+#define COMBINE(X,Y) COMBINE_HELPER(X,Y)
+
+/*
+__FUNCTION__
+__FUNCSIG__
+*/
+
+#define PROFILING 1
+#ifdef PROFILING
+    #define PROFILE_SCOPE(name) InstrumentationTimer COMBINE(timer,__LINE__)(name)
+    #define PROFILE_FUNCTION()  PROFILE_SCOPE(__FUNCTION__)
+#else
+    #define PROFILE_SCOPE(name)
+#endif
+
+struct ProfileResult
+{
+    std::string Name;
+    long long Start, End;
+    
+    // linux: unsigned long int (depend on compile setting 64bit or 32bit)
+    uint32_t ThreadID;
+    //std::thread::id ThreadID;
+};
+
+struct InstrumentationSession
+{
+    std::string Name;
+};
+
+class Instrumentor
+{
+private:
+    InstrumentationSession* m_CurrentSession;
+    std::ofstream m_OutputStream;
+    int m_ProfileCount;
+    std::mutex m_lock;
+public:
+    Instrumentor()
+        : m_CurrentSession(nullptr), m_ProfileCount(0)
+    {
+    }
+
+    void BeginSession(const std::string& name, const std::string& filepath = "results.json")
+    {
+        m_OutputStream.open(filepath);
+        WriteHeader();
+        m_CurrentSession = new InstrumentationSession{ name };
+    }
+
+    void EndSession()
+    {
+        WriteFooter();
+        m_OutputStream.close();
+        delete m_CurrentSession;
+        m_CurrentSession = nullptr;
+        m_ProfileCount = 0;
+    }
+
+    void WriteProfile(const ProfileResult& result)
+    {
+        std::lock_guard<std::mutex> lock(m_lock);
+
+        if (m_ProfileCount++ > 0)
+            m_OutputStream << ",";
+
+        std::string name = result.Name;
+        std::replace(name.begin(), name.end(), '"', '\'');
+
+        m_OutputStream << "{";
+        m_OutputStream << "\"cat\":\"function\",";
+        m_OutputStream << "\"dur\":" << (result.End - result.Start) << ',';
+        m_OutputStream << "\"name\":\"" << name << "\",";
+        m_OutputStream << "\"ph\":\"X\",";
+        m_OutputStream << "\"pid\":0,";
+        m_OutputStream << "\"tid\":" << result.ThreadID << ",";
+        m_OutputStream << "\"ts\":" << result.Start;
+        m_OutputStream << "}";
+
+        m_OutputStream.flush();
+    }
+
+    void WriteHeader()
+    {
+        m_OutputStream << "{\"otherData\": {},\"traceEvents\":[";
+        m_OutputStream.flush();
+    }
+
+    void WriteFooter()
+    {
+        m_OutputStream << "]}";
+        m_OutputStream.flush();
+    }
+
+    static Instrumentor& Get()
+    {
+        static Instrumentor instance;
+        return instance;
+    }
+};
+
+class InstrumentationTimer
+{
+public:
+    InstrumentationTimer(const char* name)
+        : m_Name(name), m_Stopped(false)
+    {
+        m_StartTimepoint = std::chrono::high_resolution_clock::now();
+    }
+
+    ~InstrumentationTimer()
+    {
+        if (!m_Stopped)
+            Stop();
+    }
+
+    void Stop()
+    {
+        auto endTimepoint = std::chrono::high_resolution_clock::now();
+
+        long long start = std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTimepoint).time_since_epoch().count();
+        long long end = std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint).time_since_epoch().count();
+
+        uint32_t threadID = std::hash<std::thread::id>{}(std::this_thread::get_id());
+        Instrumentor::Get().WriteProfile({ m_Name, start, end, threadID });
+
+        m_Stopped = true;
+    }
+private:
+    const char* m_Name;
+    std::chrono::time_point<std::chrono::high_resolution_clock> m_StartTimepoint;
+    bool m_Stopped;
+};
+
+
+namespace Benchmark
+{
+        void fn1()
+        {
+                PROFILE_FUNCTION();
+                int value = 0;
+                {
+                        PROFILE_SCOPE("for loop");
+                        for (int i = 0; i < 1000000; i++)
+                        {
+                                value += 2;
+                        }
+                }
+
+                std::cout << value << std::endl;
+        }
+
+        void fn2()
+        {
+                PROFILE_FUNCTION();
+                struct Vector2
+                {
+                        float x, y;
+                };
+
+                std::cout << "Make shared \n";
+                {
+                        PROFILE_SCOPE("make_shared");
+                        std::array<std::shared_ptr<Vector2>, 1000> sharedPtrs;
+                        for (int i = 0; i < sharedPtrs.size(); i++)
+                        {
+                                sharedPtrs[i] = std::make_shared<Vector2>();
+                        }
+                }
+
+                std::cout << "New shared \n";
+                {
+                        PROFILE_SCOPE("new_shared");
+                        std::array<std::shared_ptr<Vector2>, 1000> sharedPtrs;
+                        for (int i = 0; i < sharedPtrs.size(); i++)
+                        {
+                                sharedPtrs[i] = std::shared_ptr<Vector2>(new Vector2());
+                        }
+                }
+
+                std::cout << "Make unique \n";
+                {
+                        PROFILE_SCOPE("make_unique");
+                        std::array<std::unique_ptr<Vector2>, 1000> uniquePtrs;
+                        for (int i = 0; i < uniquePtrs.size(); i++)
+                        {
+                                uniquePtrs[i] = std::make_unique<Vector2>();
+                        }
+                }
+        }
+        void fn3()
+        {
+                PROFILE_FUNCTION();
+
+                std::thread a([]() { fn1(); });
+                a.join();
+        }
+}
+#include "Instrumentor.h"
+#include <iostream>
+#include <array>
+#include <memory>
+
+namespace Benchmark
+{
+    void fn1()
+    {
+        PROFILE_FUNCTION();
+        int value = 0;
+        {
+                PROFILE_SCOPE("for loop");
+                for (int i = 0; i < 1000000; i++)
+                {
+                        value += 2;
+                }
+        }
+
+        std::cout << value << std::endl;
+    }
+
+    void fn2()
+    {
+        PROFILE_FUNCTION();
+        struct Vector2
+        {
+                float x, y;
+        };
+
+        std::cout << "Make shared \n";
+        {
+                PROFILE_SCOPE("make_shared");
+                std::array<std::shared_ptr<Vector2>, 1000> sharedPtrs;
+                for (int i = 0; i < sharedPtrs.size(); i++)
+                {
+                        sharedPtrs[i] = std::make_shared<Vector2>();
+                }
+        }
+
+        std::cout << "New shared \n";
+        {
+                PROFILE_SCOPE("new_shared");
+                std::array<std::shared_ptr<Vector2>, 1000> sharedPtrs;
+                for (int i = 0; i < sharedPtrs.size(); i++)
+                {
+                        sharedPtrs[i] = std::shared_ptr<Vector2>(new Vector2());
+                }
+        }
+
+        std::cout << "Make unique \n";
+        {
+            PROFILE_SCOPE("make_unique");
+            std::array<std::unique_ptr<Vector2>, 1000> uniquePtrs;
+            for (int i = 0; i < uniquePtrs.size(); i++)
+            {
+                    uniquePtrs[i] = std::make_unique<Vector2>();
+            }
+        }
+    }
+    void fn3()
+    {
+        PROFILE_FUNCTION();
+
+        std::thread a([]() { fn1(); });
+        a.join();
+    }
+}
+int main()
+{
+    Instrumentor::Get().BeginSession("Profile");
+    Benchmark::fn1();
+    Benchmark::fn2();
+    Benchmark::fn3();
+    Instrumentor::Get().EndSession();
+    return 0;
+}
+```
+
+### 单例模式 Singleton
+
+当我们想要拥有应用于某种完全数据集的功能，且我们只是想要重复使用时，单例是非常有用的。
+
+单例的行为就像命名空间，单例累可以像命名空间一样工作。
+
+C++ 中的单例只是一种组织一堆全局变量和静态函数的方式。
+
+```C++
+// 没有构造函数
+class Random
+{
+public:
+    // 删除拷贝构造函数
+    Random(const Random&) = delete;
+    // 删除赋值操作符（不可复制赋值操作符）
+    Random& operator=(const Random&) = delete;
+    /*
+    // 上述删除了复制方法，以下将不被允许❌
+    Random instance = Random::Get();
+    
+    // 必须写成引用
+    Random& instance = Random::Get();
+    */
+    static Random& Get()
+    {
+        static Random instance;
+        return instance;
+    }
+    static float Float()
+    {
+        return Get().IFloat();
+    }
+private:
+    float IFloat()
+    {
+        return m_RandomGenerator;
+    }
+    Random() {}
+    float m_RandomGenerator = 0.5f;
+};
+
+int main()
+{
+    // Random::Get().Float();
+    Random::Float();
+}
+```

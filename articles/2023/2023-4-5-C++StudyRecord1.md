@@ -1388,3 +1388,378 @@ int main()
     Random::Float();
 }
 ```
+
+
+
+### 小字符串优化
+
+15个字符 -- 小字符串
+
+```C++
+basic_string(_In_z const _Elem* const _Ptr) : xxx
+{
+    // xxx
+    _Container_procy_ptr<_Alty> _Proxy(_Alproxy, _Mypair._Myval2);
+}
+```
+
+### 跟踪内存分配
+
+自己的 `operator new / operator delete`
+
+```C++
+#include <iostream>
+#include <memory>
+
+static uint32_t s_AllocCount = 0;
+
+struct AllocationMetrics
+{
+    uint32_t TotalAllocated = 0;
+    uint32_t TotalFreed = 0;
+    
+    uint32_t CurrentUsage() { return TotalAllocated - TotalFreed; };
+};
+
+static AllocationMetrics s_AllocationMetrics;
+
+void* operator new(size_t size)
+{
+    s_AllocCount++;
+    s_AllocationMetrics.TotalAllocated += size;
+    std::cout << "Allocating = " << size << "bytes \n";
+    return malloc(size);
+}
+
+void operator delete(void* memory, size_t size)
+{
+    s_AllocationMetrics.TotalFreed += size;
+    free(memory);
+}
+
+static void PrintMemoryUsage()
+{
+    std::cout << "Memory usage:" << s_AllocationMetrics.CurrentUsage() << " bytes\n";
+}
+
+struct Object
+{
+    int x,y,z;
+};
+
+
+void fn9()
+{
+    PrintMemoryUsage();
+    {
+        Object* obj = new Object;
+        PrintMemoryUsage();
+    }
+    {
+        std::unique_ptr<Object> obj = std::make_unique<Object>();    
+        PrintMemoryUsage();
+    }
+    PrintMemoryUsage();
+}
+
+int main()
+{
+    fn9();
+}
+```
+
+### 左值与右值
+
+左值时某种存储支持的变量，右值时临时变量。
+
+左值引用仅仅接受左值，除非使用 const
+
+右值引用仅仅接受右值
+
+Expression must be a modifiable lvalue
+
+Located value
+
+```C++
+{
+    // i -> 左值/10 -> 右值
+    int i = 10;
+    // 同上
+    int temp = 10;
+    // temp -> 左值 / a -> const 左值引用可以同时接受左值和右值
+    const int& a = temp;
+}
+
+void PrintName1(std::string& name)
+{
+    std::cout << "lValue: " << name << std::endl;
+}
+// 重载
+void PrintName1(const std::string&& name)
+    {
+        std::cout << "rValue: " << name << std::endl; // ok
+    }
+
+void PrintName2(const std::string& name)
+{
+    std::cout << name << std::endl;
+}
+
+void fn10()
+{
+    std::string firstName = "liu";
+    std::string lastName = "xing";    
+    
+    std::string fullName = firstName + lastName;
+    
+    PrintName1(fullName);
+    PrintName1(firstName + lastName); // no 报错
+    
+    PrintName2(firstName + lastName); // ok
+    
+    /*
+    检测左值or右值
+    写一个非常亮的左值引用，因为左值只能接受左值，否则编译器报错
+    
+    写一个函数，只接受临时对象（需要使用一个叫做右值引用 &&）
+    
+    */
+}
+```
+
+### 持续集成（CI）
+
+构建自动化和测试
+
+jenkins
+
+jenkinsfile
+
+```undefined
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh 'echo "Building..."'
+                sh 'chmod +x scripts/Linux-Build.sh'
+                sh 'scripts/Linux-Build.sh'
+                archiveArtifacts artifacts: 'bin/Debug/*', fingerprint: true
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'echo "Running..."'
+                sh 'chmod +x scripts/Linux-Run.sh'
+                sh 'scripts/Linux-Run.sh'
+            }
+        }
+    }
+}
+```
+
+### 静态分析
+
+pvs-studio
+
+```undefined
+EXTENSIONS -- PVS-Studio -- Check -- Current Project/...
+```
+
+### 参数计算顺序  argument evaluation order
+
+```C++
+void Function(int a, int b, int c)
+{
+
+}
+
+/*
+ undeifine behavior 未定义行为
+ 完全依赖于 c++ 编译器将代码转换成机器码的实际表现
+*/
+{
+    int a = 2;
+    Function(GetResult(), ++a, a--);
+}
+
+/*
+c++17
+The postfix-expression is sequenced before each expression in the expression list
+and andy default argument. The initialization of a parameter, including every associated
+value computation and side effect, is indeterminately sequenced with respect to that
+of any other parameter.
+后缀表达式必须在别的表达式之前被计算，对于这些参数，它们必须一个接一个地被计算
+但他们被计算的顺序仍然是不确定的。
+*/
+```
+
+### 移动语义
+
+很多情况下我们不需要或者不想把一个对象从一个地方复制到另一个地方，但又不得不复制，因为这是唯一可以复制的地方。
+
+例如：
+
+1. 如果我把一个对象传递给一个函数，那么它要获得那个对象的所有权，就需要拷贝。
+   1. 在当前堆栈帧中构造一个一次性对象，不管它在哪里，然后将它复制到我正在调用的函数中
+2. 当我想从函数返回一个对象时也是一样的，需要在函数中创建那个对象，然后返回它（ps.返回值优化)
+
+移动对象，而不是复制，性能会更高。
+
+```C++
+class String
+{
+private:
+    char* m_Buffer;
+    unsigned int m_Size;
+    
+public:
+    String() = default;
+    String(const char* string)
+    {
+        printf("create!\n");
+        m_Size = strlen(string);
+        // 注意：空终止字符
+        m_Buffer = new char[m_Size+1];
+        // memcpy(m_Buffer, string, m_Size+1);
+        memcpy(m_Buffer, string, m_Size);
+        m_Buffer[m_Size] = 0;
+    }
+    
+    // move 构造函数
+    String(String&& other)
+    {
+        /*
+         接管了那个旧字符串，而不是通过复制所有数据和分配新的内存
+         来进行深度复制。
+         以下实际上做了一个浅拷贝
+        */
+        printf("move!\n");
+        m_Buffer = other.m_Buffer;
+        m_Size = other.m_Size;
+
+        other.m_Size = 0;
+        other.m_Buffer = nullptr;
+    }
+    
+    String(const String& other)
+        : m_Size(other.m_Size)
+    {
+        printf("copy!\n");
+        m_Buffer = new char[m_Size+1];
+         memcpy(m_Buffer, other.m_Buffer, m_Size+1);
+    }
+    
+    ~String()
+    {
+        printf("delete!\n");
+        delete[] m_Buffer;
+    }
+    
+    void Print()
+    {
+        for (uint32_t i = 0; i < m_Size; i++)
+        {
+            printf("%c", m_Buffer[i]);
+        }
+        printf("\n");
+    }
+    
+    friend std::ostream& operator<<(std::ostream& stream, const String& string);
+};
+
+class Entity
+{
+public:
+    // 对传进来的字符串，复制到 m_Name (分配空间)
+    Entity(const String& name)
+        : m_Name(name)
+    {
+    }
+    
+    // move 构造函数
+    /*
+    Entity(String&& name)
+        : m_Name((String&&)name)
+    {
+    }
+    */
+    Entity(String&& name)
+        : m_Name((std::move)name)
+    {
+    }
+    
+    void PrintName()
+    {
+        m_Name.Print();
+    }
+private:
+    String m_Name;    
+};
+
+void fn11()
+{
+    // 这里创建字符串，然后传递到 Entity 构造函数
+    // 构造函数把字符串复制到 m_Name
+    // 为什么不能把字符串移动到这儿？为什么不能直接放到 m_Name 分配的内存里
+    Entity entity("liuxing");
+    entity.PrintName();
+
+}
+```
+
+### std::move 与移动赋值操作符
+
+移动赋值操作符是你想要包含在类中的东西，当你包含一个移动构造函数时，因为它当然是想要将一个对象移动到现有的变量中。
+
+C++ 三法则：
+
+- 如果需要析构函数，一定需要拷贝构造函数和拷贝赋值操作符
+
+C++ 五法则（为了支持移动语义，又增加了）：
+
+- 移动构造函数 和 移动赋值运算符
+
+```C++
+{
+    /*
+     // 将字符串移动到 dest，同上，但是使用 std::move 更加优雅
+     // std::move 是你想要将一个对象转换为临时对象时要做的
+    String string = "Hello";
+    
+    // 移动构造函数
+    // String dest((String&&)string); == String dest((std::move)string);
+    
+    String ap = "apple";
+    String dest;
+    // 移动赋值运算符
+    dest = std::move(ap);
+    */
+}
+
+// 接上一个例子🌰
+
+{
+    /*
+    通常在赋值操作符中，你还需要确保这个对象，也就是当前对象，不等于另一个对象。
+    如果是同一个对象，那确实没必要移动
+    dest = std::move(dest); // ❌
+    */
+    String& operator=(String&& other)
+    {
+        if (this != &other)
+        {
+            printf("= \n");
+            
+            delete[] m_Buffer;
+            
+            m_Size = other.m_Size;
+            m_Buffer = other.m_Buffer;
+            
+            other.m_Size = 0;
+            other.m_Buffer = nullptr;
+        }
+        return *this;
+    }
+}
+```

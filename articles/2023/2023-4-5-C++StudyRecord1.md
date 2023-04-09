@@ -1763,3 +1763,365 @@ C++ 五法则（为了支持移动语义，又增加了）：
     }
 }
 ```
+
+
+
+### Array
+
+Fixed size stack allocated array data structure in c++
+
+```C++
+template<typename T, size_t S>
+class Array
+{
+    T m_Data[S];
+public:
+    constexpr int Size() const { return S; }
+    
+    // for the potential other data types
+    T& operator[](size_t index) 
+    {
+        if (!(index < S))
+        {
+            // msvc
+            __debugbreak();
+        }
+        return m_Data[index];
+    }
+    
+    const T& operator[](size_t index) const { return m_Data[index]; }  
+    
+    
+    T* Data() { return m_Data;}
+    const T* Data() const { return m_Data;}    
+};
+
+
+void fn12()
+{
+    int size = 5;
+    Array<int 5> data;
+    
+    // 断言
+    static_assert(data.Size() < 10, "Size is too large!");
+    
+    const auto& arrayRef = data;
+    
+    memset(data.Data(), 0, data.Size() * sizeof(int));
+    // memset(&data[0], 0, data.Size() * sizeof(int));
+    
+    for (int i = 0; i< data.Size(); i++)
+    {
+        data[i] = 2;
+        // arrayRef[i] = 2; // ❌
+        
+        
+        std::cout << data[i] << std::endl;
+        
+        std::cout << arrayRef[i] << std::endl; // ok
+    }
+}
+```
+
+### Vector
+
+```C++
+#pragma once
+
+/*
+//1
+//2
+The 1 2 is we change the way  allocate and deallocate memory
+TODO
+shrinking
+emplace or push into middle of the vector
+replace or remove element form the middle of vectors
+iterator
+*/
+
+template<typename T>
+class Vector
+{
+public:
+        Vector()
+        {
+                ReAlloc(2);
+
+        }
+        void PushBack(const T& value)
+        {
+                if (m_Size >= m_Capacity)
+                {
+                        // growing this by 1.5 times every time
+                        ReAlloc(m_Capacity + m_Capacity / 2);
+                }
+                m_Data[m_Size] = value;
+                m_Size++;
+        }
+
+        void PushBack(T&& value)
+        {
+                if (m_Size >= m_Capacity)
+                {
+                        // growing this by 1.5 times every time
+                        ReAlloc(m_Capacity + m_Capacity / 2);
+                }
+                m_Data[m_Size] = std::move(value);
+                m_Size++;
+        }
+
+        template<typename... Args>
+        T& EmplaceBack(Args&&... args)
+        {
+                if (m_Size >= m_Capacity)
+                {
+                        ReAlloc(m_Capacity + m_Capacity / 2);
+                }
+                // constructing a temporary here which is then moving
+                // m_Data[m_Size] = T(std::forward<Args>(args)...);
+                // new for constructing objects
+                // associate that with heap allocations
+                // grab the memory address of this element
+                new(&m_Data[m_Size]) T(std::forward<Args>(args)...);
+                m_Size++;
+                return m_Data[m_Size];
+        }
+
+        void PopBack()
+        {
+                if (m_Size > 0)
+                {
+                        m_Size--;
+                        // manual call destructor
+                        m_Data[m_Size].~T();
+                }
+        }
+
+        void Clear()
+        {
+                for (size_t i = 0; i < m_Size; i++)
+                {
+                        // manual call destructor
+                        m_Data[i].~T();
+                }
+                m_Size = 0;
+        }
+
+        // const version
+        const T& operator[](size_t index) const
+        {
+                // assert overflow
+                return m_Data[index];
+        }
+        // none const version
+        T& operator[](size_t index)
+        {
+                // assert overflow
+                return m_Data[index];
+        }
+
+        size_t Size() const { return m_Size; }
+
+        ~Vector()
+        {
+                //1
+                // delete[] m_Data;
+                Clear();
+                ::operator delete(m_Data, m_Capacity * sizeof(T));
+        }
+private:
+        /*
+        void ReAlloc(size_t newCapacity)
+        {
+                // 0. overflow
+                if (newCapacity < m_Size)
+                {
+                        m_Size = newCapacity;
+                }
+                // 1. allocate a new block of memeory
+                // shouldn't be any constructors being called here at all
+                T* newBlock = new T[newCapacity];
+                // 2. copy/move old element to new block
+                for (size_t i = 0; i < m_Size; i++)
+                        newBlock[i] = std::move(m_Data[i]);
+                // 3. delete
+                //2
+                delete[] m_Data;
+
+                m_Data = newBlock;
+                m_Capacity = newCapacity;
+        }
+        */
+        void ReAlloc(size_t newCapacity)
+        {
+                // 0. overflow
+                if (newCapacity < m_Size)
+                {
+                        m_Size = newCapacity;
+                }
+                // 1. allocate a new block of memeory
+                // malloc enough memory to fill up this new capacity
+                T* newBlock = (T*)::operator new(newCapacity * sizeof(T));
+                // 2. copy/move old element to new block
+                for (size_t i = 0; i < m_Size; i++)
+                        newBlock[i] = std::move(m_Data[i]);
+                // 3. delete
+                for (size_t i = 0; i < m_Size; i++)
+                {
+                        m_Data[i].~T();
+                }
+                ::operator delete(m_Data, m_Capacity * sizeof(T));
+
+                m_Data = newBlock;
+                m_Capacity = newCapacity;
+        }
+        
+private:
+        T* m_Data = nullptr;
+        size_t m_Size = 0;
+        // an initial size or an initial allocation
+        // to prevent having to reallocate
+        size_t m_Capacity = 0;
+};
+#include <iostream>
+#include "Vector.h"
+
+
+struct Vector3
+{
+        float x = 0.0f;
+        float y = 0.0f;
+        float z = 0.0f;
+        int* m_MemoryBlock = nullptr;
+
+        Vector3()
+        {
+                m_MemoryBlock = new int[5];
+        }
+        Vector3(float scalar)
+                : x(scalar), y(scalar), z(scalar)
+        {
+                m_MemoryBlock = new int[5];
+        }
+        Vector3(float x, float y, float z)
+                : x(x), y(y), z(z)
+        {
+                m_MemoryBlock = new int[5];
+        }
+        Vector3(const Vector3& other) = delete;
+        /*
+        Vector3(const Vector3& other)
+                : x(other.x), y(other.y), z(other.z)
+        {
+                std::cout << "copyed! \n";
+        }
+        */
+        Vector3(Vector3&& other)
+                : x(other.x), y(other.y), z(other.z)
+        {
+                m_MemoryBlock = other.m_MemoryBlock;
+                other.m_MemoryBlock = nullptr;
+                std::cout << "copyed! \n";
+        }
+
+        Vector3& operator=(const Vector3& other) = delete;
+        /*
+        Vector3& operator=(const Vector3& other)
+        {
+                if (this != &other)
+                {
+                        std::cout << "Copy \n";
+                        x = other.x;
+                        y = other.y;
+                        z = other.z;
+                }
+
+                return *this;
+        }
+        */
+
+        Vector3& operator=(Vector3&& other)
+        {
+                if (this != &other)
+                {
+                        std::cout << "move \n";
+                        m_MemoryBlock = other.m_MemoryBlock;
+                        other.m_MemoryBlock = nullptr;
+                        x = other.x;
+                        y = other.y;
+                        z = other.z;
+                }
+
+                return *this;
+        }
+
+        ~Vector3()
+        {
+                std::cout << "destoryed! \n";
+                delete[] m_MemoryBlock;
+        }
+};
+
+
+template<typename T>
+void PrintVector(const Vector<T>& vector)
+{
+        for (size_t i = 0; i < vector.Size(); i++)
+        {
+                std::cout << vector[i] << std::endl;
+        }
+}
+
+template<>
+void PrintVector(const Vector<Vector3>& vector)
+{
+        for (size_t i = 0; i < vector.Size(); i++)
+        {
+                std::cout << vector[i].x << "," << vector[i].y << "," << vector[i].z << std::endl;
+        }
+}
+
+int main()
+{
+        /*
+        Vector<std::string> vector;
+        vector.PushBack("liuxing");
+        vector.PushBack("yangzi");
+        vector.PushBack("xiaopang");
+
+        PrintVector(vector);
+        */
+
+        /*
+        Vector<Vector3> vector;
+        vector.PushBack(Vector3(1.0));
+        vector.PushBack(Vector3(1.0,2.0,3.0));
+        vector.PushBack(Vector3());
+        PrintVector(vector);
+        */
+        {
+                Vector<Vector3> vector;
+                vector.EmplaceBack(1.0f);
+                vector.EmplaceBack(2.0f, 3.0f, 4.0f);
+                vector.EmplaceBack(1.0f, 3.0f, 4.0f);
+                vector.EmplaceBack();
+                PrintVector(vector);
+                vector.PopBack();
+                vector.PopBack();
+                PrintVector(vector);
+                vector.EmplaceBack(5.0f, 2.0f, 0.0f);
+                vector.EmplaceBack(1.0f, 7.0f, 9.0f);
+                PrintVector(vector);
+
+                vector.Clear();
+                PrintVector(vector);
+                vector.EmplaceBack(5.0f, 2.0f, 0.0f);
+                vector.EmplaceBack(1.0f, 7.0f, 9.0f);
+                PrintVector(vector);
+
+                PrintVector(vector);
+        }
+
+        //std::cin.get();
+}
+```

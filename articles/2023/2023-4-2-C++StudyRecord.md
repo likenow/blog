@@ -235,6 +235,31 @@ Plain old data (POD) ，（一堆变量）尽可能的使用 struct -- 数据结
 
 ### Static
 
+```c++
+class MyClass {
+public:
+  static void staticFunction() {
+    // 不能访问非静态成员变量 x
+    // 只能访问静态成员变量 y
+    y++;
+  }
+
+private:
+  int x;
+  static int y;
+};
+
+int MyClass::y = 0; // 类静态成员变量需要在类外部进行定义和初始化
+
+int main() {
+  MyClass::staticFunction();
+  return 0;
+}
+
+```
+
+
+
 - 在结构体或类内部使用static 关键字
   - 
 - 在结构体或类外部使用static 关键字
@@ -488,7 +513,7 @@ void PrintStirng(std::string string) {
 
 
 // vs
-// 当你传递一个这样的字符串，而且是只读的情况下，确保通过常量应用传递它
+// 当你传递一个这样的字符串，而且是只读的情况下，确保通过常量引用传递它
 // 因为字符串拷贝一份到堆上并不是一个很快的操作
 void PrintStirng(const std::string& string) {
     std::cout << string << std::endl;
@@ -537,14 +562,14 @@ line3)";
 ```C++
 // 1 const 在星号之前
 const int* a = new int; // 等价于 int const* a = new int;
-*a = 2; // 指针指向的内容不可变，但指向可变
+*a = 2; // 指针指向的内容不可变，但指向可变，编译报错❌
 
 // 2 const 在星号之后
 int* const b = new int;
 *a = 2; // 可以改变指针指向的内容，但是指针指向不可变
 
 
-// 3 在参数里表之后写上 const（只在类中有效）
+// 3 在参数列表之后写上 const（只在类中有效）
 class Entity {
 private:
     int m_X, m_Y;
@@ -716,11 +741,24 @@ delete e1;
 ### 隐式转换与 explicit 关键字
 
 ```C++
-    Entity a("liuxing");
+{
+  
+  	// explicit key word
+    explicit Entity(int sorce)
+        : m_Name("Unknow"), m_Sorce(0) {
+
+    }
+}
+
+{
+		Entity a("liuxing");
     Entity b(22);
 
     // Entity c = String("liuxing");
-    Entity d = (Entity)22; //Entity d = 22;
+  	//Entity d = 22;
+  	// no suitable constructor exists to convert from "int" to "Entity"
+    Entity d = (Entity)22; 
+}
 ```
 
 ### 运算符及重载
@@ -1072,7 +1110,8 @@ int main()
 ### 箭头操作符
 
 ```C++
-    Entity e;
+{
+		Entity e;
     e.GetName();
 
     Entity* ptr = &e;
@@ -1087,6 +1126,8 @@ int main()
     
     // 箭头操作符号
     ptr->GetName();
+}
+
 class ScopedPtr
 {
 private:
@@ -1192,7 +1233,7 @@ int main()
     // 分配3个空间
     vector2s.reserve(3);
     
-    // 我想在实际的vector中构造，--> 使用 emplace_back
+    // 我想在实际的vector中构造，--> 使用 emplace_back 而不是 push_back
     // 不是传递我们已经构建的 vector 对象，而只是传递了构造函数的参数列表
     vector2s.emplace_back(1,3);
     
@@ -1216,6 +1257,8 @@ int main()
 
 ### 使用静态库（静态链接）
 
+推荐源码构建；链接二进制更快：）
+
 Virtual studio 可以添加另一个项目，该项目包含你的依赖库的源代码，然后将其编译为静态或动态库。
 
 链接二进制文件，会更快更容易。但是如果项目足够重要，时间也足够，肯定会选择编译他，因为它有助于调试。甚至想稍微修改一下。
@@ -1226,9 +1269,19 @@ Virtual studio 可以添加另一个项目，该项目包含你的依赖库的�
   - 头文件
 - Library
   - 预先构建的二进制文件
-  - 
-  - 动态库（比如 dll 是一种运行时动态链接库）
-  - 静态库
+    - 动态库（比如 dll 是一种运行时动态链接库）
+    - 静态库
+
+「动or静」态库的主要区别是，库文件是否被编译到 exe 文件中或链接到 exe 文件中。
+
+以 GLFW 库为例：（库的版本要匹配，否则编译不通过）
+
+```
+1 创建 dependency/GLFW 文件目录
+2 将include文件和lib 文件放到 1 的目录下
+```
+
+
 
 ```Plain
 Project
@@ -1256,6 +1309,132 @@ Properties
 ```
 
 头文件提供声明，告诉我们那些函数是可用的，库文件我们提供了定义，这样我们就可以链接到那些函数，并在 C++ 中调用函数时执行正确的代码。
+
+> ⚠️我用 mac 系统，vmware fusion 13.0.1，安装 win11 x64 版本，virtual studio 2022 个人版。按照上述操作，编译❌
+>
+> ```
+> Build started...
+> 1>------ Build started: Project: LibDemo, Configuration: Debug x64 ------
+> 1>LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+> 1>glfw3.lib(win32_init.obj) : error LNK2019: unresolved external symbol __imp_TranslateMessage referenced in function _glfwPlatformInit
+> 1>glfw3.lib(win32_window.obj) : error LNK2001: unresolved external symbol __imp_TranslateMessage
+> 1>glfw3.lib(win32_init.obj) : error LNK2019: unresolved external symbol __imp_DispatchMessageW referenced in function _glfwPlatformInit
+> 1>glfw3.lib(win32_window.obj) : error LNK2001: unresolved external symbol __imp_DispatchMessageW
+> 1>glfw3.lib(win32_init.obj) : error LNK2019: unresolved external symbol __imp_PeekMessageW referenced in function _glfwPlatformInit
+> 1>glfw3.lib(win32_window.obj) : error LNK2001: unresolved external symbol __imp_PeekMessageW
+> 1>glfw3.lib(win32_init.obj) : error LNK2019: unresolved external symbol __imp_RegisterDeviceNotificationW referenced in function _glfwPlatformInit
+> 1>glfw3.lib(win32_init.obj) : error LNK2019: unresolved external symbol __imp_UnregisterDeviceNotification referenced in function _glfwPlatformTerminate
+> 1>glfw3.lib(win32_init.obj) : error LNK2019: unresolved external symbol __imp_CreateWindowExW referenced in function _glfwPlatformInit
+> 1>glfw3.lib(win32_window.obj) : error LNK2001: unresolved external symbol __imp_CreateWindowExW
+> 1>glfw3.lib(win32_init.obj) : error LNK2019: unresolved external symbol __imp_DestroyWindow referenced in function _glfwPlatformTerminate
+> 1>glfw3.lib(win32_window.obj) : error LNK2001: unresolved external symbol __imp_DestroyWindow
+> 1>glfw3.lib(win32_init.obj) : error LNK2019: unresolved external symbol __imp_ShowWindow referenced in function _glfwPlatformInit
+> 1>glfw3.lib(win32_window.obj) : error LNK2001: unresolved external symbol __imp_ShowWindow
+> 1>glfw3.lib(win32_init.obj) : error LNK2019: unresolved external symbol __imp_ToUnicode referenced in function _glfwPlatformInit
+> 1>glfw3.lib(win32_init.obj) : error LNK2019: unresolved external symbol __imp_MapVirtualKeyW referenced in function _glfwPlatformInit
+> 1>glfw3.lib(win32_window.obj) : error LNK2001: unresolved external symbol __imp_MapVirtualKeyW
+> 1>glfw3.lib(win32_init.obj) : error LNK2019: unresolved external symbol __imp_SystemParametersInfoW referenced in function _glfwPlatformInit
+> 1>glfw3.lib(win32_window.obj) : error LNK2001: unresolved external symbol __imp_SystemParametersInfoW
+> 1>glfw3.lib(win32_monitor.obj) : error LNK2019: unresolved external symbol __imp_CreateDCW referenced in function _glfwPlatformGetGammaRamp
+> 1>glfw3.lib(win32_monitor.obj) : error LNK2019: unresolved external symbol __imp_DeleteDC referenced in function _glfwPlatformGetGammaRamp
+> 1>glfw3.lib(win32_monitor.obj) : error LNK2019: unresolved external symbol __imp_GetDeviceCaps referenced in function _glfwGetMonitorContentScaleWin32
+> 1>glfw3.lib(win32_monitor.obj) : error LNK2019: unresolved external symbol __imp_GetDeviceGammaRamp referenced in function _glfwPlatformGetGammaRamp
+> 1>glfw3.lib(win32_monitor.obj) : error LNK2019: unresolved external symbol __imp_SetDeviceGammaRamp referenced in function _glfwPlatformSetGammaRamp
+> 1>glfw3.lib(win32_monitor.obj) : error LNK2019: unresolved external symbol __imp_GetDC referenced in function _glfwGetMonitorContentScaleWin32
+> 1>glfw3.lib(win32_window.obj) : error LNK2001: unresolved external symbol __imp_GetDC
+> 1>glfw3.lib(wgl_context.obj) : error LNK2001: unresolved external symbol __imp_GetDC
+> 1>glfw3.lib(win32_monitor.obj) : error LNK2019: unresolved external symbol __imp_ReleaseDC referenced in function _glfwGetMonitorContentScaleWin32
+> 1>glfw3.lib(win32_window.obj) : error LNK2001: unresolved external symbol __imp_ReleaseDC
+> 1>glfw3.lib(win32_monitor.obj) : error LNK2019: unresolved external symbol __imp_ChangeDisplaySettingsExW referenced in function _glfwPlatformGetVideoModes
+> 1>glfw3.lib(win32_monitor.obj) : error LNK2019: unresolved external symbol __imp_EnumDisplaySettingsW referenced in function _glfwPlatformGetVideoMode
+> 1>glfw3.lib(win32_monitor.obj) : error LNK2019: unresolved external symbol __imp_EnumDisplaySettingsExW referenced in function _glfwPlatformGetMonitorPos
+> 1>glfw3.lib(win32_monitor.obj) : error LNK2019: unresolved external symbol __imp_EnumDisplayDevicesW referenced in function _glfwPollMonitorsWin32
+> 1>glfw3.lib(win32_monitor.obj) : error LNK2019: unresolved external symbol __imp_GetMonitorInfoW referenced in function _glfwPlatformGetMonitorWorkarea
+> 1>glfw3.lib(win32_window.obj) : error LNK2001: unresolved external symbol __imp_GetMonitorInfoW
+> 1>glfw3.lib(win32_monitor.obj) : error LNK2019: unresolved external symbol __imp_EnumDisplayMonitors referenced in function _glfwPollMonitorsWin32
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_CreateBitmap referenced in function createIcon
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_CreateRectRgn referenced in function updateFramebufferTransparency
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_DeleteObject referenced in function createIcon
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_CreateDIBSection referenced in function createIcon
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_TrackMouseEvent referenced in function windowProc
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_GetMessageTime referenced in function windowProc
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_SendMessageW referenced in function _glfwPlatformSetWindowIcon
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_PostMessageW referenced in function _glfwPlatformPostEmptyEvent
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_WaitMessage referenced in function _glfwPlatformWaitEvents
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_DefWindowProcW referenced in function windowProc
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_UnregisterClassW referenced in function _glfwUnregisterWindowClassWin32
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_RegisterClassExW referenced in function _glfwRegisterWindowClassWin32
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_GetLayeredWindowAttributes referenced in function _glfwPlatformGetWindowOpacity
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_SetLayeredWindowAttributes referenced in function _glfwPlatformSetWindowOpacity
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_FlashWindow referenced in function _glfwPlatformRequestWindowAttention
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_MoveWindow referenced in function _glfwPlatformSetWindowAspectRatio
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_SetWindowPos referenced in function _glfwPlatformMaximizeWindow
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_GetWindowPlacement referenced in function createNativeWindow
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_SetWindowPlacement referenced in function createNativeWindow
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_IsWindowVisible referenced in function _glfwPlatformMaximizeWindow
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_IsIconic referenced in function _glfwPlatformWindowIconified
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_BringWindowToTop referenced in function _glfwPlatformCreateWindow
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_IsZoomed referenced in function _glfwPlatformWindowMaximized
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_OpenClipboard referenced in function _glfwPlatformGetClipboardString
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_CloseClipboard referenced in function _glfwPlatformGetClipboardString
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_SetClipboardData referenced in function _glfwPlatformSetClipboardString
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_GetClipboardData referenced in function _glfwPlatformGetClipboardString
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_EmptyClipboard referenced in function _glfwPlatformSetClipboardString
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_SetFocus referenced in function _glfwPlatformCreateWindow
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_GetActiveWindow referenced in function _glfwPlatformPollEvents
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_GetKeyState referenced in function _glfwPlatformPollEvents
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_SetCapture referenced in function windowProc
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_ReleaseCapture referenced in function windowProc
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_MsgWaitForMultipleObjects referenced in function _glfwPlatformWaitEventsTimeout
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_GetSystemMetrics referenced in function _glfwPlatformMaximizeWindow
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_SetForegroundWindow referenced in function _glfwPlatformCreateWindow
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_SetPropW referenced in function createNativeWindow
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_GetPropW referenced in function _glfwPlatformPollEvents
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_RemovePropW referenced in function _glfwPlatformDestroyWindow
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_SetWindowTextW referenced in function _glfwPlatformSetWindowTitle
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_GetClientRect referenced in function _glfwPlatformGetFramebufferSize
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_GetWindowRect referenced in function _glfwPlatformSetWindowAspectRatio
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_AdjustWindowRectEx referenced in function _glfwPlatformGetWindowFrameSize
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_SetCursorPos referenced in function _glfwPlatformPollEvents
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_SetCursor referenced in function _glfwPlatformSetCursor
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_GetCursorPos referenced in function _glfwPlatformGetCursorPos
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_ClientToScreen referenced in function _glfwPlatformGetWindowPos
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_ScreenToClient referenced in function _glfwPlatformGetCursorPos
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_WindowFromPoint referenced in function cursorInContentArea
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_ClipCursor referenced in function updateClipRect
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_SetRect referenced in function _glfwPlatformGetWindowFrameSize
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_OffsetRect referenced in function _glfwPlatformMaximizeWindow
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_PtInRect referenced in function cursorInContentArea
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_GetWindowLongW referenced in function _glfwPlatformGetWindowOpacity
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_SetWindowLongW referenced in function _glfwPlatformMaximizeWindow
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_GetClassLongPtrW referenced in function _glfwPlatformSetWindowIcon
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_LoadCursorW referenced in function _glfwPlatformSetCursor
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_DestroyIcon referenced in function _glfwPlatformDestroyCursor
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_LoadImageW referenced in function _glfwPlatformCreateStandardCursor
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_CreateIconIndirect referenced in function createIcon
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_MonitorFromWindow referenced in function _glfwPlatformGetWindowContentScale
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_GetRawInputData referenced in function windowProc
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_RegisterRawInputDevices referenced in function _glfwPlatformSetRawMouseMotion
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_DragQueryFileW referenced in function windowProc
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_DragQueryPoint referenced in function windowProc
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_DragFinish referenced in function windowProc
+> 1>glfw3.lib(win32_window.obj) : error LNK2019: unresolved external symbol __imp_DragAcceptFiles referenced in function createNativeWindow
+> 1>glfw3.lib(win32_joystick.obj) : error LNK2019: unresolved external symbol __imp_GetRawInputDeviceInfoA referenced in function deviceCallback
+> 1>glfw3.lib(win32_joystick.obj) : error LNK2019: unresolved external symbol __imp_GetRawInputDeviceList referenced in function deviceCallback
+> 1>glfw3.lib(wgl_context.obj) : error LNK2019: unresolved external symbol __imp_ChoosePixelFormat referenced in function _glfwInitWGL
+> 1>glfw3.lib(wgl_context.obj) : error LNK2019: unresolved external symbol __imp_DescribePixelFormat referenced in function _glfwCreateContextWGL
+> 1>glfw3.lib(wgl_context.obj) : error LNK2019: unresolved external symbol __imp_SetPixelFormat referenced in function _glfwCreateContextWGL
+> 1>glfw3.lib(wgl_context.obj) : error LNK2019: unresolved external symbol __imp_SwapBuffers referenced in function swapBuffersWGL
+> 1>C:\Users\fmsli\dev\LibDemo\bin\x64\Debug\LibDemo.exe : fatal error LNK1120: 97 unresolved externals
+> 1>Done building project "LibDemo.vcxproj" -- FAILED.
+> ========== Build: 0 succeeded, 1 failed, 0 up-to-date, 0 skipped ==========
+> ========== Build started at 4:42 PM and took 01.420 seconds ==========
+> 
+> ```
+>
+> 用window 电脑是可以的。应该是虚拟机的问题。
+
+
 
 ### 使用动态库
 

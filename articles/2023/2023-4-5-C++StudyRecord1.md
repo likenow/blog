@@ -23,7 +23,7 @@ vector<int> values = {1,3,4,5};
 
 **避免在头文件内使用 using namespace**
 
-**对自己的库使用 using namespace，在足够小可控的****作用域****下使用。**
+**对自己的库使用 using namespace，在足够小可控的作用域下使用。**
 
 ### 名称空间 namespace
 
@@ -52,7 +52,7 @@ namespace apple { namespace functions {
 }
 ```
 
-### 线程
+### 线程 threads
 
 ```C++
 #include <iostream>
@@ -82,7 +82,7 @@ int main()
 }
 ```
 
-### 计时
+### 计时 timing
 
 **Chrono** 库，平台无关
 
@@ -128,7 +128,7 @@ int main()
 }
 ```
 
-### 多维数组
+### 多维数组 multidimensional arrays
 
 ```C++
 void f11()
@@ -204,7 +204,7 @@ void f12()
 }
 ```
 
-### 排序
+### 排序 sorting
 
 标准库 algorithm sort 可以为你进行排序，或者为你提供它的任何类型的迭代器执行排序。nlogN
 
@@ -233,7 +233,11 @@ void f3()
 }
 ```
 
-### 类型双关
+### 类型双关 Type Punning
+
+> Type punning refers to the practice of accessing an object of one type through a pointer or reference of another type. This can be done by using C-style casts or by using union types in C++.
+>
+> In C++, type punning can be used for a variety of purposes, such as converting one type to another, reinterpreting the contents of a memory buffer, or accessing an object as a different type for performance reasons.
 
 用来在  c++ 中绕过类型系统
 
@@ -244,7 +248,9 @@ void f4()
 {
     int a = 50;
     double value = a; // 隐式类型转换 = *(double*)&a;
+  	// C++会将整数a转换为双精度浮点数，但是由于整数类型和浮点类型的内部表示方式不同，因此可能会导致精度丢失。 
     double value1 = (double)a; // 显示类型转换
+  	// double value1 = static_cast<double>(a);
     std::cout << value << std::endl;
 }
 
@@ -252,7 +258,7 @@ void f5()
 {
     int a = 50;
     double value = a; // 隐式类型转换 = *(double*)&a;
-    value = 0.0; // 可能会导致 crash
+    value = 0.0; // 可能会导致 issue
     std::cout << value << std::endl;
 }
 
@@ -285,9 +291,7 @@ struct Entity
 }
 ```
 
-### 联合体
-
-Union
+### 联合体 Union
 
 可以像结构体或类一样使用它，也可以给它添加静态函数或普通函数/方法等，但只能有一个成员。
 
@@ -386,7 +390,13 @@ void f7()
 }
 ```
 
-### 虚析构函数
+在C++标准中，联合体（union）的大小至少要能够容纳其中最大的成员，这通常是因为不同的成员可能占用的内存空间大小是不同的，因此需要保证联合体大小足够大以容纳最大的成员。
+
+但是，联合体的实际内存分配大小通常是编译器依据其内部实现而定的，并不是成员内存大小之和。由于联合体的成员共享同一块内存空间，因此编译器需要确保所有成员都能够放在同一块内存中，可能会采用一些内存对齐、填充等技术来达到这个目的。
+
+因此，对于一个联合体，其实际内存分配大小通常会大于等于其最大成员的大小，而不是等于所有成员内存大小之和。实际分配大小还可能受到编译器和平台的影响，因此最好使用`sizeof`运算符来获取联合体的实际大小。
+
+### 虚析构函数 virtual destructors
 
 虚函数 + 析构函数
 
@@ -441,7 +451,7 @@ void f8()
 
 > 只要你允许一个类拥有子类你必须声明你的析构函数是虚函数，否则没人能安全的扩展这个类
 
-### 类型转换
+### 类型转换 casting
 
 Cast
 
@@ -525,7 +535,7 @@ void f10()
 }
 ```
 
-### 条件与操作断点
+### 条件与操作断点 conditional an action breakpoints
 
 调试
 
@@ -662,7 +672,7 @@ virtual studio --> c/c++ -> language -> enable runtime type information
 // 'dynamic cast' used on polymorphic type entity with / GR-
 ```
 
-### 测试基准
+### 测试基准 Benchmarking
 
 ```C++
 #include "pch.h"
@@ -825,7 +835,7 @@ int main()
 >
 > 这里我用了绝对路径才访问到。。。
 
-### 单一变量存放多种类型的数据 c++17
+### 单一变量存放多种类型的数据 c++17 multiple types of data in a single variable
 
 ```C++
 #include <variant>
@@ -850,9 +860,21 @@ void fn6()
 }
 ```
 
-Variant 是一个类型安全的 union
+Variant 是一个类型安全的 “union”
 
-### 存储任意类型的数据 c++17
+当我们修改联合体的某个成员时，其他成员的值也被改变了，因为它们共享同一块内存空间。
+
+
+
+std::variant与联合体不同，它使用的内存空间大小只和存储的成员类型最大的一种成员大小相同，而不是成员内存大小之和。
+
+这是因为std::variant内部实现使用了一个类型擦除技术，将不同类型的成员进行类型擦除后，存储到一个固定大小的内存空间中，保证不同成员之间的地址不重叠。因此，std::variant的大小只需要足够存储最大的成员即可。
+
+在C++17之前，std::variant的实现是使用了类似于联合体的技术，需要保证所有成员能够放在同一块内存中，因此实际内存分配大小可能会大于等于最大成员的大小。但是，从C++17开始，标准库提供了std::aligned_union模板来保证内存对齐和填充，因此实际内存分配大小不再需要大于等于最大成员的大小。
+
+总之，std::variant的实际内存分配大小是由其最大成员的大小和内存对齐方式所决定的，不是成员内存大小之和。
+
+### 存储任意类型的数据 c++17 store any data
 
 鸡肋。。。
 
@@ -914,7 +936,7 @@ int main()
 
 
 
-### 让 C++ 运行的更快
+### 让 C++ 运行的更快 c++ run faster
 
 多线程
 
@@ -971,7 +993,7 @@ void func()
 }
 ```
 
-### 让字符串更快
+### 让字符串更快 Make your Strings faster
 
 ```C++
 static uint32_t s_AllocCount = 0;
@@ -1046,7 +1068,7 @@ string_view -- c++17
 
 没有内存分配，按值传递字符串视图是非常轻量级的
 
-### 可视化基准测试
+### 可视化基准测试 Visual Benchmarking 
 
 > chrome://tracing/
 >
@@ -1391,7 +1413,7 @@ int main()
 
 
 
-### 小字符串优化
+### 小字符串优化 small string optimization
 
 15个字符 -- 小字符串
 
@@ -1403,7 +1425,7 @@ basic_string(_In_z const _Elem* const _Ptr) : xxx
 }
 ```
 
-### 跟踪内存分配
+### 跟踪内存分配 track memory allocations the easy way
 
 自己的 `operator new / operator delete`
 
@@ -1468,7 +1490,7 @@ int main()
 }
 ```
 
-### 左值与右值
+### 左值与右值 lvalues and rvalues
 
 左值时某种存储支持的变量，右值时临时变量。
 
@@ -1527,7 +1549,7 @@ void fn10()
 }
 ```
 
-### 持续集成（CI）
+### 持续集成（CI）continuous integration
 
 构建自动化和测试
 
@@ -1558,7 +1580,7 @@ pipeline {
 }
 ```
 
-### 静态分析
+### 静态分析 static analysis
 
 pvs-studio
 
@@ -1594,7 +1616,7 @@ of any other parameter.
 */
 ```
 
-### 移动语义
+### 移动语义 Move Semantics
 
 很多情况下我们不需要或者不想把一个对象从一个地方复制到另一个地方，但又不得不复制，因为这是唯一可以复制的地方。
 

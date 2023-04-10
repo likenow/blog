@@ -6,17 +6,17 @@
 
 
 
-### 编译
+### 编译 compiler
 
-### 链接
+### 链接 linker
 
-### 变量
+### 变量 variables
 
 不同变量类型之间唯一区别是，这个变量会占用多少内存。（依赖编译器）
 
-### 函数
+### 函数 functions
 
-### 头文件
+### 头文件 header files
 
 ```C++
 #pragma once
@@ -39,7 +39,7 @@
 #include"" //指示预处理程序先到当前目录下寻找文件，再到预定义的缺省路径下寻找文件。 
 ```
 
-### 调试
+### 调试 Debug in Visual Studio
 
 Visual Studio
 
@@ -57,7 +57,7 @@ Visual Studio
 
 -  CC 数字实际上是十六进制数，意味着它是未初始化的栈内存
 
-### 条件与分支
+### 条件与分支 conditions and branches
 
 查看汇编，确保您处于调试模式并确保已经尽可能多的关闭了优化。
 
@@ -100,7 +100,7 @@ output directory -- $(SolutionDir)bin\$(Platform)\$(Configuration)\
 Intermediate directory  -- $(SolutionDir)bin\intermediates\$(Platform)\$(Configuration)\
 ```
 
-### 循环
+### 循环 loops
 
 ```C++
 bool conition = true;
@@ -122,7 +122,7 @@ do {
 } while(condition);
 ```
 
-### 控制语句
+### 控制语句 control flow
 
 ```undefined
 continue
@@ -132,7 +132,7 @@ break
 return
 ```
 
-### 指针
+### 指针 Pointers
 
 指针只是一个地址，它是一个保存内存地址的整数。
 
@@ -146,7 +146,7 @@ int main() {
 }
 ```
 
-### 引用
+### 引用 references
 
 语法糖～～
 
@@ -184,7 +184,7 @@ int main() {
 }
 ```
 
-### 类
+### 类 classes
 
 类只是对数据和功能组合在一起的一种方法。
 
@@ -205,7 +205,7 @@ public:
 
 通过类实例引用静态变量是没有意义的，静态方法也是一样，无法访问类的实例。
 
-### 结构体
+### 结构体 structs
 
 和类的区别，可见度（默认public），与C保持向后兼容性。
 
@@ -276,7 +276,7 @@ External linkage or external linking
 - 生命周期（在内存中存多久）
 - 作用域（访问变量的范围）
 
-### 枚举
+### 枚举Enums
 
 Enumration
 
@@ -288,7 +288,7 @@ enum Example {
 }
 ```
 
-### 构造函数
+### 构造函数 constructors
 
 构造函数是一种特殊类型的方法，这是一种每次你构造一个对象时都会调用的方法。
 
@@ -303,15 +303,15 @@ public:
 }
 ```
 
-### 析构函数
+### 析构函数 destructors
 
 卸载变量等，并清理你使用过的内存
 
 很少见手动调用析构函数的！！！
 
-### 继承
+### 继承 inheritance
 
-### 虚函数
+### 虚函数 virtual functions
 
 Dynamic Dispatch 动态联编
 
@@ -354,7 +354,7 @@ int main() {
 }
 ```
 
-### 纯虚函数
+### 纯虚函数 interfaces in c++(pure virtual functions)
 
 类似于java 或 C# 中的抽象方法或接口
 
@@ -386,7 +386,7 @@ void Print(Printable* obj) {
 }
 ```
 
-### 可见性
+### 可见性 visibility
 
 - Private
 - Protected
@@ -394,7 +394,7 @@ void Print(Printable* obj) {
 
 Friend 是 C++ 关键字，它可以让类或者函数成为类的朋友（友元）
 
-### 数组
+### 数组 arrays
 
 安全检查，确保没有越界
 
@@ -483,7 +483,7 @@ int main() {
 }
 ```
 
-### 字符串
+### 字符串 strings
 
 char 字符，一个字节，单引号
 
@@ -522,7 +522,7 @@ void PrintStirng(const std::string& string) {
 
 通过常量引用来传递参数，特别是那些只读的东西，没必要copy分配内存
 
-### 字符串字面量
+### 字符串字面量 string literals
 
 永远保存在内存的只读区域。
 
@@ -667,19 +667,19 @@ int main() {
     std::cout << "out1=" << x << std::endl;
 ```
 
-### C++ 的成员初始化列表
+### C++ 的成员初始化列表 member initializer lists(constructor initializer list)
 
 初始化成员变量
 
 按照成员变量声明时的顺序，否则有些编译器可能会报错。
 
-### 三元操作符
+### 三元操作符 ternary operators
 
 Condition ? A : B;
 
 可以嵌套
 
-### 创建并初始化 C++ 对象
+### 创建并初始化 C++ 对象 how to create/instantiate objects in c++
 
 对象在堆上or栈上，它们有不同的功能差异。
 
@@ -738,7 +738,7 @@ delete e;
 delete e1;
 ```
 
-### 隐式转换与 explicit 关键字
+### 隐式转换(implicit conversion)与 explicit 关键字
 
 ```C++
 {
@@ -761,7 +761,7 @@ delete e1;
 }
 ```
 
-### 运算符及重载
+### 运算符及重载 operators and operator overloading
 
 重载本质是给运算符重载赋予新的含义，或者添加参数，或者创建。
 
@@ -880,7 +880,7 @@ void PrintEntity0(const Entity0& e)
 
 
 
-### 对象生存周期（栈作用域生存期）
+### 对象生存周期（栈作用域生存期）object lifetime
 
 以下是问题代码：
 
@@ -941,7 +941,7 @@ public:
 };
 ```
 
-### 智能指针
+### 智能指针 smart pointers
 
 本质上是原始指针的包装
 
@@ -990,7 +990,7 @@ shared_ptr 需要分配另一块内存，叫做控制块，用来存储引用计
 
 #### weak_ptr
 
-### 复制与拷贝构造函数
+### 复制与拷贝构造函数 copying and copy constructors
 
 对于只读的，或者修改已经存在的对象，尽量避免复制，因为复制是增加开销的。
 
@@ -1107,7 +1107,7 @@ int main()
 
 
 
-### 箭头操作符
+### 箭头操作符 arrow operator
 
 ```C++
 {
@@ -1169,7 +1169,7 @@ int main()
     std::cout << offset << std::endl;    // 0, 4, 8
 ```
 
-### 动态数组
+### 动态数组 dynamic arrays
 
 标准模板库
 
@@ -1255,7 +1255,7 @@ int main()
 }
 ```
 
-### 使用静态库（静态链接）
+### 使用静态库（静态链接）using libraries
 
 推荐源码构建；链接二进制更快：）
 
@@ -1433,10 +1433,12 @@ Properties
 > ```
 >
 > 用window 电脑是可以的。应该是虚拟机的问题。
+>
+> 删了 重新搞了一遍又可以了。。。奇怪
 
 
 
-### 使用动态库
+### 使用动态库 using dynamic libraries
 
 动态链接
 
@@ -1613,7 +1615,7 @@ Dependencies\GLFW\lib-vc2022\glfw3.dll : fatal error LNK1107: invalid or corrupt
 
 
 
-### 创建与使用库
+### 创建与使用库 making and working with libraries
 
 ```undefined
 new project
@@ -1654,7 +1656,7 @@ Virtual studio (vs) 中
 
 
 
-### 如何处理多返回值
+### 如何处理多返回值 Deal with multiple return values
 
 #### 输入参数
 
@@ -1884,7 +1886,7 @@ int main()
 
 日志系统，可以使用模板。当模板搞得越来越复杂，可能没人知道干什么。。。
 
-### 栈和堆
+### 栈和堆 stack vs heap
 
 ```C++
 #include <iostream>
@@ -1930,7 +1932,7 @@ int main()
 }
 ```
 
-### 宏
+### 宏 macros
 
 预处理器
 
@@ -2026,7 +2028,9 @@ int main()
 }
 ```
 
-### 静态数组
+### 静态数组 static arrays
+
+> whose lifetime is tied to the scope in which it is declared. It is created on the stack, and its elements are initialized when the program starts.
 
 ```C++
 #include <array>
@@ -2047,7 +2051,7 @@ int main()
 }
 ```
 
-### 函数指针
+### 函数指针 function pointers
 
 讲一个函数赋值给一个变量的方法。
 

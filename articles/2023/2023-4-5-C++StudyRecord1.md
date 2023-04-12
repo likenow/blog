@@ -2147,3 +2147,387 @@ int main()
         //std::cin.get();
 }
 ```
+
+
+
+### 迭代器 Iterators
+
+广告 skillshare
+
+Iterators are used to iterate over a collection of elements and iterating over them is really simple
+
+```C++
+for (size_t i = 0; i < length; i++)
+{
+
+}
+
+for each (object var in collection_to_loop)
+{
+
+}
+
+std::vector<int> values = {1,3,5,7,9};
+for (int value : values)
+{
+        std::cout << value << std::endl;
+}
+
+/*
+vector class provides a begin and end function  which returns an iterator
+at a particular position
+- const_iterator
+- const_reverse_iterator
+- iterator
+- reverse_iterator
+*/
+for (std::vector<int>::iterator it = values.begin();
+    it != values.end(); it++)
+{
+    std::cout << *it << std::endl;
+}
+
+using ScoreMap = std::unordered_map<std::string, int>;
+using ScoreMapIterator = ScoreMap::iterator;
+ScoreMap map;
+map["Cherno"] = 5;
+map["c++"] = 2;
+map["c"] = 0;
+for (ScoreMapIterator it = map.begin(); it != map.end(); it++)
+{
+    std::cout << it->first << " k - v " << it->second << std::endl;
+}
+
+for (auto kv : map)
+{
+    std::cout << kv.first << " k - v " << kv.second << std::endl;
+}
+
+for (auto [k, v] : map)
+{
+    std::cout << k << " k - v " << v << std::endl;
+}
+```
+
+### Writing an Iterator
+
+Study vector class
+
+```C++
+template<typename Vector>
+class VectorIterator
+{
+public:
+    using ValueType = typename Vector::ValueType;
+    using PointerType = ValueType*;
+    using ReferenceType = ValueType&;
+public:
+    VectorIterator(PointerType ptr)
+            : m_Ptr(ptr)
+    {
+            
+    }
+
+    VectorIterator& operator++()
+    {
+        m_Ptr++;
+        return *this;
+    }
+
+    VectorIterator& operator++(int)
+    {
+        VectorIterator iterator = *this;
+        ++(*this);
+        return *this;
+    }
+
+    VectorIterator& operator--()
+    {
+        m_Ptr--;
+        return *this;
+    }
+
+    VectorIterator& operator--(int)
+    {
+        VectorIterator iterator = *this;
+        --(*this);
+        return *this;
+    }
+
+    bool operator==(const VectorIterator& other) const
+    {
+        return m_Ptr == other.m_Ptr;
+    }
+
+    bool operator!=(const VectorIterator& other) const
+    {
+        return !(*this == other);
+    }
+
+    VectorIterator operator[](int index)
+    {
+        return *(m_Ptr + index);
+    }
+
+    VectorIterator operator->()
+    {
+        return m_Ptr;
+    }
+
+    ReferenceType operator*()
+    {
+        return *m_Ptr;
+    }
+private:
+    PointerType m_Ptr;
+};
+```
+
+### Really Learn c++
+
+Open source Projects
+
+### Intro to binary and bitwise operators
+
+> In C++, binary operators and bitwise operators are used to perform operations on binary numbers or bit patterns.
+>
+> Binary operators are operators that operate on two operands and perform arithmetic or logical operations. The following are the binary operators in C++:
+>
+> - Addition (+)
+> - Subtraction (-)
+> - Multiplication (*)
+> - Division (/)
+> - Modulus (%)
+> - Assignment (=)
+> - Greater than (>)
+> - Less than (<)
+> - Greater than or equal to (>=)
+> - Less than or equal to (<=)
+> - Equality (==)
+> - Inequality (!=)
+> - Logical AND (&&)
+> - Logical OR (||)
+>
+> Bitwise operators are operators that operate on individual bits of a binary number. The following are the bitwise operators in C++:
+>
+> - Bitwise AND (&)
+> - Bitwise OR (|)
+> - Bitwise XOR (^)
+> - Bitwise NOT (~)
+> - Left shift (<<) * 2^n
+> - Right shift (>>) /  2^n
+>
+> Bitwise AND, OR, and XOR operators compare the corresponding bits of the two operands and perform the specified operation on them. Bitwise NOT operator inverts all the bits of an operand. Left shift and right shift operators shift the bits of the first operand by the specified number of positions to the left or right.
+
+举例🌰
+
+"5>>1", which is "101", is shifted one bit to the right, resulting in the binary value "10"
+
+The expression "5/2" represents a division operation between the integer value 5 and the integer value 2, which results in the floating-point value 2.5.
+
+工具网站：[Compiler Explorer](https://godbolt.org/)
+
+### Bitwise AND(&) OR(|) XOR(^) and NOT(~)
+
+### Maps
+
+Key-Value
+
+- Map
+- unordered_map
+
+Recommend unordered_map
+
+```C++
+#include <iostream>
+#include <string>
+#include <unordered_map>
+
+int main()
+{
+    std::unordered_map<std::string, int> dict;
+
+    // 插入元素
+    dict.insert(std::make_pair("apple", 1));
+    dict.emplace("banana", 2);
+
+    // 访问元素
+    std::cout << dict["apple"] << std::endl; // 1
+    std::cout << dict.at("banana") << std::endl; // 2
+
+    // 查找元素
+    auto it = dict.find("pear");
+    if (it == dict.end()) {
+        std::cout << "pear not found" << std::endl;
+    }
+
+    // 删除元素
+    dict.erase("apple");
+
+    // 容器大小
+    std::cout << "size: " << dict.size() << std::endl;
+
+    // 清空容器
+    dict.clear();
+
+    return 0;
+}
+
+{
+    // if you pass like a const map into a function you have to use at 
+    /*
+    std::unordered_map 的 at 和 [] 都可以用于访问容器中的元素，但它们有以下几个不同之处：
+    返回值类型：[] 返回元素的引用，at 返回元素的值。
+    
+    是否会添加新元素：如果使用 [] 访问不存在的键值，则会创建一个空元素并返回其引用；
+    如果使用 at 访问不存在的键值，则会抛出 std::out_of_range 异常。
+    
+    安全性：使用 at 访问元素时，如果键值不存在，则会抛出 std::out_of_range 异常，这有助于在代码中及时发现问题；
+    而使用 [] 访问元素时，如果键值不存在，则会创建一个空元素，可能导致程序错误。
+    
+    因此，如果您确定访问的键值已经存在于容器中，且您希望能够修改该元素的值，则可以使用 []；
+    如果您不确定访问的键值是否存在，或者不希望创建新的空元素，则应该使用 at。
+    在实际使用中，建议先使用 find 查找元素，如果存在则使用 [] 或 at 访问元素，如果不存在则根据需要进行相应的处理。
+    */
+    at()
+    
+    // 查找 find
+    find()
+    
+    // 删除
+    erase()
+}
+```
+
+代码 🌰
+
+```C++
+struct CityRecord
+{
+    std::string Name;
+    uint64_t Population;
+    double Latitude, Longitude;
+public:
+    CityRecord() = default;
+    CityRecord(std::string name, uint64_t population, double la, double lg)
+        : Name(name), Population(population), Latitude(la), Longitude(lg)
+    {
+
+    }
+    bool operator==(const CityRecord& other) const
+    {
+        return Name == other.Name && Population == other.Population &&
+                    Latitude == other.Latitude && Longitude == other.Longitude;
+    }
+};
+
+namespace std {
+    template<>
+    struct hash<CityRecord>
+    {
+        size_t operator()(const CityRecord& key) const
+        {
+            return hash<string>()(key.Name) ^ hash<uint64_t>()(key.Population) ^
+                        hash<double>()(key.Latitude) ^ hash<double>()(key.Longitude);
+        }
+    };
+}
+
+void fn14()
+{
+        
+#if 0
+    std::vector<CityRecord> cities;
+    cities.emplace_back("Beijing", 2000, 116.46, 39.92);
+    cities.emplace_back("Hebei", 1000, 115.46, 39.92);
+    cities.emplace_back("neimenggu", 500, 112.46, 39.92);
+    cities.emplace_back("tianjin", 1000, 117.46, 39.92);
+#endif
+
+#if 0
+    std::unordered_map<std::string, CityRecord> cityMap;
+    cityMap["Beijing"] = CityRecord { "Beijing", 2000, 116.46, 39.92 };
+    cityMap["Hebei"] = CityRecord { "Hebei", 1000, 115.46, 39.92 };
+    cityMap["neimenggu"] = CityRecord { "neimenggu", 500, 112.46, 39.92 };
+    cityMap["tianjin"] = CityRecord { "tianjin", 1000, 117.46, 39.92 };
+
+    CityRecord& bjData = cityMap["Beijing"];
+    std::cout << bjData.Name << std::endl;
+#endif
+
+    std::unordered_map<CityRecord, uint32_t> foundedMap;
+    foundedMap[CityRecord{ "Beijing", 2000, 116.46, 39.92 }] = 1050;
+
+    std::cout << foundedMap[CityRecord{ "Beijing", 2000, 116.46, 39.92 }] << std::endl;
+}
+```
+
+### NULL
+
+```C++
+void* value = nullptr; // null pointer
+// 00 00 00 00 00 00 00 00 00 00 8 bytes
+
+// NULL
+#ifdef NULL
+    #ifdef __cplusplus
+        #define NULL 0
+    #else
+        #define NULL ((void *)0)
+    #endif
+#endif    
+
+
+// offsetof
+#ifdef __cplusplus
+    #define offsetof(s,m) ((::size_t)&reinterpret_cast<char const volatile&>((((s*)0)->m)))
+#else
+    #define offsetof(s,m) ((size_t)&(((s*)0)->m))
+#endif
+namespace testtest {
+    class Entity
+    {
+    public:
+        Entity() = default;
+
+        const std::string& GetName() const { return m_Name; }
+
+        void PrintType()
+        {
+            std::cout << "Entity \n";
+        }
+    private:
+        Entity* m_Parent;
+        std::string m_Name;
+    };
+
+    struct EntityData
+    {
+        Entity* m_Parent; // 0
+        std::string m_Name; // 8
+    };
+
+    const std::string& Entity_GetName(const EntityData* self)
+    {
+        return self->m_Name;
+    }
+
+    void Entity_PrintType(const EntityData* self)
+    {
+        std::cout << "Entity \n";
+    }
+
+    void fn()
+    {
+        Entity* e = nullptr;
+        e->PrintType();
+        uint64_t offset = offsetof(EntityData, m_Name);
+        // uint64_t offset = (uint64_t)&((EntityData*)0) -> m_Name;
+        std::cout <<  " offset = " << offset << std::endl;
+        
+        // Exception thrown: read access violation.
+        // this was 0x8
+        std::cout << e->GetName() << " offset = "<< offset << std::endl;
+    }
+}
+```

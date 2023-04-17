@@ -184,6 +184,57 @@ $(inherited) "$(SRCROOT)/xxxx" "$(SRCROOT)/xx"
 
 文档指出，如果你引用的 `Frameworks` 没有在标准位置（`standard locations`），那么，你需要在工程的配置文件里设置` “Framework Search Paths”`， 用来为编译器（`compiler`）和连接器（`linker`）指定搜索路径。
 
+---
+
+> 一般我们在xcode里面配置包含工程目录下头文件的时候，都要关联着相对路径和绝对路径，如果用绝对路径，你把工程发给别人，别人就要再改这个绝对路径，否则报错。
+>
+> Xcode用户可以 通过 `Header Search Paths` 来配置环境变量。但这里涉及到另外一个参数 `User Header Search Paths`， 这两者到底有什么区别呢？
+>
+> `Header Search Paths` 是用来存放 Project 中头文件的搜索根源，没有被add到项目里的头文件，可以通过配置`Header Search Paths` 来引入头文件，这样的好处可以不让 `project` 包含的文件太多，便于管理。
+>
+> 通过 `#import `引入头文件的方式有 `<>` 和` ""`两种。前者是只从 `Header Search Paths` 中搜索，后者能从  `Header Search Paths` 和  `User Header Search Paths` 中搜索。
+>
+> `<>` 是从系统目录空间 （对应` Header Search Paths`）中搜索文件
+>
+>  `""` 是从用户目录空间（对应 `User Header Search Paths`）中搜索文件。 如果你把路径加到 `User Header Search Paths` 中，却使用 `<>`导入头文件，那么程序无法从系统目录空间中找到新加的路径，从而报错。
+>
+> 在修改`User Header Search Paths`这个选项的时候使用`"$(SRCROOT)/当前工程名字/需要包含头文件所在文件夹"` 。
+>
+> 
+>
+> 绝对路径: 点击工程某个文件，右键 `show in finder` 打开终端，cd 把文件夹拖入，即可出现一个路径，这个就是绝对路径.
+>
+>  相对路径: 相对于当前工程文件的路径，`./`表示当前工程文件夹，，`../`表示上层目录 
+>
+> 在xcode里`$(PROJECT_DIR)`也表示当前工程文件夹目录
+>
+> 小结：
+>  `$(SRCROOT)` 代表的是项目根目录下
+>  `$(PROJECT_DIR)` 代表的是整个项目
+>  `./`也表示当前工程文件夹
+>  `../`表示上层目录
+>
+> #### 
+>
+> ###### 1.c/c++  头文件引用问题
+>
+> `include/import  <>` 引用编译器的类库路径下的头文件
+>  `include/import  “”` 引用工程目录的相对路径的头文件
+>  `include/import` 都是编译指令，在编译时，编译器会将相对路径替换成绝对路径。因此，头文件的绝对路径=搜索路径+相对路径。
+>
+> Xcode Build Settings 中的 `Header Search Paths`: 即可设置头文件搜索路径。
+>  例如：文件test.h的路径为testDemo/libs/test.h，我们在Xcode的
+>
+> ```
+>  Header Search Paths 中添加 $(SRCROOT) => 项目中引用该文件: #import "libs/test.h"
+>  
+>  Header Search Paths 中添加 $(SRCROOT)/libs => 项目中引用该文件: #import "test.h"
+> ```
+>
+> 
+
+---
+
 
 
 ### 如果想让使用ARC机制的代码不使用ARC机制，只需要输入`-fno-objc-arc`

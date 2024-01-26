@@ -1956,3 +1956,109 @@ class Solution {
 }
 ```
 
+14 求多边形的面积
+> 计算凸多边形和计算凹多边形的面积可以使用相同的代码，前提是提供的顶点坐标按照正确的顺序（逆时针或顺时针）连接。
+> 对于凸多边形：顶点的连接顺序可以是逆时针或顺时针，只要所有顶点按照相同的方向连接即可。这是因为凸多边形的内部角都小于180度，所以不管是逆时针还是顺时针的顺序，面积的计算结果都将是正数。
+
+> 对于凹多边形：顶点的连接顺序通常要求是逆时针顺序（counter-clockwise）以便得到正面积，但也可以是顺时针顺序，只要你愿意得到负的面积。如果顶点按照逆时针顺序连接，计算出的面积将是正数，而如果按照顺时针顺序连接，计算出的面积将是负数。在一些情况下，使用负面积可能有其特定用途。
+
+> 对于凸多边形，以多边形某一点为顶点，将其划分为几个三角形，计算这些三角形的面积，然后加起来即可。
+已知三角形顶点坐标，三角形面积可以利用“向量的叉乘”来计算。
+
+> 向量叉乘：向量AB和向量AC的坐标表示。假设A点坐标为 (x1, y1, 1)，B点坐标为 (x2, y2, 1)，C点坐标为 (x3, y3, 1)。计算 AB X AC
+
+```
+向量AB = (x2 - x1, y2 - y1, 1 - 1) = (x2 - x1, y2 - y1, 0)
+
+向量AC = (x3 - x1, y3 - y1, 1 - 1) = (x3 - x1, y3 - y1, 0)
+
+由于z坐标都是0，所以向量AB和向量AC都在xy平面上。现在，我们可以计算它们的叉乘，即AB x AC：
+
+AB x AC = [(y2 - y1) * 0 - 0 * (y3 - y1), 
+           0 * (x3 - x1) - (x2 - x1) * 0, 
+           (x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1)]
+
+由于两个向量的z坐标都是0，它们的叉乘仍然在xy平面上，因此z坐标仍然是0。叉乘的坐标表示为：
+
+AB x AC = (0, 0, (x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1))
+
+这就是向量AB和向量AC的叉乘的结果。
+
+AB x AC = |i       j       k    |
+          |x2 - x1 y2 - y1 1 - 1|
+          |x3 - x1 y3 - y1 1 - 1|
+
+其中，i、j、k是单位向量，它们分别代表x、y、z轴的方向。
+
+具体的计算步骤为：
+
+计算i分量：
+i 分量等于在消去i行和i列后得到的2x2子行列式的值，即 ((y2 - y1) * (1 - 1) - (1 - 1) * (y3 - y1))。
+
+计算j分量：
+j 分量等于在消去j行和j列后得到的2x2子行列式的值，即 ((x3 - x1) * (1 - 1) - (1 - 1) * (x2 - x1))。
+
+计算k分量：
+k 分量等于在消去k行和k列后得到的2x2子行列式的值，即 ((x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1))。
+
+最终，向量AB x AC的结果是一个新的向量，其三个分量分别对应i、j、k方向的值。
+
+```
+
+![](../../assets/tuduobianxing.png)
+
+
+Python 实现：
+```python
+class Point:
+    def __init__(self, x=0.0, y=0.0, z=0.0) -> None:
+        self.x = x
+        self.y = y
+        self.z = z
+
+class Solution:
+    def __getSquareOfTriangle(self, a: Point, b: Point, c: Point) -> float:
+        return ((b.x - a.x)*(c.y-a.y) - (b.y-a.y)*(c.x-a.x)) / 2
+    
+    def __is_convex_polygon(self, points: [Point]) -> bool:
+        '''
+        判断是否是凸多边形
+        '''
+        n = len(points)
+        if n < 3:
+            return False # 三个或更少的点无法构成多边形
+        prev_cross = 0  # 用于存储前一个叉乘的结果
+        for i in range(n):
+            p1 = points[i]
+            p2 = points[(i + 1) % n]  # 下一个顶点
+            p3 = points[(i + 2) % n]  # 下下个顶点
+            # 这里服用过了求三个点组成的三角形面积函数（叉积 / 2），但是不影响符号
+            cross = self.__getSquareOfTriangle(p1, p2, p3)
+            if cross == 0:
+                continue # 如果叉积结果为 0 忽略这3个点
+            if prev_cross == 0:
+                prev_cross = cross
+            else:
+                if prev_cross * cross < 0:
+                    return False # 如果叉乘结果的符号发生变化，不是凸多边形
+        
+        return True # 所有叉乘结果符号一致，是凸多边形
+
+    def getSquareOfPolygon(self, points:[Point]) -> float:
+        sum = 0.0
+        n = len(points)
+        if n < 3:
+            return sum
+        for i in range(1, n-1):
+            # n-2 个三角形之和
+            sum += self.__getSquareOfTriangle(points[0], points[i], points[i+1])
+        return abs(sum)
+
+
+if __name__ == "__main__":
+    # points = [Point(1,1,0),Point(1,2,0),Point(2,4,0),Point(3,2,0),Point(3,1,0)]
+    # points = [Point(3,3,0),Point(3,0,0),Point(1,0,0),Point(1,2,0)]
+    points = [Point(1,0,0),Point(3,0,0),Point(3,3,0),Point(2,1,0), Point(1,3,0)]
+    ret = Solution().getSquareOfPolygon(points)
+    print("result = ", ret)
+```

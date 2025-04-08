@@ -282,10 +282,38 @@ NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.25 target:[TestTimerP
 self.timer = timer;
 ```
 
+### 后记：
+```
+NSTimer -> MTBTargetWeakProxy (weak) -> Target (ViewController) -> NSTimer
+
+当 ViewController 被释放时：
+  proxy 的 target 变为 nil
+  NSTimer 的 target (proxy) 仍然存在
+  但由于 proxy 的 target 是 nil，不会造成内存泄漏
+上述，NSProxy 子类的实现在这个场景下，主要目的是打破循环引用
+
+当 target 被释放后，proxy 的 target 变为 nil，此时即使有方法调用，也不会造成崩溃，因为：
+  methodSignatureForSelector: 返回了 init 方法的签名
+  forwardInvocation: 设置了 NULL 返回值
 
 
-推荐文章 [浅析NSTimer & CADisplayLink内存泄漏](https://tingxins.com/2016/11/NSTimer-CADisplayLink-leaks/)
+我解释一下 forwardInvocation 中设置 NULL 返回值的目的：
+  在 Objective-C runtime 中，消息转发必须处理返回值
+  即使方法声明为 void，实际上也会返回一个值
+  如果不设置返回值，可能会导致未定义行为或崩溃（可能会读取到未初始化的内存/造成不可预测的行为）
+  
 
+当 target 被释放后，proxy 的 target 变为 nil
+此时如果还有方法调用，我们需要确保：
+  1 不会崩溃
+  2 返回一个安全的默认值
+
+NULL 是一个安全的默认返回值，因为：
+  对于对象类型，返回 nil 是安全的
+  对于指针类型，返回 NULL 是安全的
+  对于基本类型，NULL 会被解释为 0，这也是相对安全的
+  
+```
 
 
 ##### 2.3 我们创建的 Timer 默认情况下是添加到当前 RunLoop 的 default 模式下，这个时候如果切换到 TrackingRunLoopMode 上面，定时器就不会在生效了

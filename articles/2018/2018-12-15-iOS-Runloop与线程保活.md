@@ -317,6 +317,179 @@ WeexSDK/Sources/Manager/WXComponentManager.mm
 }
 ```
 
+### 后记
+
+```
+RunLoop 卡顿检测
+实现原理
+
+1 Runloop观察者：向主线程的Runloop添加观察者，监听其活动状态（如处理事件前、进入休眠等）。
+2 信号量超时机制：在子线程中通过信号量等待超时来判断主线程是否卡顿。若多次超时，则判定为卡顿。
+3 堆栈收集：当检测到卡顿时，收集主线程的调用堆栈以定位问题。
+
+typedef CF_OPTIIONS(CFOptionFlags, CFRunLoopActivity) {
+  KCFRunLoopEntry,
+  KCFRunLoopBeforeTimers,
+  KCFRunLoopBeforeSources, // 触发 Source0 回调（进入休眠前的状态）
+  KCFRunLoopBeforeWaiting, // 即将进入休眠，等待 mach_port 消息
+  KCFRunLoopAfterWaiting, // 接收 mach_port 消息 （唤醒线程后的状态）
+  KCFRunLoopExit, // 推出 loop
+  KCFRunLoopAllActivities // loop 所有状态改变
+}
+
+如果 RunLoop 的线程，进入睡眠前的方法的执行时间过长而导致无法进入睡眠，或者线程唤醒后接收消息时间过长而无法进入下发一步的话，就可以认为是线程受阻了。
+如果这线程是主线程，表现出来的就是出现了卡顿。所以，如果我们利用 RunLoop 原理来监控卡顿的话，就要关注这两个阶段。
+BeforeSources
+AfterWaiting
+
+进入休眠之前（BeforeWaiting） 会执行 source0 等方法，唤醒 AfterWaiting 后接收 mach_port 消息。
+如果在执行 source 0 或者 接收 mach_port 消息的时候太耗时，那么就会卡顿。
+  把 BeforeSources 作为执行 sources0 等方法的开始时间节点
+  把 AfterWaiting 作为接收 mach_port 方法作为接收 mach_port 消息的开始时间节点
+只要监控这两个状态是否超过设置的时间阈值。
+
+如果监控 BeforeWaiting 状态，当监听到 BeforeWaiting 状态时，其实已经执行完了 source0，无法监控 source 0 的耗时。
+
+
+实现步骤
+1 创建Runloop观察者：监听主线程Runloop的所有活动。
+2 记录活动状态：在观察者回调中记录当前Runloop状态，并通过信号量通知子线程。
+3 子线程检测超时：子线程等待信号量，若超时且Runloop处于处理事件状态，则判定为卡顿。
+4 收集堆栈信息：触发卡顿时，收集并上报主线程的调用堆栈。
+
+---
+还有：
+1 使用 CADisplayLink 检测掉帧，在回调中记录每次刷新的时间戳，如果连续几帧没有触发回调，则表示主线程被阻塞，发生了卡顿。
+2 子线程定时 ping 主线程，创建一个子线程，定期向主线程发送任务，然后等待主线程响应。如果超过一定时间主线程还没响应，就认为是卡顿。
+3 在后台线程中定期采集主线程的堆栈信息（Backtrace）。如果连续多次采样显示主线程卡在某个或某几个函数上，则可判定为卡顿。
+
+```
+
+代码实现：
+```objc
+#import <Foundation/Foundation.h>
+
+@interface LagMonitor : NSObject
+
++ (instancetype)sharedInstance;
+- (void)startMonitoring;
+- (void)stopMonitoring;
+
+@end
+
+@implementation LagMonitor {
+    CFRunLoopObserverRef _observer;
+    dispatch_semaphore_t _semaphore;
+    NSInteger _timeoutCount;
+    CFRunLoopActivity _activity;
+}
+
++ (instancetype)sharedInstance {
+    static LagMonitor *instance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[LagMonitor alloc] init];
+    });
+    return instance;
+}
+
+- (void)startMonitoring {
+    if (_observer) {
+        return;
+    }
+    
+    // 初始化信号量
+    _semaphore = dispatch_semaphore_create(0);
+    
+    // 设置Runloop观察者上下文
+    CFRunLoopObserverContext context = {
+        0,
+        (__bridge void *)self,
+        NULL,
+        NULL
+    };
+    
+    // 创建观察者，监听所有活动
+    _observer = CFRunLoopObserverCreate(
+        kCFAllocatorDefault,
+        kCFRunLoopAllActivities,
+        YES,
+        0,
+        &runLoopObserverCallBack,
+        &context
+    );
+    
+    // 将观察者添加到主线程的Runloop
+    CFRunLoopAddObserver(
+        CFRunLoopGetMain(),
+        _observer,
+        kCFRunLoopCommonModes
+    );
+    
+    // 在子线程中监控卡顿
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        while (YES) {
+            // 等待信号量，超时时间设为50毫秒
+            long st = dispatch_semaphore_wait(
+                self->_semaphore,
+                dispatch_time(DISPATCH_TIME_NOW, 50 * NSEC_PER_MSEC)
+            );
+            
+            if (st != 0) { // 超时
+                // 判断Runloop是否在处理事件
+                if (self->_activity == kCFRunLoopBeforeSources ||
+                    self->_activity == kCFRunLoopAfterWaiting) {
+                    
+                    // 连续超时3次（累计150毫秒）判定为卡顿
+                    if (++self->_timeoutCount < 3) {
+                        continue;
+                    }
+                    
+                    // 收集堆栈信息
+                    [self collectStackInfo];
+                }
+            }
+            self->_timeoutCount = 0;
+        }
+    });
+}
+
+- (void)stopMonitoring {
+    if (!_observer) {
+        return;
+    }
+    CFRunLoopRemoveObserver(
+        CFRunLoopGetMain(),
+        _observer,
+        kCFRunLoopCommonModes
+    );
+    CFRelease(_observer);
+    _observer = NULL;
+}
+
+// Runloop观察者回调
+static void runLoopObserverCallBack(
+    CFRunLoopObserverRef observer,
+    CFRunLoopActivity activity,
+    void *info
+) {
+    LagMonitor *monitor = (__bridge LagMonitor *)info;
+    monitor->_activity = activity;
+    
+    // 发送信号量
+    dispatch_semaphore_signal(monitor->_semaphore);
+}
+
+// 收集堆栈信息
+- (void)collectStackInfo {
+    NSArray *callSymbols = [NSThread callStackSymbols];
+    NSLog(@"检测到卡顿：\n%@", callSymbols);
+    // 此处可上报callSymbols到服务器
+}
+
+@end
+
+```
 
 
 ## 总结 
